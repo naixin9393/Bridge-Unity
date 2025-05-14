@@ -19,7 +19,7 @@ public class DeckTests {
         var deck = new Deck();
         deck.DealCard();
         deck.DealCard();
-        var card = new Card(Card.CardRank.Ace, Suit.Clubs);
+        var card = new Card(Rank.Ace, Suit.Clubs);
         deck.InsertCard(card);
         Assert.AreEqual(51, deck.Cards.Count);
     }

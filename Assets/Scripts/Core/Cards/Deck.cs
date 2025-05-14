@@ -8,7 +8,7 @@ public class Deck {
 
     public Deck() {
         foreach (Suit suit in Enum.GetValues(typeof(Suit))) {
-            foreach (Card.CardRank rank in Enum.GetValues(typeof(Card.CardRank))) {
+            foreach (Rank rank in Enum.GetValues(typeof(Rank))) {
                 _cards.Add(new Card(rank, suit));
             }
         }

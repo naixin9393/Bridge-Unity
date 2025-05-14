@@ -20,7 +20,7 @@ public class PlayerTests
     public void ReceiveCards_AddsCardsToHand() {
         var player = new Player(Position.North);
         var cards = new List<Card> {
-            new(Card.CardRank.Ace, Suit.Clubs)
+            new(Rank.Ace, Suit.Clubs)
         };
         player.ReceiveCards(cards);
         Assert.AreEqual(1, player.Hand.Count);
@@ -29,7 +29,7 @@ public class PlayerTests
     [Test]
     public void PlayCard_RemovesCardFromHand() {
         var player = new Player(Position.North);
-        var card = new Card(Card.CardRank.Ace, Suit.Clubs);
+        var card = new Card(Rank.Ace, Suit.Clubs);
         player.ReceiveCards(new List<Card> { card });
         player.PlayCard(card);
         Assert.AreEqual(0, player.Hand.Count);
@@ -38,8 +38,8 @@ public class PlayerTests
     [Test]
     public void PlayCard_DoesNothing_IfCardNotInHand() {
         var player = new Player(Position.North);
-        var card = new Card(Card.CardRank.Ace, Suit.Clubs);
-        var card2 = new Card(Card.CardRank.Ace, Suit.Spades);
+        var card = new Card(Rank.Ace, Suit.Clubs);
+        var card2 = new Card(Rank.Ace, Suit.Spades);
         player.ReceiveCards(new List<Card> { card2 });
         player.PlayCard(card);
         Assert.AreEqual(1, player.Hand.Count);
