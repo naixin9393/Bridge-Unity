@@ -65,6 +65,7 @@ public class Auction {
 
     private void DetermineDeclarer() {
         if (_highestBid == null) return;
+        _finalContract = _highestBid.Bid;
 
         Strain winningStrain = _highestBid.Bid.Strain;
         var winningCaller = _highestBid.Caller;
