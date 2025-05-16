@@ -1,6 +1,6 @@
 public interface ICall {
     CallType Type { get; }
-    Player Caller { get; }
+    IPlayer Caller { get; }
 }
 
 public enum CallType {

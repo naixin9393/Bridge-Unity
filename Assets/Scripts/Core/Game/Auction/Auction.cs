@@ -2,32 +2,33 @@ using System.Collections.Generic;
 using System.Linq;
 
 public class Auction {
-    private List<Player> _players;
-    private Player _declarer;
-    public Player Declarer => _declarer;
-    private ICall _lastCall => _calls.Count > 0 ? _calls[^1] : null;
-    public ICall LastCall => _lastCall;
+
+    private List<IPlayer> _players;
+    public List<IPlayer> Players => _players;
+    private IPlayer _declarer;
+    public IPlayer Declarer => _declarer;
+    public ICall LastCall => _calls.Count > 0 ? _calls[^1] : null;
     private Bid _finalContract;
     public Bid FinalContract => _finalContract;
-    public Player CurrentPlayer => _players[_currentPlayerIndex];
-    private Player _dummy;
-    public Player Dummy => _dummy;
+    public IPlayer CurrentPlayer => _players[_currentPlayerIndex];
+    private IPlayer _dummy;
+    public IPlayer Dummy => _dummy;
 
-    private readonly Player _dealer;
-    public Player Dealer => _dealer;
+    private readonly IPlayer _dealer;
+    public IPlayer Dealer => _dealer;
 
     private int _consecutivePasses;
     private int _currentPlayerIndex;
     private bool _isOver = false;
     public bool IsOver => _isOver;
     private BidCall _highestBid;
-    private List<Player> _offendingSide = new();
-    public List<Player> OffendingSide => _offendingSide;
+    private readonly List<IPlayer> _offendingSide = new();
+    public List<IPlayer> OffendingSide => _offendingSide;
 
     public BidCall HighestBid => _highestBid;
     private readonly List<ICall> _calls = new();
 
-    public Auction(List<Player> players, Player dealer) {
+    public Auction(List<IPlayer> players, IPlayer dealer) {
         _players = players;
         _dealer = dealer;
         _currentPlayerIndex = players.IndexOf(dealer);
@@ -36,13 +37,13 @@ public class Auction {
     public void MakeCall(ICall call) {
         if (call.Caller != CurrentPlayer)
             throw new InvalidCallException("Caller is not the current player");
-        if (_lastCall == null && call.Type != CallType.Pass && call.Type != CallType.Bid)
+        if (LastCall == null && call.Type != CallType.Pass && call.Type != CallType.Bid)
             throw new InvalidCallException("First call must be a bid or pass");
-        if (IsPass(_lastCall) && (IsDouble(call) || IsRedouble(call)))
+        if (IsPass(LastCall) && (IsDouble(call) || IsRedouble(call)))
             throw new InvalidCallException("Double and Redouble are not allowed after pass");
-        if (!IsDouble(_lastCall) && IsRedouble(call))
+        if (!IsDouble(LastCall) && IsRedouble(call))
             throw new InvalidCallException("Redouble is only allowed after double");
-        if (IsBid(_lastCall) && IsBid(call) && IsLowerThanLastCall((call as BidCall).Bid))
+        if (IsBid(LastCall) && IsBid(call) && IsLowerThanLastCall((call as BidCall).Bid))
             throw new InvalidCallException("Caller bid is lower than last bid");
 
         _consecutivePasses = IsPass(call) ? _consecutivePasses + 1 : 0;
@@ -85,13 +86,13 @@ public class Auction {
         _dummy = PartnerOf(_declarer);
     }
 
-    private Player PartnerOf(Player player) {
+    private IPlayer PartnerOf(IPlayer player) {
         return _players[(_players.IndexOf(player) + 2) % _players.Count];
     }
 
     private bool IsLowerThanLastCall(Bid bid) {
-        if (_lastCall == null || _lastCall.Type != CallType.Bid) return false;
-        return bid < (_lastCall as BidCall).Bid;
+        if (LastCall == null || LastCall.Type != CallType.Bid) return false;
+        return bid < (LastCall as BidCall).Bid;
     }
 
     private bool IsBid(ICall call) {

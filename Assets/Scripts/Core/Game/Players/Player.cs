@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-public class Player {
+public class Player : IPlayer {
     public Position Position { get; private set; }
     private readonly List<Card> _hand = new();
 
@@ -17,6 +17,8 @@ public class Player {
     }
 
     public void PlayCard(Card card) {
+        if (!_hand.Contains(card))
+            throw new CardNotInHandException(card, this);
         _hand.Remove(card);
     }
 }

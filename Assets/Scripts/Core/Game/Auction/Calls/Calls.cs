@@ -1,26 +1,26 @@
 public class Pass : ICall {
     public CallType Type => CallType.Pass;
-    public Player Caller { get; private set; }
+    public IPlayer Caller { get; private set; }
 
-    public Pass(Player caller) {
+    public Pass(IPlayer caller) {
         Caller = caller;
     }
 }
 
 public class Double : ICall {
     public CallType Type => CallType.Double;
-    public Player Caller { get; private set; }
+    public IPlayer Caller { get; private set; }
 
-    public Double(Player caller) {
+    public Double(IPlayer caller) {
         Caller = caller;
     }
 }
 
 public class Redouble : ICall {
     public CallType Type => CallType.Redouble;
-    public Player Caller { get; private set; }
+    public IPlayer Caller { get; private set; }
 
-    public Redouble(Player caller) {
+    public Redouble(IPlayer caller) {
         Caller = caller;
     }
 }
@@ -28,9 +28,9 @@ public class Redouble : ICall {
 public class BidCall : ICall {
     public Bid Bid { get; private set; }
     public CallType Type => CallType.Bid;
-    public Player Caller { get; private set; }
+    public IPlayer Caller { get; private set; }
 
-    public BidCall(Bid bid, Player caller) {
+    public BidCall(Bid bid, IPlayer caller) {
         Bid = bid;
         Caller = caller;
     }

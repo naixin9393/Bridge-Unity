@@ -2,14 +2,14 @@ using System.Collections.Generic;
 using NUnit.Framework;
 
 public class AuctionTests {
-    private List<Player> CreateTestPlayers() => new() {
+    private List<IPlayer> CreateTestPlayers() => new() {
         new Player(Position.North),
         new Player(Position.East),
         new Player(Position.South),
         new Player(Position.West)
     };
 
-    private List<List<ICall>> CreateValidCalls(List<Player> players, int dealerIndex) {
+    private List<List<ICall>> CreateValidCalls(List<IPlayer> players, int dealerIndex) {
         return new List<List<ICall>>() {
             new() {
                 new BidCall(new Bid(1, Strain.Clubs), players[dealerIndex++ % 4]),
