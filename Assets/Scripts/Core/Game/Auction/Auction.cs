@@ -1,8 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using GluonGui.WorkspaceWindow.Views.WorkspaceExplorer.Explorer.Operations;
-using NUnit.Framework;
 
 public class Auction {
     private List<Player> _players;
@@ -76,14 +73,6 @@ public class Auction {
         _offendingSide.Add(partner);
         _offendingSide.Add(winningCaller);
 
-/*
-        foreach (ICall call in _calls) {
-            if (call.Type == CallType.Bid && (call as BidCall).Bid.Strain == winningStrain && _offendingSide.Contains(call.Caller)) {
-                _declarer = call.Caller;
-                return;
-            }
-        }
-        */
         _declarer = _calls
             .OfType<BidCall>()
             .Where(bidCall => bidCall.Bid.Strain == winningStrain && _offendingSide.Contains(bidCall.Caller))
