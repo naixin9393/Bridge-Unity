@@ -1,0 +1,13 @@
+using System.Collections.Generic;
+
+public interface IAuction {
+    List<IPlayer> Players { get; }
+    IPlayer Declarer { get; }
+    ICall LastCall { get; }
+    Bid FinalContract { get; }
+    IPlayer CurrentPlayer { get; }
+    IPlayer Dummy { get; }
+    IPlayer Dealer { get; }
+    bool IsOver { get; }
+    BidCall HighestBid { get; }
+}

@@ -193,8 +193,6 @@ public class AuctionTests {
         Assert.IsTrue(auction.IsOver);
         Assert.AreEqual(players[0], auction.Declarer);
         Assert.AreEqual(players[2], auction.Dummy);
-        Assert.IsTrue(auction.OffendingSide.Contains(auction.Dummy));
-        Assert.IsTrue(auction.OffendingSide.Contains(auction.Declarer));
     }
 
     [Test]
@@ -211,7 +209,5 @@ public class AuctionTests {
         Assert.AreEqual(players[0], auction.Declarer);
         Assert.AreEqual(players[2], auction.Dummy);
         Assert.AreEqual(new Bid(2, Strain.NoTrump), auction.FinalContract);
-        Assert.IsTrue(auction.OffendingSide.Contains(auction.Dummy));
-        Assert.IsTrue(auction.OffendingSide.Contains(auction.Declarer));
     }
 }

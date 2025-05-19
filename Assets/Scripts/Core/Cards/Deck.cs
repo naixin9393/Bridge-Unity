@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-public class Deck {
+public class Deck{
     private readonly List<Card> _cards = new();
     public ReadOnlyCollection<Card> Cards => new(_cards);
 

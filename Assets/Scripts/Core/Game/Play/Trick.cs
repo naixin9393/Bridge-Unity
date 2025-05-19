@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public class Trick {
+public class Trick : ITrick {
     private readonly List<(Card Card, IPlayer Player)> _plays = new();
     private readonly List<IPlayer> _players = new();
-    private int _currentPlayerIndex = 0;
+    private int _currentPlayerIndex;
     private readonly Strain _strain;
 
     public List<(Card Card, IPlayer Player)> Plays => _plays;
@@ -13,9 +13,10 @@ public class Trick {
     public IPlayer Winner => IsOver ? GetWinner() : null;
     public Suit LeadSuit { get; private set; }
 
-    public Trick(List<IPlayer> players, Strain strain) {
+    public Trick(List<IPlayer> players, Strain strain, IPlayer currentPlayer) {
         _players.AddRange(players);
         _strain = strain;
+        _currentPlayerIndex = players.IndexOf(currentPlayer);
     }
 
     private IPlayer GetWinner() {

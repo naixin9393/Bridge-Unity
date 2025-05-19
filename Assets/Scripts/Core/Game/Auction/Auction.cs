@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public class Auction {
+public class Auction : IAuction {
 
     private List<IPlayer> _players;
     public List<IPlayer> Players => _players;
@@ -23,7 +23,6 @@ public class Auction {
     public bool IsOver => _isOver;
     private BidCall _highestBid;
     private readonly List<IPlayer> _offendingSide = new();
-    public List<IPlayer> OffendingSide => _offendingSide;
 
     public BidCall HighestBid => _highestBid;
     private readonly List<ICall> _calls = new();

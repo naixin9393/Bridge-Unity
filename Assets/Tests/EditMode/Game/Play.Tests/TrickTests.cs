@@ -18,14 +18,14 @@ public class TrickTests {
 
     [Test]
     public void Trick_ShouldBeEmpty_IfNoCardsWerePlayed() {
-        var trick = new Trick(new List<IPlayer> { northPlayer, eastPlayer, southPlayer, westPlayer }, Strain.NoTrump);
+        var trick = new Trick(new List<IPlayer> { northPlayer, eastPlayer, southPlayer, westPlayer }, Strain.NoTrump, northPlayer);
         Assert.AreEqual(0, trick.Plays.Count);
     }
 
     [TestCase(Rank.Ace, Suit.Spades, Rank.Four, Suit.Spades, Rank.King, Suit.Hearts, Rank.Queen, Suit.Diamonds)]
     [TestCase(Rank.Five, Suit.Spades, Rank.Ten, Suit.Spades, Rank.King, Suit.Hearts, Rank.Queen, Suit.Diamonds)]
     public void Trick_ShouldContainCardsPlayed(Rank firstCardRank, Suit firstCardSuit, Rank secondCardRank, Suit secondCardSuit, Rank thirdCardRank, Suit thirdCardSuit, Rank fourthCardRank, Suit fourthCardSuit) {
-        var trick = new Trick(new List<IPlayer> { northPlayer, eastPlayer, southPlayer, westPlayer }, Strain.NoTrump);
+        var trick = new Trick(new List<IPlayer> { northPlayer, eastPlayer, southPlayer, westPlayer }, Strain.NoTrump, northPlayer);
         trick.PlayCard(new Card(firstCardRank, firstCardSuit), northPlayer);
         trick.PlayCard(new Card(secondCardRank, secondCardSuit), eastPlayer);
         trick.PlayCard(new Card(thirdCardRank, thirdCardSuit), southPlayer);
@@ -40,7 +40,7 @@ public class TrickTests {
 
     [Test]
     public void Trick_Play_ShouldUpdateTurn() {
-        Trick trick = new(new List<IPlayer> { northPlayer, eastPlayer, southPlayer, westPlayer }, Strain.NoTrump);
+        Trick trick = new(new List<IPlayer> { northPlayer, eastPlayer, southPlayer, westPlayer }, Strain.NoTrump, northPlayer);
         trick.PlayCard(new Card(Rank.Two, Suit.Clubs), northPlayer);
         Assert.AreEqual(Position.East, trick.CurrentPlayer.Position);
         trick.PlayCard(new Card(Rank.Ace, Suit.Diamonds), eastPlayer);
@@ -53,7 +53,7 @@ public class TrickTests {
 
     [Test]
     public void Trick_ShouldEnd_AfterFourCardsPlayed() {
-        Trick trick = new(new List<IPlayer> { northPlayer, eastPlayer, southPlayer, westPlayer }, Strain.NoTrump);
+        Trick trick = new(new List<IPlayer> { northPlayer, eastPlayer, southPlayer, westPlayer }, Strain.NoTrump, northPlayer);
         trick.PlayCard(new Card(Rank.Two, Suit.Clubs), northPlayer);
         trick.PlayCard(new Card(Rank.Ace, Suit.Diamonds), eastPlayer);
         trick.PlayCard(new Card(Rank.Six, Suit.Hearts), southPlayer);
@@ -68,7 +68,7 @@ public class TrickTests {
     [TestCase(Rank.Ace, Suit.Spades, Rank.Ace, Suit.Hearts, Rank.Ace, Suit.Diamonds, Rank.Ace, Suit.Clubs, Strain.NoTrump, Position.North)] // All equal rank
     [TestCase(Rank.Two, Suit.Spades, Rank.Three, Suit.Spades, Rank.Four, Suit.Spades, Rank.Ace, Suit.Spades, Strain.NoTrump, Position.West)] // Lowest to Highest
     public void Trick_Winner_ShouldBeExpectedPlayer(Rank firstCardRank, Suit firstCardSuit, Rank secondCardRank, Suit secondCardSuit, Rank thirdCardRank, Suit thirdCardSuit, Rank fourthCardRank, Suit fourthCardSuit, Strain strain, Position expectedPosition) {
-        var trick = new Trick(new List<IPlayer> { northPlayer, eastPlayer, southPlayer, westPlayer }, strain);
+        var trick = new Trick(new List<IPlayer> { northPlayer, eastPlayer, southPlayer, westPlayer }, strain, northPlayer);
         trick.PlayCard(new Card(firstCardRank, firstCardSuit), northPlayer);
         trick.PlayCard(new Card(secondCardRank, secondCardSuit), eastPlayer);
         trick.PlayCard(new Card(thirdCardRank, thirdCardSuit), southPlayer);
@@ -78,7 +78,7 @@ public class TrickTests {
 
     [Test]
     public void Trick_Play_ShouldThrowException_IfNotPlayersTurn() {
-        var trick = new Trick(new List<IPlayer> { northPlayer, eastPlayer, southPlayer, westPlayer }, Strain.NoTrump);
+        var trick = new Trick(new List<IPlayer> { northPlayer, eastPlayer, southPlayer, westPlayer }, Strain.NoTrump, northPlayer);
         Assert.Throws<NotPlayersTurnException>(() => trick.PlayCard(new Card(Rank.Two, Suit.Clubs), eastPlayer));
     }
 

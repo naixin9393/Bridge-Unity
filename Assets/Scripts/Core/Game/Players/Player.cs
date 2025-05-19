@@ -21,4 +21,8 @@ public class Player : IPlayer {
             throw new CardNotInHandException(card, this);
         _hand.Remove(card);
     }
+
+    public override string ToString() {
+        return $"{Position}";
+    }
 }
