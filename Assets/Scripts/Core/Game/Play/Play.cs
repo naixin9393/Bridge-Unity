@@ -5,21 +5,18 @@ using System.Linq;
 public class Play : IPlay {
     internal List<ITrick> _tricks = new();
     internal int _currentTrickIndex;
+    internal int _tricksWonByAttackers = 0;
     private readonly List<IPlayer> _players = new();
     private int _currentPlayerIndex;
-    internal int _tricksWonByAttackers = 0;
     private List<IPlayer> _attackers = new();
     private List<IPlayer> _defenders = new();
+
     public ITrick CurrentTrick => _tricks[_currentTrickIndex];
     public ReadOnlyCollection<ITrick> Tricks => new(_tricks);
-
     public ReadOnlyCollection<IPlayer> Players => new(_players);
-
     public IPlayer LeadPlayer { get; private set; }
-
     public IPlayer CurrentPlayer => _players.Count > 0 ? _players[_currentPlayerIndex] : null;
     public int TricksWonByAttackers => _tricksWonByAttackers;
-
     public Bid Contract { get; private set; }
     public bool IsOver { get; private set; }
     public bool ContractIsMade => TricksWonByAttackers >= Contract.Level + 6;
@@ -80,7 +77,7 @@ public class Play : IPlay {
     private IPlayer PartnerOf(IPlayer player) {
         return _players[(_players.IndexOf(player) + 2) % _players.Count];
     }
-    
+
     private bool IsAttacker(IPlayer player) {
         return _attackers.Contains(player);
     }

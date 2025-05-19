@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using Moq;
 using NUnit.Framework;
 
@@ -120,7 +119,7 @@ public class PlayTests {
     public void Play_PlayShouldEnd_WhenLastTrickIsOver() {
         Mock<IAuction> mockAuction = CreateMockAuction();
         mockAuction.Setup(a => a.Declarer).Returns(southPlayer);
-        
+
         var lastTrick = new Mock<ITrick>();
         lastTrick.SetupSequence(t => t.IsOver)
             .Returns(false)

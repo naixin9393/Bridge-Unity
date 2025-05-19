@@ -1,0 +1,46 @@
+.header {
+    font-size: 100px;
+    -unity-text-align: upper-center;
+    -unity-font-definition: url("project://database/Assets/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=2230732570650464555&guid=84dfe4ff20a0007459e7af83923e1ed6&type=3#NotInter-Regular");
+    -unity-font-style: bold;
+    color: rgb(254, 243, 207);
+}
+
+.button {
+    color: rgb(10, 15, 10);
+    font-size: 60px;
+    -unity-font-style: bold;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    background-color: rgb(253, 236, 196);
+    margin-top: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    transition-duration: 0s;
+}
+
+.gap {
+    margin-top: 40px;
+    margin-right: 40px;
+    margin-bottom: 40px;
+    margin-left: 40px;
+}
+
+.icon-gap {
+    padding-left: 0;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.button:hover {
+    scale: 1.05 1.05;
+    transition-duration: 0.3s;
+    background-color: rgb(204, 190, 158);
+}
