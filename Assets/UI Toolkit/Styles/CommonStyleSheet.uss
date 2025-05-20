@@ -1,0 +1,204 @@
+.button {
+    color: rgb(10, 15, 10);
+    font-size: 60px;
+    -unity-font-style: bold;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    background-color: rgb(253, 236, 196);
+    margin-top: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    transition-duration: 0s;
+    padding-top: 20px;
+    padding-right: 30px;
+    padding-bottom: 20px;
+    padding-left: 30px;
+}
+
+.gap {
+    margin-top: 40px;
+    margin-right: 40px;
+    margin-bottom: 40px;
+    margin-left: 40px;
+}
+
+.icon-gap {
+    padding-left: 0;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.button:hover {
+    scale: 1.05 1.05;
+    transition-duration: 0.3s;
+    background-color: rgb(204, 190, 158);
+}
+
+.gap {
+    margin-top: 40px;
+    margin-right: 40px;
+    margin-bottom: 40px;
+    margin-left: 40px;
+}
+
+.background {
+    background-color: rgb(19, 58, 37);
+}
+
+.header {
+    font-size: 100px;
+    -unity-text-align: upper-center;
+    -unity-font-definition: url("project://database/Assets/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=2230732570650464555&guid=84dfe4ff20a0007459e7af83923e1ed6&type=3#NotInter-Regular");
+    -unity-font-style: bold;
+    color: rgb(254, 243, 207);
+}
+
+.header2 {
+    -unity-font-style: bold;
+    font-size: 40px;
+    color: rgb(254, 243, 207);
+}
+
+.padding10 {
+    padding-top: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+}
+
+.wrap-content {
+    flex-grow: 0;
+}
+
+.text30 {
+    color: rgb(254, 243, 207);
+    font-size: 30px;
+}
+
+.round-slider #unity-thumb-min {
+    width: 30px;
+    height: 30px;
+    border-top-left-radius: 100px;
+    border-top-right-radius: 100px;
+    border-bottom-right-radius: 100px;
+    border-bottom-left-radius: 100px;
+}
+
+.round-slider #unity-thumb-max {
+    width: 30px;
+    height: 30px;
+    border-top-left-radius: 100px;
+    border-top-right-radius: 100px;
+    border-bottom-right-radius: 100px;
+    border-bottom-left-radius: 100px;
+}
+
+.round-slider #unity-dragger {
+    align-items: center;
+    flex-direction: row;
+}
+
+.accept-button {
+    color: rgb(10, 15, 10);
+    font-size: 60px;
+    -unity-font-style: bold;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    background-color: rgb(232, 255, 183);
+    margin-top: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    transition-duration: 0s;
+    padding-top: 20px;
+    padding-right: 30px;
+    padding-bottom: 20px;
+    padding-left: 30px;
+}
+
+.cancel-button {
+    color: rgb(10, 15, 10);
+    font-size: 60px;
+    -unity-font-style: bold;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    background-color: rgb(255, 221, 183);
+    margin-top: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    transition-duration: 0s;
+    padding-top: 20px;
+    padding-right: 30px;
+    padding-bottom: 20px;
+    padding-left: 30px;
+}
+
+.accept-button:hover {
+    color: rgb(10, 15, 10);
+    font-size: 60px;
+    -unity-font-style: bold;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    background-color: rgb(186, 205, 147);
+    margin-top: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    transition-duration: 0.3s;
+    padding-top: 20px;
+    padding-right: 30px;
+    padding-bottom: 20px;
+    padding-left: 30px;
+    scale: 1.05 1.05;
+}
+
+.cancel-button:hover {
+    color: rgb(10, 15, 10);
+    font-size: 60px;
+    -unity-font-style: bold;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    background-color: rgb(204, 177, 146);
+    margin-top: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    transition-duration: 0.3s;
+    padding-top: 20px;
+    padding-right: 30px;
+    padding-bottom: 20px;
+    padding-left: 30px;
+    scale: 1.05 1.05;
+}

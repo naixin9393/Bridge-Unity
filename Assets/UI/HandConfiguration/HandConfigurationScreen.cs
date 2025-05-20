@@ -3,27 +3,28 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
-public class MainMenu : MonoBehaviour {
+public class HandConfigurationScreen : MonoBehaviour {
+    [SerializeField] private HandGeneratorViewModel _handGeneratorViewModel;
     private UIDocument _document;
-    private Button _startButton;
-    private Button _exitButton;
+    private Button _acceptButton;
+    private Button _returnButton;
     private List<Button> _menuButtons = new();
     private AudioSource _audioSource;
     [SerializeField] private AudioClip _buttonHoverSound;
     [SerializeField] private AudioClip _buttonClickSound;
 
-    public void Awake() {
+    private void Awake() {
         _document = GetComponent<UIDocument>();
-        _startButton = _document.rootVisualElement.Q<Button>("StartButton");
-        _exitButton = _document.rootVisualElement.Q<Button>("ExitButton");
+        _acceptButton = _document.rootVisualElement.Q<Button>("AcceptButton");
+        _returnButton = _document.rootVisualElement.Q<Button>("ReturnButton");
         _menuButtons = _document.rootVisualElement.Query<Button>().ToList();
         _audioSource = GetComponent<AudioSource>();
         DontDestroyOnLoad(_audioSource);
     }
 
     private void OnEnable() {
-        _startButton.RegisterCallback<ClickEvent>(OnStartButtonClicked);
-        _exitButton.RegisterCallback<ClickEvent>(OnExitButtonClicked);
+        _acceptButton.RegisterCallback<ClickEvent>(OnGenerateButtonClicked);
+        _returnButton.RegisterCallback<ClickEvent>(OnGoBackButtonClicked);
         foreach (var button in _menuButtons) {
             button.RegisterCallback<MouseEnterEvent>(OnButtonHover);
             button.RegisterCallback<ClickEvent>(OnButtonClick);
@@ -31,20 +32,16 @@ public class MainMenu : MonoBehaviour {
     }
 
     private void OnDisable() {
-        _startButton.UnregisterCallback<ClickEvent>(OnStartButtonClicked);
-        _exitButton.UnregisterCallback<ClickEvent>(OnExitButtonClicked);
-        foreach (var button in _menuButtons) {
-            button.UnregisterCallback<MouseEnterEvent>(OnButtonHover);
-            button.UnregisterCallback<ClickEvent>(OnButtonClick);
-        }
+        _acceptButton.UnregisterCallback<ClickEvent>(OnGenerateButtonClicked);
+        _returnButton.UnregisterCallback<ClickEvent>(OnGoBackButtonClicked);
     }
 
-    private void OnStartButtonClicked(ClickEvent evt) {
-        SceneManager.LoadScene("HandSelection");
+    private void OnGenerateButtonClicked(ClickEvent evt) {
+        SceneManager.LoadScene("Game");
     }
 
-    private void OnExitButtonClicked(ClickEvent evt) {
-        Application.Quit();
+    private void OnGoBackButtonClicked(ClickEvent evt) {
+        SceneManager.LoadScene("MainMenu");
     }
 
     private void OnButtonHover(MouseEnterEvent evt) {
