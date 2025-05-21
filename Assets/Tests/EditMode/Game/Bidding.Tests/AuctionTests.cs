@@ -3,10 +3,10 @@ using NUnit.Framework;
 
 public class AuctionTests {
     private List<IPlayer> CreateTestPlayers() => new() {
-        new Player(Position.North),
-        new Player(Position.East),
-        new Player(Position.South),
-        new Player(Position.West)
+        new ComputerPlayer(Position.North),
+        new ComputerPlayer(Position.East),
+        new ComputerPlayer(Position.South),
+        new ComputerPlayer(Position.West)
     };
 
     private List<List<ICall>> CreateValidCalls(List<IPlayer> players, int dealerIndex) {
@@ -139,15 +139,23 @@ public class AuctionTests {
     }
 
     [TestCase(2, Strain.Clubs, 1, Strain.Diamonds)]
-    [TestCase(1, Strain.NoTrump, 1, Strain.Diamonds)]
+    [TestCase(1, Strain.NoTrump, 1, Strain.NoTrump)]
     [TestCase(3, Strain.Hearts, 3, Strain.Diamonds)]
     [TestCase(2, Strain.Spades, 2, Strain.Diamonds)]
     [TestCase(4, Strain.Clubs, 3, Strain.NoTrump)]
-    public void Auction_MakeCall_ShouldThrowException_WhenCallerMakesLowerBidThanLastCall(int level1, Strain strain1, int level2, Strain strain2) {
+    public void Auction_MakeCall_ShouldThrowException_WhenCallerMakesLowerOrEqualBidThanLastCall(int level1, Strain strain1, int level2, Strain strain2) {
         var players = CreateTestPlayers();
         var auction = new Auction(players, players[0]);
         auction.MakeCall(new BidCall(new Bid(level1, strain1), players[0]));
         Assert.Throws<InvalidCallException>(() => auction.MakeCall(new BidCall(new Bid(level2, strain2), players[1])));
+    }
+
+    [Test]
+    public void Auction_MakeCall_ShouldThrowException_WhenNotPlayersTurn() {
+        var players = CreateTestPlayers();
+        var auction = new Auction(players, players[0]);
+        auction.MakeCall(new Pass(players[0]));
+        Assert.Throws<InvalidCallException>(() => auction.MakeCall(new Pass(players[2])));
     }
 
     [Test]
@@ -200,6 +208,7 @@ public class AuctionTests {
         var players = CreateTestPlayers();
         var auction = new Auction(players, players[0]);
         auction.MakeCall(new BidCall(new Bid(1, Strain.NoTrump), players[0]));
+        Assert.IsFalse(auction.IsOver);
         auction.MakeCall(new Pass(players[1]));
         auction.MakeCall(new BidCall(new Bid(2, Strain.NoTrump), players[2]));
         auction.MakeCall(new Pass(players[3]));

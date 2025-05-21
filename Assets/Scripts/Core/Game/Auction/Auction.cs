@@ -1,8 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 public class Auction : IAuction {
-
     private List<IPlayer> _players;
     public List<IPlayer> Players => _players;
     private IPlayer _declarer;
@@ -25,12 +25,22 @@ public class Auction : IAuction {
     private readonly List<IPlayer> _offendingSide = new();
 
     public BidCall HighestBid => _highestBid;
+
+    public List<ICall> Calls => _calls;
+
     private readonly List<ICall> _calls = new();
+
+    public event Action OnAuctionEnd;
+    public event Action<ICall> OnCallMade;
 
     public Auction(List<IPlayer> players, IPlayer dealer) {
         _players = players;
         _dealer = dealer;
         _currentPlayerIndex = players.IndexOf(dealer);
+    }
+
+    public void RequestPlayerCallDecision() {
+        CurrentPlayer.RequestPlayerCallDecision(new AuctionContext(_highestBid, _calls));
     }
 
     public void MakeCall(ICall call) {
@@ -40,27 +50,32 @@ public class Auction : IAuction {
             throw new InvalidCallException("First call must be a bid or pass");
         if (IsPass(LastCall) && (IsDouble(call) || IsRedouble(call)))
             throw new InvalidCallException("Double and Redouble are not allowed after pass");
+        if (IsDouble(LastCall) && IsDouble(call))
+            throw new InvalidCallException("Double is not allowed after double");
         if (!IsDouble(LastCall) && IsRedouble(call))
             throw new InvalidCallException("Redouble is only allowed after double");
-        if (IsBid(LastCall) && IsBid(call) && IsLowerThanLastCall((call as BidCall).Bid))
-            throw new InvalidCallException("Caller bid is lower than last bid");
+        if (_highestBid != null && IsBid(call) && IsEqualOrLowerThanHighest((call as BidCall).Bid))
+            throw new InvalidCallException("Caller bid is equal or lower than the highest bid");
 
         _consecutivePasses = IsPass(call) ? _consecutivePasses + 1 : 0;
 
+        _calls.Add(call);
+
         if (_consecutivePasses == 4 || (_consecutivePasses == 3 && _highestBid != null))
-            _isOver = true;
             EndAuction();
-        
+
         if (IsBid(call))
             _highestBid = call as BidCall;
-        
-        _calls.Add(call);
+
         _currentPlayerIndex = (_currentPlayerIndex + 1) % _players.Count;
+        OnCallMade?.Invoke(call);
     }
 
     private void EndAuction() {
+        _isOver = true;
         DetermineDeclarer();
         DetermineDummy();
+        OnAuctionEnd?.Invoke();
     }
 
     private void DetermineDeclarer() {
@@ -89,9 +104,8 @@ public class Auction : IAuction {
         return _players[(_players.IndexOf(player) + 2) % _players.Count];
     }
 
-    private bool IsLowerThanLastCall(Bid bid) {
-        if (LastCall == null || LastCall.Type != CallType.Bid) return false;
-        return bid < (LastCall as BidCall).Bid;
+    private bool IsEqualOrLowerThanHighest(Bid bid) {
+        return !(bid > _highestBid.Bid);
     }
 
     private bool IsBid(ICall call) {

@@ -1,13 +1,17 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-public class Player : IPlayer {
+public class HumanPlayer : IPlayer {
     public Position Position { get; private set; }
     private readonly List<Card> _hand = new();
 
+    public event Action<Card> OnCardChosen = delegate { };
+    public event Action<ICall> OnCallChosen;
+
     public ReadOnlyCollection<Card> Hand => new(_hand);
 
-    public Player(Position position) {
+    public HumanPlayer(Position position) {
         Position = position;
         _hand = new List<Card>();
     }
@@ -24,5 +28,12 @@ public class Player : IPlayer {
 
     public override string ToString() {
         return $"{Position}";
+    }
+    
+    public void RequestPlayerPlayDecision() {
+    }
+
+    public void RequestPlayerCallDecision(AuctionContext auctionContext) {
+        // Feedback from UI
     }
 }

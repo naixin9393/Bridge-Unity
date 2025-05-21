@@ -3,6 +3,8 @@ public class Bid {
     public Strain Strain { get; private set; }
 
     public Bid(int level, Strain strain) {
+        if (level > 7)
+            throw new InvalidCallException("Level must be between 1 and 7");
         Level = level;
         Strain = strain;
     }
@@ -32,6 +34,6 @@ public class Bid {
     }
 
     public override string ToString() {
-        return $"{Level}-{Strain}";
+        return $"{Level}{Strain.ToSymbol()}";
     }
 }

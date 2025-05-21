@@ -22,23 +22,91 @@
     padding-left: 30px;
 }
 
-.gap {
-    margin-top: 40px;
-    margin-right: 40px;
-    margin-bottom: 40px;
-    margin-left: 40px;
+.accept-button {
+    color: rgb(10, 15, 10);
+    font-size: 60px;
+    -unity-font-style: bold;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    background-color: rgb(232, 255, 183);
+    margin-top: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    transition-duration: 0s;
+    padding-top: 20px;
+    padding-right: 30px;
+    padding-bottom: 20px;
+    padding-left: 30px;
 }
 
-.icon-gap {
-    padding-left: 0;
-    margin-left: 10px;
+.cancel-button {
+    color: rgb(10, 15, 10);
+    font-size: 60px;
+    -unity-font-style: bold;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    background-color: rgb(255, 221, 183);
+    margin-top: 10px;
     margin-right: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    transition-duration: 0s;
+    padding-top: 20px;
+    padding-right: 30px;
+    padding-bottom: 20px;
+    padding-left: 30px;
 }
 
 .button:hover {
     scale: 1.05 1.05;
     transition-duration: 0.3s;
     background-color: rgb(204, 190, 158);
+    align-items: flex-start;
+    align-self: auto;
+}
+
+.accept-button:hover {
+    color: rgb(10, 15, 10);
+    font-size: 60px;
+    -unity-font-style: bold;
+    background-color: rgb(186, 205, 147);
+    transition-duration: 0.3s;
+    scale: 1.05 1.05;
+    align-items: flex-start;
+    align-content: auto;
+}
+
+.cancel-button:hover {
+    color: rgb(10, 15, 10);
+    font-size: 60px;
+    -unity-font-style: bold;
+    background-color: rgb(204, 177, 146);
+    transition-duration: 0.3s;
+    scale: 1.05 1.05;
+}
+
+.selected-button {
+    border-color: rgb(248, 141, 0);
+    border-width: 5px;
+}
+
+.icon-gap {
+    padding-left: 0;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .gap {
@@ -103,102 +171,4 @@
 .round-slider #unity-dragger {
     align-items: center;
     flex-direction: row;
-}
-
-.accept-button {
-    color: rgb(10, 15, 10);
-    font-size: 60px;
-    -unity-font-style: bold;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-left-color: rgba(0, 0, 0, 0);
-    border-right-color: rgba(0, 0, 0, 0);
-    border-top-color: rgba(0, 0, 0, 0);
-    border-bottom-color: rgba(0, 0, 0, 0);
-    background-color: rgb(232, 255, 183);
-    margin-top: 10px;
-    margin-right: 10px;
-    margin-bottom: 10px;
-    margin-left: 10px;
-    transition-duration: 0s;
-    padding-top: 20px;
-    padding-right: 30px;
-    padding-bottom: 20px;
-    padding-left: 30px;
-}
-
-.cancel-button {
-    color: rgb(10, 15, 10);
-    font-size: 60px;
-    -unity-font-style: bold;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-left-color: rgba(0, 0, 0, 0);
-    border-right-color: rgba(0, 0, 0, 0);
-    border-top-color: rgba(0, 0, 0, 0);
-    border-bottom-color: rgba(0, 0, 0, 0);
-    background-color: rgb(255, 221, 183);
-    margin-top: 10px;
-    margin-right: 10px;
-    margin-bottom: 10px;
-    margin-left: 10px;
-    transition-duration: 0s;
-    padding-top: 20px;
-    padding-right: 30px;
-    padding-bottom: 20px;
-    padding-left: 30px;
-}
-
-.accept-button:hover {
-    color: rgb(10, 15, 10);
-    font-size: 60px;
-    -unity-font-style: bold;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-left-color: rgba(0, 0, 0, 0);
-    border-right-color: rgba(0, 0, 0, 0);
-    border-top-color: rgba(0, 0, 0, 0);
-    border-bottom-color: rgba(0, 0, 0, 0);
-    background-color: rgb(186, 205, 147);
-    margin-top: 10px;
-    margin-right: 10px;
-    margin-bottom: 10px;
-    margin-left: 10px;
-    transition-duration: 0.3s;
-    padding-top: 20px;
-    padding-right: 30px;
-    padding-bottom: 20px;
-    padding-left: 30px;
-    scale: 1.05 1.05;
-}
-
-.cancel-button:hover {
-    color: rgb(10, 15, 10);
-    font-size: 60px;
-    -unity-font-style: bold;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-left-color: rgba(0, 0, 0, 0);
-    border-right-color: rgba(0, 0, 0, 0);
-    border-top-color: rgba(0, 0, 0, 0);
-    border-bottom-color: rgba(0, 0, 0, 0);
-    background-color: rgb(204, 177, 146);
-    margin-top: 10px;
-    margin-right: 10px;
-    margin-bottom: 10px;
-    margin-left: 10px;
-    transition-duration: 0.3s;
-    padding-top: 20px;
-    padding-right: 30px;
-    padding-bottom: 20px;
-    padding-left: 30px;
-    scale: 1.05 1.05;
 }

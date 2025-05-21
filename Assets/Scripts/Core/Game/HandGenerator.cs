@@ -31,6 +31,7 @@ public class HandGenerator : IHandGenerator {
         if (minHCP > maxHCP || minHCP > 37) return new List<Card>();
 
         List<Card> hand = new();
+        List<Card> discardedCards = new();
 
         while (hand.Count < 13) {
             Card card = deck.DealCard();
@@ -38,9 +39,13 @@ public class HandGenerator : IHandGenerator {
 
             if ((balancedHand && !CouldBeBalancedHand(hand)) || !CouldReachMinHCP(hand, minHCP) || handAnalyzer.CalculateHighCardPoints(hand) > maxHCP) {
                 hand.Remove(card);
-                deck.InsertCard(card);
+                discardedCards.Add(card);
                 deck.Shuffle();
             }
+        }
+        // Put discarded cards back into deck
+        foreach (Card card in discardedCards) {
+            deck.InsertCard(card);
         }
 
         return hand;
@@ -96,6 +101,6 @@ public class HandGenerator : IHandGenerator {
         cardsRemainingToDraw -= jacksToDraw;
         potentialAdditionalHCP += jacksToDraw;
 
-        return HCPNeeded < potentialAdditionalHCP;
+        return HCPNeeded <= potentialAdditionalHCP;
     }
 }

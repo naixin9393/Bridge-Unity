@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 public interface IAuction {
@@ -8,6 +9,11 @@ public interface IAuction {
     IPlayer CurrentPlayer { get; }
     IPlayer Dummy { get; }
     IPlayer Dealer { get; }
+    List<ICall> Calls { get; }
     bool IsOver { get; }
     BidCall HighestBid { get; }
+    void RequestPlayerCallDecision();
+    void MakeCall(ICall call);
+    event Action OnAuctionEnd;
+    event Action<ICall> OnCallMade;
 }
