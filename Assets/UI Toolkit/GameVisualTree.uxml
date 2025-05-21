@@ -1,0 +1,13 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="StatsPanelVisualTree" src="project://database/Assets/UI%20Toolkit/StatsPanelVisualTree.uxml?fileID=9197481963319205126&amp;guid=ce309c8100b91cb4ea874eea10b8d997&amp;type=3#StatsPanelVisualTree" />
+    <ui:Template name="AuctionVisualTree" src="project://database/Assets/UI%20Toolkit/AuctionVisualTree.uxml?fileID=9197481963319205126&amp;guid=a495872616cb374429df7a818f0473c3&amp;type=3#AuctionVisualTree" />
+    <Style src="project://database/Assets/UI%20Toolkit/Styles/CommonStyleSheet.uss?fileID=7433441132597879392&amp;guid=086b46d161ea6c843a6999d57f0fa7ea&amp;type=3#CommonStyleSheet" />
+    <ui:VisualElement name="GameContainer" class="background" style="flex-grow: 1; flex-direction: row;">
+        <ui:VisualElement name="Game" style="flex-grow: 1;">
+            <ui:Instance template="AuctionVisualTree" />
+        </ui:VisualElement>
+        <ui:VisualElement name="Stats" style="flex-grow: 0; width: 30%;">
+            <ui:Instance template="StatsPanelVisualTree" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

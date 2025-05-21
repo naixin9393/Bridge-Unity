@@ -35,6 +35,7 @@ public class Play : IPlay {
         if (player != CurrentPlayer)
             throw new NotPlayersTurnException(player, CurrentPlayer);
         CurrentTrick.PlayCard(card, player);
+        player.PlayCard(card);
 
         if (!CurrentTrick.IsOver) {
             _currentPlayerIndex = (_currentPlayerIndex + 1) % _players.Count;

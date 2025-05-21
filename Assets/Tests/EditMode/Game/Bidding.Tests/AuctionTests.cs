@@ -3,10 +3,10 @@ using NUnit.Framework;
 
 public class AuctionTests {
     private List<IPlayer> CreateTestPlayers() => new() {
-        new Player(Position.North),
-        new Player(Position.East),
-        new Player(Position.South),
-        new Player(Position.West)
+        new ComputerPlayer(Position.North),
+        new ComputerPlayer(Position.East),
+        new ComputerPlayer(Position.South),
+        new ComputerPlayer(Position.West)
     };
 
     private List<List<ICall>> CreateValidCalls(List<IPlayer> players, int dealerIndex) {

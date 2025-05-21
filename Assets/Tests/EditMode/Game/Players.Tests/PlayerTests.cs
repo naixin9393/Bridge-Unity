@@ -6,19 +6,19 @@ public class PlayerTests
     [Test]
     public void Player_Constructor_SetsPosition() {
         Position position = Position.North;
-        IPlayer player = new Player(position);
+        IPlayer player = new ComputerPlayer(position);
         Assert.AreEqual(position, player.Position);
     }
 
     [Test]
     public void Player_Hand_StartsEmpty() {
-        IPlayer player = new Player(Position.North);
+        IPlayer player = new ComputerPlayer(Position.North);
         Assert.AreEqual(0, player.Hand.Count);
     }
 
     [Test]
     public void ReceiveCards_AddsCardsToHand() {
-        IPlayer player = new Player(Position.North);
+        IPlayer player = new ComputerPlayer(Position.North);
         var cards = new List<Card> {
             new(Rank.Ace, Suit.Clubs)
         };
@@ -28,7 +28,7 @@ public class PlayerTests
 
     [Test]
     public void PlayCard_RemovesCardFromHand() {
-        IPlayer player = new Player(Position.North);
+        var player = new ComputerPlayer(Position.North);
         var card = new Card(Rank.Ace, Suit.Clubs);
         player.ReceiveCards(new List<Card> { card });
         player.PlayCard(card);
@@ -37,7 +37,7 @@ public class PlayerTests
 
     [Test]
     public void PlayCard_ThrowsException_IfCardIsNotInHand() {
-        IPlayer player = new Player(Position.North);
+        var player = new ComputerPlayer(Position.North);
         var card = new Card(Rank.Ace, Suit.Clubs);
         var card2 = new Card(Rank.Ace, Suit.Spades);
         player.ReceiveCards(new List<Card> { card2 });

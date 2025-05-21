@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class HandConfigurationScreen : MonoBehaviour {
-    [SerializeField] private HandGeneratorViewModel _handGeneratorViewModel;
+    [SerializeField] private GameConfiguration _handGeneratorConfig;
     private UIDocument _document;
     private Button _acceptButton;
     private Button _returnButton;

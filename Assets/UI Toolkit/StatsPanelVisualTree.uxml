@@ -1,0 +1,15 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/Styles/CommonStyleSheet.uss?fileID=7433441132597879392&amp;guid=086b46d161ea6c843a6999d57f0fa7ea&amp;type=3#CommonStyleSheet" />
+    <ui:VisualElement name="StatsContainer" style="flex-grow: 1;">
+        <ui:VisualElement name="PlayerContainer" class="gap" style="flex-grow: 0; flex-direction: row; align-items: flex-start; justify-content: center;">
+            <ui:Label text="Label" name="Player1" class="header2" />
+            <ui:Label text="|" class="header2" />
+            <ui:Label text="Label" name="Player2" class="header2" />
+            <ui:Label text="|" class="header2" />
+            <ui:Label text="Label" name="Player3" class="header2" />
+            <ui:Label text="|" class="header2" />
+            <ui:Label text="Label" name="Player4" class="header2" />
+        </ui:VisualElement>
+        <ui:VisualElement name="ActionsContainer" style="flex-grow: 1;" />
+    </ui:VisualElement>
+</ui:UXML>

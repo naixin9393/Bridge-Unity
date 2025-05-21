@@ -1,4 +1,4 @@
-public class Pass : ICall {
+public record Pass : ICall {
     public CallType Type => CallType.Pass;
     public IPlayer Caller { get; private set; }
 
@@ -7,7 +7,7 @@ public class Pass : ICall {
     }
 }
 
-public class Double : ICall {
+public record Double : ICall {
     public CallType Type => CallType.Double;
     public IPlayer Caller { get; private set; }
 
@@ -16,7 +16,7 @@ public class Double : ICall {
     }
 }
 
-public class Redouble : ICall {
+public record Redouble : ICall {
     public CallType Type => CallType.Redouble;
     public IPlayer Caller { get; private set; }
 
@@ -25,7 +25,7 @@ public class Redouble : ICall {
     }
 }
 
-public class BidCall : ICall {
+public record BidCall : ICall {
     public Bid Bid { get; private set; }
     public CallType Type => CallType.Bid;
     public IPlayer Caller { get; private set; }

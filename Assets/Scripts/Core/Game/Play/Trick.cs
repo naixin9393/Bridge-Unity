@@ -29,7 +29,6 @@ public class Trick : ITrick {
         if (player != CurrentPlayer)
             throw new NotPlayersTurnException(player, CurrentPlayer);
         _plays.Add((card, player));
-        player.PlayCard(card);
         _currentPlayerIndex = (_currentPlayerIndex + 1) % _players.Count;
     }
 }

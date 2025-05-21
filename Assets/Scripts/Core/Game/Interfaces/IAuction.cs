@@ -10,4 +10,5 @@ public interface IAuction {
     IPlayer Dealer { get; }
     bool IsOver { get; }
     BidCall HighestBid { get; }
+    void StartAuction();
 }

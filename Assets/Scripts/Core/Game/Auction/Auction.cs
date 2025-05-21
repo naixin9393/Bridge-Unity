@@ -33,7 +33,11 @@ public class Auction : IAuction {
         _currentPlayerIndex = players.IndexOf(dealer);
     }
 
-    public void MakeCall(ICall call) {
+    public void StartAuction() {
+        CurrentPlayer.RequestPlayerCallDecision();
+    }
+
+    internal void MakeCall(ICall call) {
         if (call.Caller != CurrentPlayer)
             throw new InvalidCallException("Caller is not the current player");
         if (LastCall == null && call.Type != CallType.Pass && call.Type != CallType.Bid)
@@ -49,11 +53,11 @@ public class Auction : IAuction {
 
         if (_consecutivePasses == 4 || (_consecutivePasses == 3 && _highestBid != null))
             _isOver = true;
-            EndAuction();
-        
+        EndAuction();
+
         if (IsBid(call))
             _highestBid = call as BidCall;
-        
+
         _calls.Add(call);
         _currentPlayerIndex = (_currentPlayerIndex + 1) % _players.Count;
     }

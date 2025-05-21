@@ -30,6 +30,14 @@ public class Deck{
         return lastCard;
     }
 
+    public List<Card> DealCards(int count) {
+        List<Card> cards = new();
+        for (int i = 0; i < count; i++) {
+            cards.Add(DealCard());
+        }
+        return cards;
+    }
+
     public void InsertCard(Card card) {
         _cards.Add(card);
     }

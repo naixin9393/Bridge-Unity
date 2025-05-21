@@ -1,13 +1,17 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-public class Player : IPlayer {
+public class ComputerPlayer : IPlayer {
     public Position Position { get; private set; }
     private readonly List<Card> _hand = new();
 
+    public event Action<Card> PlayedCard = delegate { };
+    public event Action<ICall> MadeCall;
+
     public ReadOnlyCollection<Card> Hand => new(_hand);
 
-    public Player(Position position) {
+    public ComputerPlayer(Position position) {
         Position = position;
         _hand = new List<Card>();
     }
@@ -24,5 +28,17 @@ public class Player : IPlayer {
 
     public override string ToString() {
         return $"{Position}";
+    }
+    
+    public void RequestPlayerPlayDecision() {
+        if (_hand.Count == 0)
+            throw new EmptyHandException(this);
+        Card card = _hand[^1];
+        PlayedCard?.Invoke(card);
+        _hand.RemoveAt(_hand.Count - 1);
+    }
+
+    public void RequestPlayerCallDecision() {
+        MadeCall?.Invoke(new BidCall(new Bid(1, Strain.NoTrump), this));
     }
 }

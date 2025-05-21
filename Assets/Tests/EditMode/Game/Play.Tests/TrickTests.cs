@@ -85,7 +85,7 @@ public class TrickTests {
     private Mock<IPlayer> CreateMockPlayer(Position position) {
         var mockPlayer = new Mock<IPlayer>();
         mockPlayer.Setup(p => p.Position).Returns(position);
-        mockPlayer.Setup(p => p.PlayCard(It.IsAny<Card>()));
+        //mockPlayer.Setup(p => p.PlayCard(It.IsAny<Card>()));
         return mockPlayer;
     }
 }

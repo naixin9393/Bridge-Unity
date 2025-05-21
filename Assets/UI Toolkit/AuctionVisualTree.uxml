@@ -1,0 +1,9 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/Styles/CommonStyleSheet.uss?fileID=7433441132597879392&amp;guid=086b46d161ea6c843a6999d57f0fa7ea&amp;type=3#CommonStyleSheet" />
+    <ui:VisualElement name="AuctionContainer" style="flex-grow: 1;">
+        <ui:VisualElement name="TitleContainer" style="flex-grow: 0; align-items: center; flex-shrink: 1; flex-wrap: nowrap; flex-direction: column;">
+            <ui:Label text="SUBASTA" class="header gap" />
+        </ui:VisualElement>
+        <ui:VisualElement name="AuctionHandContainer" style="flex-grow: 1;" />
+    </ui:VisualElement>
+</ui:UXML>

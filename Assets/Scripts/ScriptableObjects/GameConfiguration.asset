@@ -10,7 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1060e508e45f4ff49babaf97edc2c22a, type: 3}
-  m_Name: HandGeneratorViewModel
+  m_Name: GameConfiguration
   m_EditorClassIdentifier: 
   BalancedHand: 0
   HCPRange: {x: 0, y: 37}
+  DealerPosition: 2
