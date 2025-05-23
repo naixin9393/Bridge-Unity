@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-public class Game : IGame, IDisposable {
+public class Game : IGame {
     private readonly List<IPlayer> _players;
     private readonly IPlayer _dealer;
     private readonly IAuction _auction;
     private IPlay _play;
     private ITrick _currentTrick => _play.CurrentTrick;
+    public Suit LeadSuit => _currentTrick.LeadSuit;
 
     public ReadOnlyCollection<ICall> Calls => _auction.Calls.AsReadOnly();
     public ReadOnlyCollection<IPlayer> Players => _players.AsReadOnly();
@@ -25,27 +26,13 @@ public class Game : IGame, IDisposable {
     public event Action<GamePhase> OnGamePhaseChanged;
 
     public Game(List<IPlayer> players, IPlayer dealer) {
-        _players = SortPlayersByTurnOrder(players, dealer);
+        _players = players;
         _dealer = dealer;
         _auction = new Auction(_players, _dealer);
         Phase = GamePhase.Auction;
     }
 
-    private List<IPlayer> SortPlayersByTurnOrder(List<IPlayer> players, IPlayer dealer) {
-        var sortedPlayers = new List<IPlayer>();
-        var currentPlayer = dealer;
-        for (int i = 0; i < players.Count; i++) {
-            sortedPlayers.Add(currentPlayer);
-            currentPlayer = PlayerUtils.GetNextPlayer(currentPlayer, players);
-        }
-        return sortedPlayers;
-    }
-
     public void StartGame() => _auction.RequestPlayerCallDecision();
-
-    public void Dispose() {
-        return;
-    }
 
     public void ProcessCall(ICall call) {
         _auction.MakeCall(call);

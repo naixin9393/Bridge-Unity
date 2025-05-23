@@ -19,12 +19,12 @@ public class Trick : ITrick {
     }
 
     private IPlayer GetWinner() {
-        LeadSuit = _plays[0].Card.Suit;
         return _plays.ToList()
             .OrderBy(play => play.Card, new BridgeCardComparer(LeadSuit, _strain)).Last().Player;
     }
 
     public void PlayCard(Card card, IPlayer player) {
+        if (_plays.Count == 0) LeadSuit = card.Suit;
         if (player != CurrentPlayer)
             throw new NotPlayersTurnException(player, CurrentPlayer);
         _plays.Add((card, player));

@@ -12,4 +12,14 @@ public class PlayerUtils {
             _ => throw new NotImplementedException(),
         };
     }
+    
+    public static IPlayer PartnerOf(IPlayer player, List<IPlayer> players) {
+        return player.Position switch {
+            Position.North => players.Where(p => p.Position == Position.South).First(),
+            Position.East => players.Where(p => p.Position == Position.West).First(),
+            Position.South => players.Where(p => p.Position == Position.North).First(),
+            Position.West => players.Where(p => p.Position == Position.East).First(),
+            _ => throw new NotImplementedException(),
+        };
+    }
 }

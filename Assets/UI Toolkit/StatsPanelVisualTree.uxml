@@ -18,7 +18,7 @@
                             <ui:Label text="-" name="Player4" class="header2" />
                         </ui:VisualElement>
                     </ui:VisualElement>
-                    <ui:VisualElement name="ActionsContainer" class="gap" style="flex-grow: 1; flex-direction: row;">
+                    <ui:VisualElement name="ActionsContainer" style="flex-grow: 1; flex-direction: row;">
                         <ui:VisualElement name="Player1Calls" style="flex-grow: 1; justify-content: flex-start; align-self: auto; align-content: flex-start; align-items: center; width: 25%;" />
                         <ui:VisualElement name="Player2Calls" style="flex-grow: 1; align-items: center; width: 25%;" />
                         <ui:VisualElement name="Player3Calls" style="flex-grow: 1; align-items: center; width: 25%;" />
@@ -26,7 +26,7 @@
                     </ui:VisualElement>
                 </ui:VisualElement>
             </ui:Tab>
-            <ui:Tab label="Carteo" style="flex-direction: column;">
+            <ui:Tab label="Carteo" name="Tab" style="flex-direction: column;">
                 <ui:VisualElement name="PlaysContainer" style="flex-grow: 1;">
                     <ui:VisualElement name="PlayerContainer" class="gap" style="flex-grow: 0; flex-direction: row; align-items: flex-start; justify-content: space-evenly;">
                         <ui:VisualElement style="flex-grow: 1; align-items: center;">
@@ -42,7 +42,7 @@
                             <ui:Label text="-" name="Player4" class="header2" />
                         </ui:VisualElement>
                     </ui:VisualElement>
-                    <ui:VisualElement name="ActionsContainer" class="gap" style="flex-grow: 1; flex-direction: row;">
+                    <ui:VisualElement name="ActionsContainer" style="flex-grow: 1; flex-direction: row;">
                         <ui:VisualElement name="Player1Plays" style="flex-grow: 1; justify-content: flex-start; align-self: auto; align-content: flex-start; align-items: center; width: 25%;" />
                         <ui:VisualElement name="Player2Plays" style="flex-grow: 1; align-items: center; width: 25%;" />
                         <ui:VisualElement name="Player3Plays" style="flex-grow: 1; align-items: center; width: 25%;" />

@@ -27,6 +27,7 @@ public class AuctionView : IDisposable {
         PopulateCallsContainer();
 
         _confirmButton = _auctionContainer.Q<Button>("ConfirmButton");
+        _confirmButton.SetEnabled(false);
         _confirmButton.clicked += () => _gameViewModel.HandlePlayerCallChosen(_selectedCall);
 
         // Show player's hand HCP
@@ -77,7 +78,7 @@ public class AuctionView : IDisposable {
         foreach (var button in buttons) {
             button.SetEnabled(_gameViewModel.CurrentPlayer == _player);
         }
-        _selectedCall = null;
+        SetSelectedButton(null, null);
         UpdateUI();
         _gameViewModel.ProceedNextAction();
     }
@@ -90,7 +91,7 @@ public class AuctionView : IDisposable {
     }
 
     private void UpdateConfirmButton() {
-        if (_selectedCall == null) return;
+        if (_selectedCall == null) _confirmButton.SetEnabled(false);
         _confirmButton.SetEnabled(_gameViewModel.CurrentPlayer == _player);
     }
 
@@ -209,8 +210,9 @@ public class AuctionView : IDisposable {
     private void SetSelectedButton(Button button, ICall call) {
         _selectedButton?.RemoveFromClassList("selected-button");
         _selectedButton = button;
-        _selectedButton.AddToClassList("selected-button");
+        _selectedButton?.AddToClassList("selected-button");
         _selectedCall = call;
+        _confirmButton.SetEnabled(_selectedCall != null);
     }
 
     private static void SetBasicStyles(Button button) {

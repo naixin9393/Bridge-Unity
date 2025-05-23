@@ -7,7 +7,6 @@ public class Play : IPlay {
     internal int _currentTrickIndex;
     internal int _tricksWonByAttackers = 0;
     private readonly List<IPlayer> _players = new();
-    private int _currentPlayerIndex;
     private List<IPlayer> _attackers = new();
     private List<IPlayer> _defenders = new();
 
@@ -15,7 +14,7 @@ public class Play : IPlay {
     public ReadOnlyCollection<ITrick> Tricks => new(_tricks);
     public ReadOnlyCollection<IPlayer> Players => new(_players);
     public IPlayer LeadPlayer { get; private set; }
-    public IPlayer CurrentPlayer => _players.Count > 0 ? _players[_currentPlayerIndex] : null;
+    public IPlayer CurrentPlayer { get; private set; }
     public int TricksWonByAttackers => _tricksWonByAttackers;
     public Bid Contract { get; private set; }
     public bool IsOver { get; private set; }
@@ -40,12 +39,12 @@ public class Play : IPlay {
         player.PlayCard(card);
 
         if (!CurrentTrick.IsOver) {
-            _currentPlayerIndex = (_currentPlayerIndex + 1) % _players.Count;
+            CurrentPlayer = PlayerUtils.GetNextPlayer(CurrentPlayer, _players);
             return;
         }
         if (IsAttacker(CurrentTrick.Winner))
             _tricksWonByAttackers++;
-        _currentPlayerIndex = _players.IndexOf(CurrentTrick.Winner);
+        CurrentPlayer = CurrentTrick.Winner;
         if (Tricks.Count == 13)
             EndGame();
     }
@@ -66,21 +65,16 @@ public class Play : IPlay {
     }
 
     private void DetermineLeadPlayer(IAuction auction) {
-        _currentPlayerIndex = (_players.IndexOf(auction.Declarer) + 1) % _players.Count;
-        int leadPlayerIndex = _currentPlayerIndex;
-        LeadPlayer = _players[leadPlayerIndex];
+        LeadPlayer = PlayerUtils.GetNextPlayer(auction.Declarer, _players);
+        CurrentPlayer = LeadPlayer;
     }
 
     private void DetermineTeams(IPlayer leadPlayer) {
         _defenders = new List<IPlayer> {
             leadPlayer,
-            PartnerOf(leadPlayer)
+            PlayerUtils.PartnerOf(leadPlayer, _players)
         };
         _attackers = _players.Where(player => !_defenders.Contains(player)).ToList();
-    }
-
-    private IPlayer PartnerOf(IPlayer player) {
-        return _players[(_players.IndexOf(player) + 2) % _players.Count];
     }
 
     private bool IsAttacker(IPlayer player) {

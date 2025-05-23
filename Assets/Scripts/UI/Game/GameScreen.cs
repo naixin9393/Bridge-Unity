@@ -13,7 +13,7 @@ public class GameScreen : MonoBehaviour {
     private VisualElement _auctionContainer;
     private VisualElement _playContainer;
     private VisualElement _statsContainer;
-
+    private IPlayer _humanPlayer;
     private AuctionView _auctionView;
     private StatsView _statsView;
     private GameViewModel _gameViewModel;
@@ -39,11 +39,10 @@ public class GameScreen : MonoBehaviour {
             Debug.LogError("Auction container not found");
 
         // Assume human is always south
-        var humanPlayer = gameViewModel.Players.First(p => p.Position == Position.South);
-        _auctionView = new AuctionView(_auctionContainer, gameViewModel, humanPlayer);
-        _playView = new PlayView(_playContainer, gameViewModel, humanPlayer);
+        _humanPlayer = gameViewModel.Players.First(p => p.Position == Position.South);
+        _auctionView = new AuctionView(_auctionContainer, gameViewModel, _humanPlayer);
         _statsView = new StatsView(_statsContainer, gameViewModel);
-        
+
         _gameViewModel = gameViewModel;
 
         _gameViewModel.OnGamePhaseChanged += HandleGamePhaseChanged;
@@ -57,12 +56,18 @@ public class GameScreen : MonoBehaviour {
                 _auctionView.Dispose();
                 _auctionContainer.style.display = DisplayStyle.None;
                 _playContainer.style.display = DisplayStyle.Flex;
+                _playView = new PlayView(_playContainer, _gameViewModel, _humanPlayer);
                 _gameViewModel.ProceedNextAction();
                 break;
             case GamePhase.End:
+                _playView.Dispose();
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(phase), phase, null);
         }
+    }
+
+    private void OnDestroy() {
+        _gameViewModel.OnGamePhaseChanged -= HandleGamePhaseChanged;
     }
 }

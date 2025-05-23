@@ -166,6 +166,7 @@ public class PlayTests {
         var mockAuction = new Mock<IAuction>();
         mockAuction.Setup(a => a.Players).Returns(new List<IPlayer> { northPlayer, eastPlayer, southPlayer, westPlayer });
         mockAuction.Setup(a => a.FinalContract).Returns(new Bid(1, Strain.NoTrump));
+        mockAuction.Setup(a => a.Declarer).Returns(southPlayer);
         return mockAuction;
     }
 }

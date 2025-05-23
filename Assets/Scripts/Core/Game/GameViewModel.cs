@@ -8,6 +8,7 @@ public class GameViewModel : IDisposable {
     public BindableProperty<int> CallCount => BindableProperty<int>.Bind(() => _game.Calls.Count);
     public IPlayer CurrentPlayer => _game.CurrentPlayer;
     public Bid HighestBid => _game.HighestBid;
+    public Suit LeadSuit => _game.LeadSuit;
     
     public event Action<ICall> OnCallMade;
     public event Action<Card, IPlayer> OnPlayMade;

@@ -6,6 +6,7 @@ public interface IGame {
     ReadOnlyCollection<ICall> Calls { get; }
     IPlayer CurrentPlayer { get; }
     Bid HighestBid { get; }
+    Suit LeadSuit { get; }
     void StartGame();
     void ProcessCall(ICall call);
     void ProcessPlay(Card card, IPlayer player);
