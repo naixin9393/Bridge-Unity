@@ -77,13 +77,21 @@ public class AuctionView : IDisposable {
         foreach (var button in buttons) {
             button.SetEnabled(_gameViewModel.CurrentPlayer == _player);
         }
+        _selectedCall = null;
         UpdateUI();
+        _gameViewModel.ProceedNextAction();
     }
 
     private void UpdateUI() {
         if (_gameViewModel.CurrentPlayer != _player) return;
         UpdateBidButtons();
         UpdateDoubleRedoubleButtons();
+        UpdateConfirmButton();
+    }
+
+    private void UpdateConfirmButton() {
+        if (_selectedCall == null) return;
+        _confirmButton.SetEnabled(_gameViewModel.CurrentPlayer == _player);
     }
 
     private void UpdateDoubleRedoubleButtons() {
@@ -91,11 +99,14 @@ public class AuctionView : IDisposable {
         if (lastCall.Type == CallType.Bid) {
             _doubleButton.SetEnabled(true);
             _redoubleButton.SetEnabled(false);
+            return;
         }
-        else if (lastCall.Type == CallType.Double) {
+        if (lastCall.Type == CallType.Double) {
             _doubleButton.SetEnabled(false);
             _redoubleButton.SetEnabled(true);
+            return;
         }
+        _redoubleButton.SetEnabled(false);
     }
 
     private void UpdateBidButtons() {

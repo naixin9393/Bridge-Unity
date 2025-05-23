@@ -9,5 +9,7 @@ public interface IPlay {
     ITrick CurrentTrick { get; }
     bool IsOver { get; }
     int TricksWonByAttackers { get; }
+    void StartNewTrick();
     void PlayCard(Card card, IPlayer player);
+    void RequestPlayerPlayDecision();
 }

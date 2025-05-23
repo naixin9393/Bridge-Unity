@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,7 +9,7 @@ public class Auction : IAuction {
     public ICall LastCall => _calls.Count > 0 ? _calls[^1] : null;
     private Bid _finalContract;
     public Bid FinalContract => _finalContract;
-    public IPlayer CurrentPlayer => _players[_currentPlayerIndex];
+    public IPlayer CurrentPlayer { get; private set; }
     private IPlayer _dummy;
     public IPlayer Dummy => _dummy;
 
@@ -18,7 +17,6 @@ public class Auction : IAuction {
     public IPlayer Dealer => _dealer;
 
     private int _consecutivePasses;
-    private int _currentPlayerIndex;
     private bool _isOver = false;
     public bool IsOver => _isOver;
     private BidCall _highestBid;
@@ -33,7 +31,7 @@ public class Auction : IAuction {
     public Auction(List<IPlayer> players, IPlayer dealer) {
         _players = players;
         _dealer = dealer;
-        _currentPlayerIndex = players.IndexOf(dealer);
+        CurrentPlayer = dealer;
     }
 
     public void RequestPlayerCallDecision() {
@@ -57,12 +55,10 @@ public class Auction : IAuction {
         _consecutivePasses = IsPass(call) ? _consecutivePasses + 1 : 0;
 
         _calls.Add(call);
-        _currentPlayerIndex = (_currentPlayerIndex + 1) % _players.Count;
+        CurrentPlayer = PlayerUtils.GetNextPlayer(CurrentPlayer, _players);
 
         if (IsBid(call))
             _highestBid = call as BidCall;
-
-        //OnCallMade?.Invoke(call);
 
         if (_consecutivePasses == 4 || (_consecutivePasses == 3 && _highestBid != null)) {
             EndAuction();
@@ -73,7 +69,6 @@ public class Auction : IAuction {
         _isOver = true;
         DetermineDeclarer();
         DetermineDummy();
-        //OnAuctionEnd?.Invoke();
     }
 
     private void DetermineDeclarer() {
@@ -94,30 +89,11 @@ public class Auction : IAuction {
             .Caller;
     }
 
-    private void DetermineDummy() {
-        _dummy = PartnerOf(_declarer);
-    }
-
-    private IPlayer PartnerOf(IPlayer player) {
-        return _players[(_players.IndexOf(player) + 2) % _players.Count];
-    }
-
-    private bool IsEqualOrLowerThanHighest(Bid bid) {
-        return !(bid > _highestBid.Bid);
-    }
-
-    private bool IsBid(ICall call) {
-        return call != null && call.Type == CallType.Bid;
-    }
-
-    private bool IsPass(ICall call) {
-        return call != null && call.Type == CallType.Pass;
-    }
-
-    private bool IsDouble(ICall call) {
-        return call != null && call.Type == CallType.Double;
-    }
-    private bool IsRedouble(ICall call) {
-        return call != null && call.Type == CallType.Redouble;
-    }
+    private void DetermineDummy() => _dummy = PartnerOf(_declarer);
+    private IPlayer PartnerOf(IPlayer player) => _players[(_players.IndexOf(player) + 2) % _players.Count];
+    private bool IsEqualOrLowerThanHighest(Bid bid) => !(bid > _highestBid.Bid);
+    private bool IsBid(ICall call) => call != null && call.Type == CallType.Bid;
+    private bool IsPass(ICall call) => call != null && call.Type == CallType.Pass;
+    private bool IsDouble(ICall call) => call != null && call.Type == CallType.Double;
+    private bool IsRedouble(ICall call) => call != null && call.Type == CallType.Redouble;
 }

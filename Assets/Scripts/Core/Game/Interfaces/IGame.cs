@@ -8,6 +8,11 @@ public interface IGame {
     Bid HighestBid { get; }
     void StartGame();
     void ProcessCall(ICall call);
+    void ProcessPlay(Card card, IPlayer player);
+    void ProceedNextAction();
+
     event Action<ICall> OnCallMade;
+    event Action<Card, IPlayer> OnPlayMade;
     event Action<GamePhase> OnGamePhaseChanged;
+    event Action OnTrickEnded;
 }

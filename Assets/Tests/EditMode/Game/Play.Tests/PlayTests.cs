@@ -80,18 +80,6 @@ public class PlayTests {
     }
 
     [Test]
-    public void Play_TrickCount_ShouldIncrease_WhenFourCardsPlayed() {
-        Mock<IAuction> mockAuction = CreateMockAuction();
-        mockAuction.Setup(a => a.Declarer).Returns(southPlayer);
-        IPlay play = new Play(mockAuction.Object);
-        play.PlayCard(new Card(Rank.Ace, Suit.Clubs), westPlayer);
-        play.PlayCard(new Card(Rank.King, Suit.Clubs), northPlayer);
-        play.PlayCard(new Card(Rank.Queen, Suit.Clubs), eastPlayer);
-        play.PlayCard(new Card(Rank.Jack, Suit.Clubs), southPlayer);
-        Assert.AreEqual(2, play.Tricks.Count);
-    }
-
-    [Test]
     public void Play_CurrentPlayer_ShouldBeTrickWinner_WhenFourCardsPlayed() {
         Mock<IAuction> mockAuction = CreateMockAuction();
         mockAuction.Setup(a => a.Declarer).Returns(southPlayer);
@@ -101,6 +89,21 @@ public class PlayTests {
         play.PlayCard(new Card(Rank.Queen, Suit.Clubs), eastPlayer);
         play.PlayCard(new Card(Rank.Jack, Suit.Clubs), southPlayer);
         Assert.AreEqual(northPlayer, play.CurrentPlayer);
+    }
+
+    [Test]
+    public void Play_PlayCard_ShouldThrowException_WhenHasCardsOfSameSuit_AndDoesNotFollowLead() {
+        var mockAuction = new Mock<IAuction>();
+        var playerWithSameSuit = new Mock<IPlayer>();
+        playerWithSameSuit.Setup(p => p.Hand).Returns(new List<Card> { new(Rank.Three, Suit.Clubs), new(Rank.Four, Suit.Hearts) }.AsReadOnly());
+
+        mockAuction.Setup(a => a.Players).Returns(new List<IPlayer> { playerWithSameSuit.Object, eastPlayer, southPlayer, westPlayer });
+        mockAuction.Setup(a => a.Declarer).Returns(southPlayer);
+        mockAuction.Setup(a => a.FinalContract).Returns(new Bid(1, Strain.NoTrump));
+
+        IPlay play = new Play(mockAuction.Object);
+        play.PlayCard(new Card(Rank.Two, Suit.Clubs), westPlayer);
+        Assert.Throws<NotFollowingLeadException>(() => play.PlayCard(new Card(Rank.Four, Suit.Hearts), playerWithSameSuit.Object));
     }
 
     [Test]
@@ -126,6 +129,7 @@ public class PlayTests {
             .Returns(false)
             .Returns(false)
             .Returns(true);
+        lastTrick.Setup(t => t.Plays).Returns(new List<(Card, IPlayer)> { });
         var tricks = new List<ITrick>(new Trick[13]) {
             [12] = lastTrick.Object
         };
@@ -151,10 +155,10 @@ public class PlayTests {
         Assert.IsTrue(play.ContractIsMade);
     }
 
+
     private Mock<IPlayer> CreateMockPlayer(Position position) {
         var mockPlayer = new Mock<IPlayer>();
         mockPlayer.Setup(p => p.Position).Returns(position);
-        //mockPlayer.Setup(p => p.PlayCard(It.IsAny<Card>()));
         return mockPlayer;
     }
 

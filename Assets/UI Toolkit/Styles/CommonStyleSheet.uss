@@ -202,3 +202,24 @@
     border-left-color: rgb(255, 255, 255);
     border-right-color: rgb(255, 255, 255);
 }
+
+.flex-row {
+    flex-direction: row;
+}
+
+.align-content-start {
+    align-items: flex-start;
+}
+
+.align-content-center {
+    align-content: center;
+}
+
+.align-content-end {
+    align-content: flex-end;
+    align-items: flex-end;
+}
+
+.justify-center {
+    justify-content: center;
+}

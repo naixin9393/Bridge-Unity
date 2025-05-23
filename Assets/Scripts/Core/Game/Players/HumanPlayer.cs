@@ -6,7 +6,7 @@ public class HumanPlayer : IPlayer {
     public Position Position { get; private set; }
     private readonly List<Card> _hand = new();
 
-    public event Action<Card> OnCardChosen = delegate { };
+    public event Action<Card, IPlayer> OnCardChosen = delegate { };
     public event Action<ICall> OnCallChosen;
 
     public ReadOnlyCollection<Card> Hand => new(_hand);
@@ -30,7 +30,8 @@ public class HumanPlayer : IPlayer {
         return $"{Position}";
     }
     
-    public void RequestPlayerPlayDecision() {
+    public void RequestPlayerPlayDecision(PlayingContext playingContext) {
+        // Feedback from UI
     }
 
     public void RequestPlayerCallDecision(AuctionContext auctionContext) {

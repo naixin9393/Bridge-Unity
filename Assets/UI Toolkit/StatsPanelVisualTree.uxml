@@ -5,17 +5,17 @@
             <ui:Tab label="Subasta&#10;" style="flex-grow: 1; width: auto;">
                 <ui:VisualElement name="CallsContainer" style="flex-grow: 1;">
                     <ui:VisualElement name="PlayerContainer" class="gap" style="flex-grow: 0; flex-direction: row; align-items: flex-start; justify-content: space-evenly;">
-                        <ui:VisualElement name="VisualElement" style="flex-grow: 1; align-items: center;">
-                            <ui:Label text="Label" name="Player1" class="header2" />
+                        <ui:VisualElement style="flex-grow: 1; align-items: center;">
+                            <ui:Label text="-" name="Player1" class="header2" />
                         </ui:VisualElement>
                         <ui:VisualElement style="flex-grow: 1; align-items: center;">
-                            <ui:Label text="Label" name="Player2" class="header2" />
+                            <ui:Label text="-" name="Player2" class="header2" />
                         </ui:VisualElement>
                         <ui:VisualElement style="flex-grow: 1; align-items: center;">
-                            <ui:Label text="Label" name="Player3" class="header2" />
+                            <ui:Label text="-" name="Player3" class="header2" />
                         </ui:VisualElement>
                         <ui:VisualElement style="flex-grow: 1; align-items: center;">
-                            <ui:Label text="Label" name="Player4" class="header2" />
+                            <ui:Label text="-" name="Player4" class="header2" />
                         </ui:VisualElement>
                     </ui:VisualElement>
                     <ui:VisualElement name="ActionsContainer" class="gap" style="flex-grow: 1; flex-direction: row;">
@@ -30,16 +30,16 @@
                 <ui:VisualElement name="PlaysContainer" style="flex-grow: 1;">
                     <ui:VisualElement name="PlayerContainer" class="gap" style="flex-grow: 0; flex-direction: row; align-items: flex-start; justify-content: space-evenly;">
                         <ui:VisualElement style="flex-grow: 1; align-items: center;">
-                            <ui:Label text="Label" name="Player1" class="header2" />
+                            <ui:Label text="-" name="Player1" class="header2" />
                         </ui:VisualElement>
                         <ui:VisualElement style="flex-grow: 1; align-items: center;">
-                            <ui:Label text="Label" name="Player2" class="header2" />
+                            <ui:Label text="-" name="Player2" class="header2" />
                         </ui:VisualElement>
                         <ui:VisualElement style="flex-grow: 1; align-items: center;">
-                            <ui:Label text="Label" name="Player3" class="header2" />
+                            <ui:Label text="-" name="Player3" class="header2" />
                         </ui:VisualElement>
                         <ui:VisualElement style="flex-grow: 1; align-items: center;">
-                            <ui:Label text="Label" name="Player4" class="header2" />
+                            <ui:Label text="-" name="Player4" class="header2" />
                         </ui:VisualElement>
                     </ui:VisualElement>
                     <ui:VisualElement name="ActionsContainer" class="gap" style="flex-grow: 1; flex-direction: row;">

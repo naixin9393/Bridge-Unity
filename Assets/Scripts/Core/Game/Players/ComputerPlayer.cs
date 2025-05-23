@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UnityEngine;
@@ -8,7 +7,7 @@ public class ComputerPlayer : IPlayer {
     public Position Position { get; private set; }
     private readonly List<Card> _hand = new();
 
-    public event Action<Card> OnCardChosen = delegate { };
+    public event Action<Card, IPlayer> OnCardChosen = delegate { };
     public event Action<ICall> OnCallChosen;
 
     public ReadOnlyCollection<Card> Hand => new(_hand);
@@ -35,17 +34,26 @@ public class ComputerPlayer : IPlayer {
         return $"{Position}";
     }
 
-    public void RequestPlayerPlayDecision() {
-        if (_hand.Count == 0)
+    public void RequestPlayerPlayDecision(PlayingContext playingContext) {
+        if (playingContext.PossibleCards.Count == 0)
             throw new EmptyHandException(this);
-        Card card = _hand[^1];
-        OnCardChosen?.Invoke(card);
-        _hand.RemoveAt(_hand.Count - 1);
+        var possibleCards = playingContext.PossibleCards;
+        var card = possibleCards[0];
+        Debug.Log($"ComputerPlayer: PlayCard: {card}");
+        _coroutineStarter.DelayAction(
+            0.6f,
+            () =>OnCardChosen?.Invoke(card, this)
+        );
     }
 
     public void RequestPlayerCallDecision(AuctionContext auctionContext) {
-        if (auctionContext.HighestBid == null)
-            OnCallChosen?.Invoke(new BidCall(new Bid(1, Strain.NoTrump), this));
+        if (auctionContext.HighestBid == null) {
+            _coroutineStarter.DelayAction(
+                0.4f,
+                () => OnCallChosen?.Invoke(new BidCall(new Bid(1, Strain.NoTrump), this))
+            );
+            return;
+        }
         if (auctionContext.HighestBid.Bid.Level == 7) {
             _coroutineStarter.DelayAction(
                 0.4f,

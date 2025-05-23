@@ -1,13 +1,12 @@
 using System.Collections.Generic;
 using NUnit.Framework;
 
-/*
 public class AuctionTests {
     private List<IPlayer> CreateTestPlayers() => new() {
-        new ComputerPlayer(Position.North),
-        new ComputerPlayer(Position.East),
-        new ComputerPlayer(Position.South),
-        new ComputerPlayer(Position.West)
+        new HumanPlayer(Position.North),
+        new HumanPlayer(Position.East),
+        new HumanPlayer(Position.South),
+        new HumanPlayer(Position.West)
     };
 
     private List<List<ICall>> CreateValidCalls(List<IPlayer> players, int dealerIndex) {
@@ -221,4 +220,3 @@ public class AuctionTests {
         Assert.AreEqual(new Bid(2, Strain.NoTrump), auction.FinalContract);
     }
 }
-*/

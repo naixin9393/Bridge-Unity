@@ -34,6 +34,8 @@ public class Play : IPlay {
             throw new GameOverException();
         if (player != CurrentPlayer)
             throw new NotPlayersTurnException(player, CurrentPlayer);
+        if (DoesNotFollowLead(player, card))
+            throw new NotFollowingLeadException(player, card.Suit);
         CurrentTrick.PlayCard(card, player);
         player.PlayCard(card);
 
@@ -41,24 +43,26 @@ public class Play : IPlay {
             _currentPlayerIndex = (_currentPlayerIndex + 1) % _players.Count;
             return;
         }
+        if (IsAttacker(CurrentTrick.Winner))
+            _tricksWonByAttackers++;
+        _currentPlayerIndex = _players.IndexOf(CurrentTrick.Winner);
+        if (Tricks.Count == 13)
+            EndGame();
+    }
 
-        if (Tricks.Count < 13) {
-            StartNewTrick();
-            return;
-        }
-        EndGame();
+    private bool DoesNotFollowLead(IPlayer player, Card cardToPlay) {
+        if (CurrentTrick.Plays.Count == 0) return false;
+        var leadSuit = CurrentTrick.Plays[0].Card.Suit;
+        if (leadSuit == cardToPlay.Suit) return false;
+        return HasCardsOfSameSuit(player, leadSuit);
+    }
+
+    private bool HasCardsOfSameSuit(IPlayer player, Suit leadSuit) {
+        return player.Hand.Any(card => card.Suit == leadSuit);
     }
 
     private void EndGame() {
         IsOver = true;
-    }
-
-    private void StartNewTrick() {
-        if (IsAttacker(CurrentTrick.Winner))
-            _tricksWonByAttackers++;
-        _currentPlayerIndex = _players.IndexOf(CurrentTrick.Winner);
-        _tricks.Add(new Trick(_players, Contract.Strain, CurrentTrick.Winner));
-        _currentTrickIndex++;
     }
 
     private void DetermineLeadPlayer(IAuction auction) {
@@ -81,5 +85,20 @@ public class Play : IPlay {
 
     private bool IsAttacker(IPlayer player) {
         return _attackers.Contains(player);
+    }
+    
+    public void StartNewTrick() {
+        _tricks.Add(new Trick(_players, Contract.Strain, CurrentTrick.Winner));
+        _currentTrickIndex++;
+    }
+
+    public void RequestPlayerPlayDecision() {
+        List<Card> possibleCards = CalculatePossibleCards();
+        CurrentPlayer.RequestPlayerPlayDecision(new PlayingContext(possibleCards, _tricks.ToList()));
+    }
+
+    private List<Card> CalculatePossibleCards() {
+        if (CurrentTrick.Plays.Count == 0 || !HasCardsOfSameSuit(CurrentPlayer, CurrentTrick.Plays[0].Card.Suit)) return CurrentPlayer.Hand.ToList();
+        return CurrentPlayer.Hand.Where(card => card.Suit == CurrentTrick.Plays[0].Card.Suit).ToList();
     }
 }

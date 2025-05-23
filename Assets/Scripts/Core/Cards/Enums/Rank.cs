@@ -1,7 +1,7 @@
 public enum Rank { Two = 2, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King, Ace }
 
 public static class RankExtensions {
-    public static string ToString(this Rank rank) {
+    public static string ToSymbol(this Rank rank) {
         return rank switch {
             Rank.Two => "2",
             Rank.Three => "3",
@@ -12,7 +12,11 @@ public static class RankExtensions {
             Rank.Eight => "8",
             Rank.Nine => "9",
             Rank.Ten => "10",
-            _ => rank.ToString(),
+            Rank.Jack => "J",
+            Rank.Queen => "Q",
+            Rank.King => "K",
+            Rank.Ace => "A",
+            _ => throw new System.NotImplementedException()
         };
     }
 }
