@@ -1,6 +1,8 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using UnityEngine;
 
 public class ComputerPlayer : IPlayer {
     public Position Position { get; private set; }
@@ -10,9 +12,12 @@ public class ComputerPlayer : IPlayer {
     public event Action<ICall> OnCallChosen;
 
     public ReadOnlyCollection<Card> Hand => new(_hand);
+    
+    private IDelayService _coroutineStarter;
 
-    public ComputerPlayer(Position position) {
+    public ComputerPlayer(Position position, IDelayService coroutineStarter) {
         Position = position;
+        _coroutineStarter = coroutineStarter;
         _hand = new List<Card>();
     }
 
@@ -29,7 +34,7 @@ public class ComputerPlayer : IPlayer {
     public override string ToString() {
         return $"{Position}";
     }
-    
+
     public void RequestPlayerPlayDecision() {
         if (_hand.Count == 0)
             throw new EmptyHandException(this);
@@ -42,9 +47,15 @@ public class ComputerPlayer : IPlayer {
         if (auctionContext.HighestBid == null)
             OnCallChosen?.Invoke(new BidCall(new Bid(1, Strain.NoTrump), this));
         if (auctionContext.HighestBid.Bid.Level == 7) {
-                OnCallChosen?.Invoke(new Pass(this));
-                return;
-            }
-        OnCallChosen?.Invoke(new BidCall(new Bid(auctionContext.HighestBid.Bid.Level + 1, auctionContext.HighestBid.Bid.Strain), this));
+            _coroutineStarter.DelayAction(
+                0.4f,
+                () => OnCallChosen?.Invoke(new Pass(this))
+        );
+            return;
+        }
+        _coroutineStarter.DelayAction(
+            0.4f,
+            () =>OnCallChosen?.Invoke(new BidCall(new Bid(auctionContext.HighestBid.Bid.Level + 1, auctionContext.HighestBid.Bid.Strain), this))
+        );
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -15,9 +16,6 @@ public class GameScreen : MonoBehaviour {
     private AuctionView _auctionView;
     private StatsView _statsView;
 
-    private void OnValidate() {
-    }
-
     private void Awake() {
         // Load visual tree
         _document = GetComponent<UIDocument>();
@@ -34,10 +32,25 @@ public class GameScreen : MonoBehaviour {
     public void Initialize(GameViewModel gameViewModel) {
         if (_auctionContainer == null)
             Debug.LogError("Auction container not found");
-        
+
         // Assume human is always south
         var humanPlayer = gameViewModel.Players.First(p => p.Position == Position.South);
         _auctionView = new AuctionView(_auctionContainer, gameViewModel, humanPlayer);
         _statsView = new StatsView(_statsContainer, gameViewModel);
+        
+        gameViewModel.OnGamePhaseChanged += HandleGamePhaseChanged;
+    }
+
+    private void HandleGamePhaseChanged(GamePhase phase) {
+        switch (phase) {
+            case GamePhase.Auction:
+                break;
+            case GamePhase.Play:
+                _auctionView.Dispose();
+                _auctionContainer.style.display = DisplayStyle.None;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(phase), phase, null);
+        }
     }
 }

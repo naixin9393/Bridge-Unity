@@ -30,9 +30,6 @@ public class Auction : IAuction {
 
     private readonly List<ICall> _calls = new();
 
-    public event Action OnAuctionEnd;
-    public event Action<ICall> OnCallMade;
-
     public Auction(List<IPlayer> players, IPlayer dealer) {
         _players = players;
         _dealer = dealer;
@@ -60,22 +57,23 @@ public class Auction : IAuction {
         _consecutivePasses = IsPass(call) ? _consecutivePasses + 1 : 0;
 
         _calls.Add(call);
-
-        if (_consecutivePasses == 4 || (_consecutivePasses == 3 && _highestBid != null))
-            EndAuction();
+        _currentPlayerIndex = (_currentPlayerIndex + 1) % _players.Count;
 
         if (IsBid(call))
             _highestBid = call as BidCall;
 
-        _currentPlayerIndex = (_currentPlayerIndex + 1) % _players.Count;
-        OnCallMade?.Invoke(call);
+        //OnCallMade?.Invoke(call);
+
+        if (_consecutivePasses == 4 || (_consecutivePasses == 3 && _highestBid != null)) {
+            EndAuction();
+        }
     }
 
     private void EndAuction() {
         _isOver = true;
         DetermineDeclarer();
         DetermineDummy();
-        OnAuctionEnd?.Invoke();
+        //OnAuctionEnd?.Invoke();
     }
 
     private void DetermineDeclarer() {

@@ -145,11 +145,6 @@
     flex-grow: 0;
 }
 
-.text30 {
-    color: rgb(254, 243, 207);
-    font-size: 30px;
-}
-
 .round-slider #unity-thumb-min {
     width: 30px;
     height: 30px;
@@ -171,4 +166,39 @@
 .round-slider #unity-dragger {
     align-items: center;
     flex-direction: row;
+}
+
+.tab-view {
+}
+
+.text30 {
+    color: rgb(254, 243, 207);
+    font-size: 30px;
+}
+
+#bridge-tab-view #unity-tab__header {
+    color: rgb(254, 243, 207);
+    background-color: rgb(41, 41, 41);
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border-left-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+}
+
+#bridge-tab-view #unity-tab__header:hover {
+    color: rgb(254, 243, 207);
+    background-color: rgb(29, 29, 29);
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border-left-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+}
+
+#bridge-tab-view #unity-tab__header:checked {
+    color: rgb(254, 243, 207);
+    background-color: rgb(0, 0, 0);
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border-left-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
 }

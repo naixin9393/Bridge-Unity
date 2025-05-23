@@ -10,14 +10,20 @@ public class GameViewModel : IDisposable {
     public Bid HighestBid => _game.HighestBid;
     
     public event Action<ICall> OnCallMade;
+    public event Action<GamePhase> OnGamePhaseChanged;
     public GameViewModel(IGame game) {
         _game = game;
         _game.OnCallMade += HandleCallMade;
+        _game.OnGamePhaseChanged += HandleGamePhaseChanged;
 
         foreach (IPlayer player in _game.Players) {
             player.OnCallChosen += HandlePlayerCallChosen;
             player.OnCardChosen += HandlePlayerCardChosen;
         }
+    }
+
+    private void HandleGamePhaseChanged(GamePhase phase) {
+        OnGamePhaseChanged?.Invoke(phase);
     }
 
     private void HandleCallMade(ICall call) {
@@ -37,5 +43,7 @@ public class GameViewModel : IDisposable {
             player.OnCallChosen -= HandlePlayerCallChosen;
             player.OnCardChosen -= HandlePlayerCardChosen;
         }
+        _game.OnGamePhaseChanged -= HandleGamePhaseChanged;
+        _game.OnCallMade -= HandleCallMade;
     }
 }

@@ -23,7 +23,7 @@ public class GameInitializer : MonoBehaviour {
         List<IPlayer> computerPlayers = new();
         
         foreach (Position comPos in computerPositions) {
-            computerPlayers.Add(new ComputerPlayer(comPos));
+            computerPlayers.Add(new ComputerPlayer(comPos, CoroutineRunner.Instance));
         }
         
         // Deal cards

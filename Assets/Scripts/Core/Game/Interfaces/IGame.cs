@@ -9,4 +9,5 @@ public interface IGame {
     void StartGame();
     void ProcessCall(ICall call);
     event Action<ICall> OnCallMade;
+    event Action<GamePhase> OnGamePhaseChanged;
 }

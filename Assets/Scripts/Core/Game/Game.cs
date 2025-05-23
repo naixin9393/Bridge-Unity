@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 public class Game : IGame, IDisposable {
@@ -21,13 +22,14 @@ public class Game : IGame, IDisposable {
     public GamePhase Phase;
 
     public event Action<ICall> OnCallMade;
+    public event Action<GamePhase> OnGamePhaseChanged;
 
     public Game(List<IPlayer> players, IPlayer dealer) {
         _players = SortPlayersByTurnOrder(players, dealer);
         _dealer = dealer;
         _auction = new Auction(_players, _dealer);
-        _auction.OnCallMade += HandleCallMade;
-        _auction.OnAuctionEnd += HandleAuctionEnd;
+        //_auction.OnCallMade += HandleCallMade;
+        //_auction.OnAuctionEnd += HandleAuctionEnd;
         Phase = GamePhase.Auction;
     }
 
@@ -57,18 +59,20 @@ public class Game : IGame, IDisposable {
         };
     }
 
-    private void HandleAuctionEnd() {
-        _play = new Play(_auction);
-        Phase = GamePhase.Play;
-    }
-
     public void StartGame() => _auction.RequestPlayerCallDecision();
 
-    public void Dispose() => _auction.OnAuctionEnd -= HandleAuctionEnd;
+    public void Dispose() {
+        return;
+    }
 
     public void ProcessCall(ICall call) {
-        Debug.Log($"Processing call {call}");
         _auction.MakeCall(call);
         OnCallMade?.Invoke(call);
+        if (!_auction.IsOver)
+            _auction.RequestPlayerCallDecision();
+        else {
+            Phase = GamePhase.Play;
+            OnGamePhaseChanged?.Invoke(Phase);
+        }
     }
 }

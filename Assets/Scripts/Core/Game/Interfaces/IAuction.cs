@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 public interface IAuction {
@@ -14,6 +13,4 @@ public interface IAuction {
     BidCall HighestBid { get; }
     void RequestPlayerCallDecision();
     void MakeCall(ICall call);
-    event Action OnAuctionEnd;
-    event Action<ICall> OnCallMade;
 }
