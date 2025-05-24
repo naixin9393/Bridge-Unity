@@ -2,45 +2,22 @@ using System;
 using System.Collections.ObjectModel;
 
 public class GameViewModel : IDisposable {
-    private readonly IGame _game;
+    private readonly IGameManager _game;
     public ReadOnlyCollection<ICall> Calls => _game.Calls;
     public ReadOnlyCollection<IPlayer> Players => _game.Players;
     public BindableProperty<int> CallCount => BindableProperty<int>.Bind(() => _game.Calls.Count);
     public IPlayer CurrentPlayer => _game.CurrentPlayer;
     public Bid HighestBid => _game.HighestBid;
-    public Suit LeadSuit => _game.LeadSuit;
+    public Suit? LeadSuit => _game.LeadSuit;
+    public Bid Contract => _game.Contract;
     
-    public event Action<ICall> OnCallMade;
-    public event Action<Card, IPlayer> OnPlayMade;
-    public event Action<GamePhase> OnGamePhaseChanged;
-    public event Action OnTrickEnded;
-    public GameViewModel(IGame game) {
+    public GameViewModel(IGameManager game) {
         _game = game;
-        _game.OnCallMade += HandleCallMade;
-        _game.OnPlayMade += HandlePlayMade;
-        _game.OnGamePhaseChanged += HandleGamePhaseChanged;
-        _game.OnTrickEnded += HandleTrickEnded;
 
         foreach (IPlayer player in _game.Players) {
             player.OnCallChosen += HandlePlayerCallChosen;
             player.OnCardChosen += HandlePlayerCardChosen;
         }
-    }
-
-    private void HandleTrickEnded() {
-        OnTrickEnded?.Invoke();
-    }
-
-    private void HandlePlayMade(Card card, IPlayer player) {
-        OnPlayMade?.Invoke(card, player);
-    }
-
-    private void HandleGamePhaseChanged(GamePhase phase) {
-        OnGamePhaseChanged?.Invoke(phase);
-    }
-
-    private void HandleCallMade(ICall call) {
-        OnCallMade?.Invoke(call);
     }
 
     public void HandlePlayerCardChosen(Card card, IPlayer player) {
@@ -51,7 +28,7 @@ public class GameViewModel : IDisposable {
         _game.ProcessCall(call);
     }
     
-    public void ProceedNextAction() {
+    public void HandleAnimationComplete() {
         _game.ProceedNextAction();
     }
 
@@ -60,7 +37,5 @@ public class GameViewModel : IDisposable {
             player.OnCallChosen -= HandlePlayerCallChosen;
             player.OnCardChosen -= HandlePlayerCardChosen;
         }
-        _game.OnGamePhaseChanged -= HandleGamePhaseChanged;
-        _game.OnCallMade -= HandleCallMade;
     }
 }

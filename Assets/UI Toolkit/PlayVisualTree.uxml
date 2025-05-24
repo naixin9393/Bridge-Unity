@@ -10,8 +10,11 @@
                 <ui:VisualElement name="PlayingArea" style="flex-grow: 1; border-top-left-radius: 20px; border-top-right-radius: 20px; border-bottom-right-radius: 20px; border-bottom-left-radius: 20px; border-top-width: 10px; border-right-width: 10px; border-bottom-width: 10px; border-left-width: 10px; border-left-color: rgb(228, 214, 167); border-right-color: rgb(228, 214, 167); border-top-color: rgb(228, 214, 167); border-bottom-color: rgb(228, 214, 167); flex-shrink: 0;">
                     <ui:VisualElement name="TopCardContainer" class="align-content-center justify-center" style="flex-grow: 1; align-items: center; flex-shrink: 0; height: 30%;" />
                     <ui:VisualElement style="flex-grow: 1; justify-content: space-around; flex-direction: row; flex-shrink: 0; height: 30%;">
-                        <ui:VisualElement name="LeftCardContainer" class="align-content-start justify-center" style="flex-grow: 1; flex-shrink: 0;" />
-                        <ui:VisualElement name="RightCardContainer" class="align-content-end justify-center" style="flex-grow: 1; flex-shrink: 0;" />
+                        <ui:VisualElement name="LeftCardContainer" class="align-content-start justify-center" style="flex-grow: 0; flex-shrink: 0; width: 20%;" />
+                        <ui:VisualElement name="VisualElement" class="justify-center" style="flex-grow: 0; flex-direction: column; align-content: flex-start; align-items: center; width: 60%;">
+                            <ui:Label text="Contrato&#10;" name="Contract" class="header2" style="align-items: flex-start; justify-content: flex-start;" />
+                        </ui:VisualElement>
+                        <ui:VisualElement name="RightCardContainer" class="align-content-end justify-center" style="flex-grow: 0; flex-shrink: 0; width: 20%;" />
                     </ui:VisualElement>
                     <ui:VisualElement name="BottomCardContainer" class="align-content-center justify-center" style="flex-grow: 1; align-items: center; flex-shrink: 0; height: 30%;" />
                 </ui:VisualElement>

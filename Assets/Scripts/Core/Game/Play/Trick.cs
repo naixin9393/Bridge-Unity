@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,7 +11,7 @@ public class Trick : ITrick {
     public bool IsOver => _plays.Count == 4;
     public IPlayer CurrentPlayer { get; private set; }
     public IPlayer Winner => IsOver ? GetWinner() : null;
-    public Suit LeadSuit { get; private set; }
+    public Suit? LeadSuit { get; private set; }
 
     public Trick(List<IPlayer> players, Strain strain, IPlayer currentPlayer) {
         _players.AddRange(players);
@@ -19,8 +20,9 @@ public class Trick : ITrick {
     }
 
     private IPlayer GetWinner() {
+        if (!LeadSuit.HasValue) throw new Exception("Cannot get winner when lead suit is not set");
         return _plays.ToList()
-            .OrderBy(play => play.Card, new BridgeCardComparer(LeadSuit, _strain)).Last().Player;
+            .OrderBy(play => play.Card, new BridgeCardComparer(LeadSuit.Value, _strain)).Last().Player;
     }
 
     public void PlayCard(Card card, IPlayer player) {

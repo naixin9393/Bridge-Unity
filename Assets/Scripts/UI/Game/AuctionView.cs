@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class AuctionView : IDisposable {
+public class AuctionView : MonoBehaviour {
     private VisualElement _auctionHandContainer;
     private VisualElement _auctionContainer;
     private VisualElement _callsContainer;
@@ -18,7 +18,7 @@ public class AuctionView : IDisposable {
     private ICall _selectedCall;
     private Dictionary<Button, Bid> _bidButtonMap = new();
 
-    public AuctionView(VisualElement auctionContainer, GameViewModel gameViewModel, IPlayer player) {
+    public void Initialize(VisualElement auctionContainer, GameViewModel gameViewModel, IPlayer player) {
         _auctionContainer = auctionContainer;
         _gameViewModel = gameViewModel;
         _player = player;
@@ -37,8 +37,6 @@ public class AuctionView : IDisposable {
 
         _auctionHandContainer = _auctionContainer.Q<VisualElement>("AuctionHandContainer");
         PopulatePlayerHandContainer();
-
-        _gameViewModel.OnCallMade += HandleCallMade;
     }
 
     private void PopulatePlayerHandContainer() {
@@ -73,14 +71,15 @@ public class AuctionView : IDisposable {
         return new StyleBackground(cardTexture);
     }
 
-    private void HandleCallMade(ICall call) {
+    public void HandleCallMade(Component sender, object call) {
+        if (call is not ICall) return;
         var buttons = _auctionContainer.Query<Button>().ToList();
         foreach (var button in buttons) {
             button.SetEnabled(_gameViewModel.CurrentPlayer == _player);
         }
         SetSelectedButton(null, null);
         UpdateUI();
-        _gameViewModel.ProceedNextAction();
+        _gameViewModel.HandleAnimationComplete();
     }
 
     private void UpdateUI() {
@@ -137,11 +136,6 @@ public class AuctionView : IDisposable {
         _callsContainer.Add(_bidsContainer);
         _callsContainer.Add(passDoubleRedoubleContainer);
     }
-
-    public void Dispose() {
-        _gameViewModel.OnCallMade -= HandleCallMade;
-    }
-
 
     public VisualElement CreateCallRowView() {
         var row = new VisualElement();

@@ -1,0 +1,10 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/Styles/CommonStyleSheet.uss?fileID=7433441132597879392&amp;guid=086b46d161ea6c843a6999d57f0fa7ea&amp;type=3#CommonStyleSheet" />
+    <ui:VisualElement class="header" style="flex-grow: 1;">
+        <ui:Label text="Resolución" name="Title" />
+        <ui:VisualElement name="ButtonsContainer" class="justify-center" style="flex-grow: 1; padding-top: 0; padding-right: 30%; padding-left: 30%;">
+            <ui:Button text="1920x1080" name="1920x1080Button" class="button" />
+            <ui:Button text="1366x768" name="1366x768Button" class="button" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

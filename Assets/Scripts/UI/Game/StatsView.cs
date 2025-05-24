@@ -1,21 +1,23 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using UnityEngine.UIElements;
 
-public class StatsView {
-    private readonly GameViewModel _gameViewModel;
-    private readonly VisualElement _statsContainer;
-    private readonly VisualElement _player1CallsContainer;
-    private readonly VisualElement _player2CallsContainer;
-    private readonly VisualElement _player3CallsContainer;
-    private readonly VisualElement _player4CallsContainer;
-    private readonly VisualElement _player1PlaysContainer;
-    private readonly VisualElement _player2PlaysContainer;
-    private readonly VisualElement _player3PlaysContainer;
-    private readonly VisualElement _player4PlaysContainer;
-    private readonly TabView _tabView;
-    private readonly VisualElement _callsContainer;
-    private readonly VisualElement _playsContainer;
+public class StatsView : MonoBehaviour{
+    private GameViewModel _gameViewModel;
+    private VisualElement _statsContainer;
+    private VisualElement _player1CallsContainer;
+    private VisualElement _player2CallsContainer;
+    private VisualElement _player3CallsContainer;
+    private VisualElement _player4CallsContainer;
+    private  VisualElement _player1PlaysContainer;
+    private VisualElement _player2PlaysContainer;
+    private VisualElement _player3PlaysContainer;
+    private VisualElement _player4PlaysContainer;
+    private TabView _tabView;
+    private VisualElement _callsContainer;
+    private VisualElement _playsContainer;
     private IPlayer _player1;
     private IPlayer _player2;
     private IPlayer _player3;
@@ -23,12 +25,9 @@ public class StatsView {
     private Dictionary<Position, VisualElement> _playerCallsContainersMap = new();
     private Dictionary<Position, VisualElement> _playerPlaysContainersMap = new();
 
-    public StatsView(VisualElement statsContainer, GameViewModel gameViewModel) {
+    public void Initialize(VisualElement statsContainer, GameViewModel gameViewModel) {
         _statsContainer = statsContainer;
         _gameViewModel = gameViewModel;
-        _gameViewModel.OnCallMade += HandleCallMade;
-        _gameViewModel.OnPlayMade += HandlePlayMade;
-        _gameViewModel.OnGamePhaseChanged += HandleGamePhaseChanged;
 
         _tabView = _statsContainer.Q<TabView>();
 
@@ -58,23 +57,29 @@ public class StatsView {
         _playerPlaysContainersMap.Add(_player4.Position, _player4PlaysContainer);
     }
 
-    private void HandlePlayMade(Card card, IPlayer player) {
-        Label label = new(card.ToString());
-        label.AddToClassList("header2");
-        _playerPlaysContainersMap[player.Position].Add(label);
+    public void HandlePlayMade(Component sender, object data) {
+        if (data is ValueTuple<Card, IPlayer> cardData) {
+            Label label = new(cardData.Item1.ToString());
+            label.AddToClassList("header2");
+            _playerPlaysContainersMap[cardData.Item2.Position].Add(label);
+        }
     }
 
-    private void HandleGamePhaseChanged(GamePhase phase) {
-        _tabView.selectedTabIndex = 1;
+    public void HandleGamePhaseChanged(Component sender, object phase) {
+        if (phase is GamePhase gamePhase) {
+            _tabView.selectedTabIndex = 1;
+        }
     }
 
-    private void HandleCallMade(ICall call) {
-        Label label = new(call switch {
+    public void HandleCallMade(Component sender, object call) {
+        if (call is not ICall) return;
+        var callData = call as ICall;
+        Label label = new(callData switch {
             BidCall bidCall => bidCall.Bid.ToString(),
-            _ => call.ToString()
+            _ => callData.ToString()
         });
         label.AddToClassList("header2");
-        _playerCallsContainersMap[call.Caller.Position].Add(label);
+        _playerCallsContainersMap[callData.Caller.Position].Add(label);
     }
 
     private void SetPlayersLabel() {

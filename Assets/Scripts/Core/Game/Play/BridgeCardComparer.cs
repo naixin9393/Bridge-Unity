@@ -10,22 +10,19 @@ public class BridgeCardComparer : IComparer<Card> {
     }
 
     public int Compare(Card x, Card y) {
-        if (_contractStrain == Strain.NoTrump) {
-            if (BothFollowsLead(x, y))
+        if (_contractStrain != Strain.NoTrump) {
+            if (BothTrump(x, y))
                 return x.Rank.CompareTo(y.Rank);
-            if (OneFollowsLead(x, y))
-                return x.Suit == _leadSuit ? 1 : -1;
-            // Comparison for display, not relevant for play
-            if (BothSameSuit(x, y))
-                return x.Rank.CompareTo(y.Rank);
-            return x.Suit.CompareTo(y.Suit);
+            if (OneTrump(x, y)) {
+                Suit trumpSuit = GetTrumpSuit(_contractStrain);
+                return x.Suit == trumpSuit ? 1 : -1;
+            }
         }
-        if (BothTrump(x, y))
+        if (BothFollowsLead(x, y))
             return x.Rank.CompareTo(y.Rank);
-        if (OneTrump(x, y)) {
-            Suit trumpSuit = GetTrumpSuit(_contractStrain);
-            return x.Suit == trumpSuit ? 1 : -1;
-        }
+        if (OneFollowsLead(x, y))
+            return x.Suit == _leadSuit ? 1 : -1;
+
         // Comparison for display, not relevant for play
         if (BothSameSuit(x, y))
             return x.Rank.CompareTo(y.Rank);

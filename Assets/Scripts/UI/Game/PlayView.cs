@@ -1,89 +1,131 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class PlayView : IDisposable {
-    private readonly VisualElement _playContainer;
-    private readonly GameViewModel _gameViewModel;
-    private readonly IPlayer _player;
-    private readonly VisualElement _bottomHandContainer;
-    private readonly VisualElement _topCardContainer;
-    private readonly VisualElement _rightCardContainer;
-    private readonly VisualElement _bottomCardContainer;
-    private readonly VisualElement _leftCardContainer;
+public class PlayView : MonoBehaviour {
+    [SerializeField] private GameObject cardPrefab;
+
+    // Place holders for card slots
+    [SerializeField] private GameObject bottomCardSlot;
+    [SerializeField] private GameObject topCardSlot;
+    [SerializeField] private GameObject leftCardSlot;
+    [SerializeField] private GameObject rightCardSlot;
+
+    // Place holders for card spawns
+    [SerializeField] private GameObject bottomCardSpawn;
+    [SerializeField] private GameObject topCardSpawn;
+    [SerializeField] private GameObject leftCardSpawn;
+    [SerializeField] private GameObject rightCardSpawn;
+
+    // Place holders for card win slots
+    [SerializeField] private GameObject bottomCardWinSlot;
+    [SerializeField] private GameObject topCardWinSlot;
+    [SerializeField] private GameObject leftCardWinSlot;
+    [SerializeField] private GameObject rightCardWinSlot;
+
+
+    private VisualElement _playContainer;
+    private GameViewModel _gameViewModel;
+    private IPlayer _bottomPlayer;
+    private IPlayer _leftPlayer;
+    private IPlayer _topPlayer;
+    private IPlayer _rightPlayer;
+    private VisualElement _bottomHandContainer;
+
+    // Container where played cards are shown
+    private readonly List<GameObject> _playedCards = new();
     private readonly List<CardView> _bottomPlayerCardViews = new();
 
-    public PlayView(VisualElement playContainer, GameViewModel gameViewModel, IPlayer player) {
+    // GameObjects that are place holders for origin and target positions
+    private readonly Dictionary<IPlayer, (GameObject, GameObject, GameObject)> _playerCardSlotSpawnMap = new();
+    private int _animationsInProgress = 0;
+
+
+    public void Initialize(VisualElement playContainer, GameViewModel gameViewModel, IPlayer humanPlayer) {
         _playContainer = playContainer;
         _gameViewModel = gameViewModel;
-        _player = player;
 
+        var contractLabel = _playContainer.Q<Label>("Contract");
+        contractLabel.text = _gameViewModel.Contract.ToString();
 
-        _gameViewModel.OnPlayMade += HandlePlayMade;
-        _gameViewModel.OnTrickEnded += HandleTrickEnded;
-
-        _topCardContainer = _playContainer.Q<VisualElement>("TopCardContainer");
-        _rightCardContainer = _playContainer.Q<VisualElement>("RightCardContainer");
-        _bottomCardContainer = _playContainer.Q<VisualElement>("BottomCardContainer");
-        _leftCardContainer = _playContainer.Q<VisualElement>("LeftCardContainer");
+        _bottomPlayer = humanPlayer;
+        _leftPlayer = PlayerUtils.GetNextPlayer(_bottomPlayer, _gameViewModel.Players.ToList());
+        _topPlayer = PlayerUtils.GetNextPlayer(_leftPlayer, _gameViewModel.Players.ToList());
+        _rightPlayer = PlayerUtils.GetNextPlayer(_topPlayer, _gameViewModel.Players.ToList());
 
         _bottomHandContainer = _playContainer.Q<VisualElement>("BottomHandContainer");
+
+        _playerCardSlotSpawnMap.Add(_bottomPlayer, (bottomCardSlot, bottomCardSpawn, bottomCardWinSlot));
+        _playerCardSlotSpawnMap.Add(_leftPlayer, (leftCardSlot, leftCardSpawn, leftCardWinSlot));
+        _playerCardSlotSpawnMap.Add(_topPlayer, (topCardSlot, topCardSpawn, topCardWinSlot));
+        _playerCardSlotSpawnMap.Add(_rightPlayer, (rightCardSlot, rightCardSpawn, rightCardWinSlot));
 
         PopulatePlayerHandContainer();
         UpdateHandsUI();
     }
 
-    private void HandleTrickEnded() {
-        _topCardContainer.Clear();
-        _rightCardContainer.Clear();
-        _bottomCardContainer.Clear();
-        _leftCardContainer.Clear();
-        _gameViewModel.ProceedNextAction();
+    public void HandleTrickEnded(Component sender, object winner) {
+        // Disable hand temporarily
+        _animationsInProgress++;
+        DisableHand();
+        var sequence = DOTween.Sequence();
+        foreach (GameObject cardObject in _playedCards) {
+            sequence.Join(
+                cardObject.transform.DOMove(_playerCardSlotSpawnMap[winner as IPlayer].Item3.transform.position, 1.0f)
+                    .SetEase(Ease.OutQuad));
+        }
+        sequence.SetDelay(1)
+            .OnComplete(() => {
+                _playedCards.Clear();
+                _animationsInProgress--;
+                UpdateHandsUI();
+                HandleAnimationComplete();
+            });
     }
 
-    private void HandlePlayMade(Card card, IPlayer player) {
-        var cardContainer = GetPlayerPlaysContainer(player);
-        cardContainer.Clear();
-        cardContainer.Add(new CardView(card));
-        UpdateHandsUI();
-        _gameViewModel.ProceedNextAction();
+    private void DisableHand() {
+        foreach (CardView cardView in _bottomPlayerCardViews) {
+            cardView.SetEnabled(false);
+        }
+    }
+
+    public void HandlePlayMade(Component sender, object data) {
+        DisableHand();
+        if (data is ValueTuple<Card, IPlayer> cardData) {
+            AnimateCardToPlayArea(cardData.Item1, cardData.Item2, HandleAnimationComplete);
+        }
+    }
+
+    private void HandleAnimationComplete() {
+        _gameViewModel.HandleAnimationComplete();
     }
 
     private void UpdateHandsUI() {
-        if (_gameViewModel.CurrentPlayer != _player) {
-            foreach (CardView cardView in _bottomPlayerCardViews) {
-                cardView.SetEnabled(false);
-            }
+        if (_gameViewModel.CurrentPlayer != _bottomPlayer || _animationsInProgress > 0) {
+            DisableHand();
             return;
         }
         foreach (CardView cardView in _bottomPlayerCardViews) {
-            bool shouldBeEnabled = !HasCardsOfSameSuit(_player, _gameViewModel.LeadSuit) ||
+            bool shouldBeEnabled =
+                !_gameViewModel.LeadSuit.HasValue ||
+                !HasCardsOfSameSuit(_bottomPlayer, _gameViewModel.LeadSuit.Value) ||
                 cardView.Card.Suit == _gameViewModel.LeadSuit;
             cardView.SetEnabled(shouldBeEnabled);
         }
     }
 
-    private VisualElement GetPlayerPlaysContainer(IPlayer player) {
-        return player.Position switch {
-            Position.North => _topCardContainer,
-            Position.East => _rightCardContainer,
-            Position.South => _bottomCardContainer,
-            Position.West => _leftCardContainer,
-            _ => throw new NotImplementedException()
-        };
-    }
-
     private void PopulatePlayerHandContainer() {
         // Show card in order Spades, Hearts, Diamonds, Clubs
-        var playerHand = _player.Hand.ToList()
+        var playerHand = _bottomPlayer.Hand.ToList()
             .OrderBy(card => card, new BridgeCardComparer(Suit.Spades, Strain.NoTrump))
             .Reverse();
         foreach (var card in playerHand) {
             var cardView = new CardView(card);
             cardView.RegisterCallback<ClickEvent>(evt => {
-                _gameViewModel.HandlePlayerCardChosen(card, _player);
+                _gameViewModel.HandlePlayerCardChosen(card, _bottomPlayer);
                 _bottomHandContainer.Remove(cardView);
             });
             _bottomHandContainer.Add(cardView);
@@ -114,11 +156,36 @@ public class PlayView : IDisposable {
         return new StyleBackground(cardTexture);
     }
 
-    public void Dispose() {
-        _gameViewModel.OnPlayMade -= HandlePlayMade;
+    private void OnDestroy() {
+        foreach (GameObject cardObject in _playedCards) {
+            Destroy(cardObject);
+        }
     }
 
     private bool HasCardsOfSameSuit(IPlayer player, Suit leadSuit) {
         return player.Hand.Any(card => card.Suit == leadSuit);
+    }
+
+    private void AnimateCardToPlayArea(Card card, IPlayer player, Action animationCompleteCallback) {
+        var (targetContainer, originContainer, _) = _playerCardSlotSpawnMap[player];
+
+        // Create card object at origin
+        GameObject cardObject = Instantiate(cardPrefab, originContainer.transform.position, Quaternion.identity);
+        _playedCards.Add(cardObject);
+
+        // Initialize card UI
+        CardUI cardUI = cardObject.GetComponent<CardUI>();
+        cardUI.Initialize(card);
+
+        _animationsInProgress++;
+        // Animate card to target position
+        cardObject.transform.DOMove(targetContainer.transform.position, 1.0f)
+            .SetEase(Ease.OutQuad)
+            .OnComplete(() => {
+                animationCompleteCallback?.Invoke();
+                _animationsInProgress--;
+                UpdateHandsUI();
+            })
+            .SetDelay(0.5f);
     }
 }

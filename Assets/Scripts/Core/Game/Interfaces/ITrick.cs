@@ -5,6 +5,6 @@ public interface ITrick {
     bool IsOver { get; }
     IPlayer CurrentPlayer { get; }
     IPlayer Winner { get; }
-    Suit LeadSuit { get; }
+    Suit? LeadSuit { get; }
     void PlayCard(Card card, IPlayer player);
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class GameInitializer : MonoBehaviour {
     [SerializeField] private GameConfiguration _gameConfig;
+    [SerializeField] private GameManager _gameManager;
     [SerializeField] private GameScreen _gameScreen;
 
     private void Awake() {
@@ -44,14 +45,14 @@ public class GameInitializer : MonoBehaviour {
 
         // Create auction and play
 
-        IGame game = new Game(players, dealer);
+        _gameManager.Initialize(players, dealer);
 
 
         // Create game view model
-        var gameViewModel = new GameViewModel(game);
+        var gameViewModel = new GameViewModel(_gameManager);
 
         _gameScreen.Initialize(gameViewModel);
         
-        game.StartGame();
+        _gameManager.StartGame();
     }
 }

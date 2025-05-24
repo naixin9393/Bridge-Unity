@@ -1,0 +1,7 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="ResolutionSettingsPupupElement" src="project://database/Assets/UI%20Toolkit/Settings/ResolutionSettingsPupupElement.uxml?fileID=9197481963319205126&amp;guid=6ed5768f1b8acdf418d85896682abbbf&amp;type=3#ResolutionSettingsPupupElement" />
+    <Style src="project://database/Assets/UI%20Toolkit/Styles/SettingsStyleSheet.uss?fileID=7433441132597879392&amp;guid=165972ecaa5ed4e46b16564da03b035b&amp;type=3#SettingsStyleSheet" />
+    <ui:VisualElement class="popup-overlay" style="flex-grow: 1;">
+        <ui:Instance template="ResolutionSettingsPupupElement" name="TemplateContainer" style="flex-grow: 1; height: 100%; width: 100%;" />
+    </ui:VisualElement>
+</ui:UXML>

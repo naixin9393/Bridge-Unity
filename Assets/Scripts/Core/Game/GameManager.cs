@@ -1,14 +1,18 @@
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using UnityEngine;
 
-public class Game : IGame {
-    private readonly List<IPlayer> _players;
-    private readonly IPlayer _dealer;
-    private readonly IAuction _auction;
+public class GameManager : MonoBehaviour, IGameManager {
+    [SerializeField] private GameEvent OnTrickEnd;
+    [SerializeField] private GameEvent OnGamePhaseChanged;
+    [SerializeField] private GameEvent OnCallMade;
+    [SerializeField] private GameEvent OnPlayMade;
+    private List<IPlayer> _players;
+    private IPlayer _dealer;
+    private IAuction _auction;
     private IPlay _play;
     private ITrick _currentTrick => _play.CurrentTrick;
-    public Suit LeadSuit => _currentTrick.LeadSuit;
+    public Suit? LeadSuit => _currentTrick.LeadSuit;
 
     public ReadOnlyCollection<ICall> Calls => _auction.Calls.AsReadOnly();
     public ReadOnlyCollection<IPlayer> Players => _players.AsReadOnly();
@@ -16,16 +20,11 @@ public class Game : IGame {
     public IPlayer CurrentPlayer => Phase == GamePhase.Auction ? _auction.CurrentPlayer : _play.CurrentPlayer;
 
     public Bid HighestBid => _auction.HighestBid.Bid;
-
-    public event Action OnTrickEnded;
-
+    public Bid Contract => _auction.FinalContract;
     public GamePhase Phase;
+    
 
-    public event Action<ICall> OnCallMade;
-    public event Action<Card, IPlayer> OnPlayMade;
-    public event Action<GamePhase> OnGamePhaseChanged;
-
-    public Game(List<IPlayer> players, IPlayer dealer) {
+    public void Initialize(List<IPlayer> players, IPlayer dealer) {
         _players = players;
         _dealer = dealer;
         _auction = new Auction(_players, _dealer);
@@ -36,12 +35,12 @@ public class Game : IGame {
 
     public void ProcessCall(ICall call) {
         _auction.MakeCall(call);
-        OnCallMade?.Invoke(call);
+        OnCallMade.Raise(this, call);
     }
 
     public void ProcessPlay(Card card, IPlayer player) {
         _play.PlayCard(card, player);
-        OnPlayMade?.Invoke(card, player);
+        OnPlayMade.Raise(this, (card, player));
     }
 
     public void ProceedNextAction() {
@@ -52,21 +51,22 @@ public class Game : IGame {
             }
             Phase = GamePhase.Play;
             _play = new Play(_auction);
-            OnGamePhaseChanged?.Invoke(Phase);
+            OnGamePhaseChanged.Raise(this, Phase);
             return;
         }
         if (Phase == GamePhase.Play) {
             if (!_play.IsOver) {
                 if (_currentTrick.IsOver) {
+                    var winner = _currentTrick.Winner;
                     _play.StartNewTrick();
-                    OnTrickEnded?.Invoke();
+                    OnTrickEnd.Raise(this, winner);
                     return;
                 }
                 _play.RequestPlayerPlayDecision();
                 return;
             }
             Phase = GamePhase.End;
-            OnGamePhaseChanged?.Invoke(Phase);
+            OnGamePhaseChanged.Raise(this, Phase);
             return;
         }
     }

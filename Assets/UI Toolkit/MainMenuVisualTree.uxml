@@ -1,5 +1,5 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI%20Toolkit/Styles/MainMenuStyle.uss?fileID=7433441132597879392&amp;guid=086b46d161ea6c843a6999d57f0fa7ea&amp;type=3#MainMenuStyle" />
+    <Style src="project://database/Assets/UI%20Toolkit/Styles/CommonStyleSheet.uss?fileID=7433441132597879392&amp;guid=086b46d161ea6c843a6999d57f0fa7ea&amp;type=3#CommonStyleSheet" />
     <ui:VisualElement name="MainContainer" style="flex-grow: 1; align-items: center; background-color: rgb(20, 56, 36); flex-wrap: nowrap; height: auto; flex-basis: auto; justify-content: center; cursor: initial;">
         <ui:Label text="BRIDGE" name="Title" class="header gap" />
         <ui:VisualElement name="IconContainer" class="gap" style="flex-grow: initial; background-image: none; width: auto; height: auto; max-height: none; max-width: none; min-width: auto; min-height: auto; flex-basis: auto; flex-shrink: initial; flex-direction: row;">
@@ -10,6 +10,7 @@
         </ui:VisualElement>
         <ui:VisualElement name="ButtonContainer" class="gap" style="flex-grow: initial; width: 30%; justify-content: center; align-items: stretch; align-self: auto; align-content: auto; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; height: auto; flex-wrap: nowrap; flex-direction: column; display: flex; max-height: none; flex-basis: auto; background-size: 100% 100%;">
             <ui:Button text="Jugar" name="StartButton" class="button unity-button" />
+            <ui:Button text="Resolución" name="SettingsButton" class="button" />
             <ui:Button text="Salir" name="ExitButton" class="button unity-button" />
         </ui:VisualElement>
     </ui:VisualElement>

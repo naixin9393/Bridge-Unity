@@ -223,3 +223,6 @@
 .justify-center {
     justify-content: center;
 }
+
+.pop-up {
+}

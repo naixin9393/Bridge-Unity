@@ -19,7 +19,6 @@ public class HandConfigurationScreen : MonoBehaviour {
         _returnButton = _document.rootVisualElement.Q<Button>("ReturnButton");
         _menuButtons = _document.rootVisualElement.Query<Button>().ToList();
         _audioSource = GetComponent<AudioSource>();
-        DontDestroyOnLoad(_audioSource);
     }
 
     private void OnEnable() {

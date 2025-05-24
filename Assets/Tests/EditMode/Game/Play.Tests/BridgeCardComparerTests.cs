@@ -22,9 +22,11 @@ public class BridgeCardComparerTests {
     [TestCase(Rank.Three, Suit.Spades, Rank.Four, Suit.Hearts, Suit.Hearts, Strain.Hearts, -1, TestName = "Trump_OneCardTrump_TrumpCardIsHigher")]
     [TestCase(Rank.Three, Suit.Hearts, Rank.Four, Suit.Clubs, Suit.Hearts, Strain.Hearts, 1, TestName = "Trump_OneCardTrump_TrumpCardIsHigher")]
     
+    [TestCase(Rank.Ace, Suit.Spades, Rank.Five, Suit.Hearts, Suit.Hearts, Strain.Clubs, -1, TestName = "Trump_NoCardsTrump_OneFollowsLead_LeadCardIsHigher")]
+    [TestCase(Rank.Four, Suit.Diamonds, Rank.Four, Suit.Clubs, Suit.Clubs, Strain.Hearts, -1, TestName = "Trump_NoCardsTrump_OneFollowsLead_CompareSuit")]
+
     [TestCase(Rank.Three, Suit.Clubs, Rank.Four, Suit.Clubs, Suit.Clubs, Strain.Hearts, -1, TestName = "Trump_NoCardsTrump_BothSameSuit_CompareRank")]
     [TestCase(Rank.Seven, Suit.Clubs, Rank.Four, Suit.Clubs, Suit.Clubs, Strain.Hearts, 1, TestName = "Trump_NoCardsTrump_BothSameSuit_CompareRank")]
-    [TestCase(Rank.Four, Suit.Diamonds, Rank.Four, Suit.Clubs, Suit.Clubs, Strain.Hearts, 1, TestName = "Trump_NoCardsTrump_BothDifferentSuit_CompareSuit")]
     [TestCase(Rank.Four, Suit.Diamonds, Rank.Four, Suit.Spades, Suit.Clubs, Strain.Hearts, -1, TestName = "Trump_NoCardsTrump_BothDifferentSuit_CompareSuit")]
     public void Compare_ShouldReturnExpectedResult(Rank rank1, Suit suit1, Rank rank2, Suit suit2, Suit leadSuit, Strain contractStrain, int expectedResult) {
         var bridgeCardComparer = new BridgeCardComparer(leadSuit, contractStrain);

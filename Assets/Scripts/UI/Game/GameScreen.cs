@@ -1,10 +1,14 @@
 using System;
 using System.Linq;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class GameScreen : MonoBehaviour {
     // Visual trees
+    [SerializeField] private AuctionView _auctionView;
+    [SerializeField] private StatsView _statsView;
+    [SerializeField] private PlayView _playView;
     [SerializeField] private VisualTreeAsset _gameVisualTree;
 
     private UIDocument _document;
@@ -14,10 +18,7 @@ public class GameScreen : MonoBehaviour {
     private VisualElement _playContainer;
     private VisualElement _statsContainer;
     private IPlayer _humanPlayer;
-    private AuctionView _auctionView;
-    private StatsView _statsView;
     private GameViewModel _gameViewModel;
-    private PlayView _playView;
 
     private void Awake() {
         // Load visual tree
@@ -40,34 +41,38 @@ public class GameScreen : MonoBehaviour {
 
         // Assume human is always south
         _humanPlayer = gameViewModel.Players.First(p => p.Position == Position.South);
-        _auctionView = new AuctionView(_auctionContainer, gameViewModel, _humanPlayer);
-        _statsView = new StatsView(_statsContainer, gameViewModel);
+        _auctionView.Initialize(_auctionContainer, gameViewModel, _humanPlayer);
+        _statsView.Initialize(_statsContainer, gameViewModel);
 
         _gameViewModel = gameViewModel;
-
-        _gameViewModel.OnGamePhaseChanged += HandleGamePhaseChanged;
     }
 
-    private void HandleGamePhaseChanged(GamePhase phase) {
-        switch (phase) {
-            case GamePhase.Auction:
-                break;
-            case GamePhase.Play:
-                _auctionView.Dispose();
-                _auctionContainer.style.display = DisplayStyle.None;
-                _playContainer.style.display = DisplayStyle.Flex;
-                _playView = new PlayView(_playContainer, _gameViewModel, _humanPlayer);
-                _gameViewModel.ProceedNextAction();
-                break;
-            case GamePhase.End:
-                _playView.Dispose();
-                break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(phase), phase, null);
+    public void HandleGamePhaseChanged(Component sender, object phase) {
+        if (phase is GamePhase) {
+            switch (phase) {
+                case GamePhase.Auction:
+                    break;
+                case GamePhase.Play:
+                    Debug.Log("Play phase started");
+                    _auctionContainer.style.opacity = 1.0f;
+                    DOTween.To(() => _auctionContainer.style.opacity.value,
+                        x => _auctionContainer.style.opacity = x, 0.0f, 1.0f)
+                        .OnComplete(() => {
+                            _auctionContainer.style.display = DisplayStyle.None;
+                            _playContainer.style.opacity = 0.0f;
+                            _playContainer.style.display = DisplayStyle.Flex;
+                            _playView.Initialize(_playContainer, _gameViewModel, _humanPlayer);
+                            DOTween.To(() => _playContainer.style.opacity.value,
+                                x => _playContainer.style.opacity = x, 1.0f, 1.0f)
+                                .OnComplete(() => _gameViewModel.HandleAnimationComplete());
+                        });
+                    break;
+                case GamePhase.End:
+                    Debug.Log("Game ended");
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(phase), phase, null);
+            }
         }
-    }
-
-    private void OnDestroy() {
-        _gameViewModel.OnGamePhaseChanged -= HandleGamePhaseChanged;
     }
 }
