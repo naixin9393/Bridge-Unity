@@ -47,7 +47,7 @@ public class ComputerPlayer : IPlayer {
         );
     }
 
-    public void RequestPlayerCallDecision(AuctionContext auctionContext) {
+    public void RequestPlayerCallDecision(BiddingContext auctionContext) {
         if (auctionContext.HighestBid == null) {
             _coroutineStarter.DelayAction(
                 0.4f,

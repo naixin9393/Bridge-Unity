@@ -10,9 +10,7 @@ public class HandGeneratorTests {
         HandGenerator handGenerator = new();
         List<Card> hand = handGenerator.Generate(deck, true);
 
-        HandAnalyzer handAnalyzer = new();
-
-        Assert.IsTrue(handAnalyzer.IsBalancedHand(hand));
+        Assert.IsTrue(HandUtils.IsBalancedHand(hand));
     }
 
     [Test]
@@ -35,9 +33,7 @@ public class HandGeneratorTests {
         HandGenerator handGenerator = new();
         List<Card> hand = handGenerator.Generate(deck, true, 15, 15);
 
-        HandAnalyzer handAnalyzer = new();
-
-        Assert.IsTrue(handAnalyzer.IsBalancedHand(hand));
-        Assert.AreEqual(15, handAnalyzer.CalculateHighCardPoints(hand));
+        Assert.IsTrue(HandUtils.IsBalancedHand(hand));
+        Assert.AreEqual(15, HandUtils.CalculateHighCardPoints(hand));
     }
 }

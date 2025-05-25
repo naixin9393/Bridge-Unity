@@ -31,7 +31,7 @@ public class AuctionView : MonoBehaviour {
         _confirmButton.clicked += () => _gameViewModel.HandlePlayerCallChosen(_selectedCall);
 
         // Show player's hand HCP
-        _auctionContainer.Q<Label>("HCP").text = new HandAnalyzer()
+        _auctionContainer.Q<Label>("HCP").text = HandUtils
             .CalculateHighCardPoints(_player.Hand.ToList())
             .ToString();
 

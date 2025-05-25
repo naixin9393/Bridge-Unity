@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public class HandAnalyzer : IHandAnalyzer {
-
-    private readonly Dictionary<Rank, int> _rankToHCP = new() {
+public class HandUtils {
+    private static readonly Dictionary<Rank, int> _rankToHCP = new() {
         { Rank.Two, 0},
         { Rank.Three, 0},
         { Rank.Four, 0},
@@ -19,7 +18,7 @@ public class HandAnalyzer : IHandAnalyzer {
         { Rank.Ace, 4}
     };
     
-    public int CalculateHighCardPoints(List<Card> hand) {
+    public static int CalculateHighCardPoints(List<Card> hand) {
         int hcp = 0;
         foreach (Card card in hand) {
             if (_rankToHCP.ContainsKey(card.Rank)) {
@@ -29,7 +28,7 @@ public class HandAnalyzer : IHandAnalyzer {
         return hcp;
     }
 
-    public bool ContainsBalancedHand(List<Card> hand) {
+    public static bool ContainsBalancedHand(List<Card> hand) {
         if (hand.Count < 13) return false;
         List<int> numberOfEachSuit = hand.GroupBy(card => card.Suit)
             .Select(group => group.Count())
@@ -41,7 +40,7 @@ public class HandAnalyzer : IHandAnalyzer {
         return false;
     }
 
-    public bool IsBalancedHand(List<Card> hand) {
+    public static bool IsBalancedHand(List<Card> hand) {
         if (hand.Count != 13) return false;
         List<int> numberOfEachSuit = hand.GroupBy(card => card.Suit)
             .Select(group => group.Count())
@@ -52,18 +51,18 @@ public class HandAnalyzer : IHandAnalyzer {
         return false;
     }
 
-    private bool Is4333(List<int> numberOfEachSuit) {
+    private static bool Is4333(List<int> numberOfEachSuit) {
         return numberOfEachSuit.Count(suit => suit == 3) == 3 &&
                numberOfEachSuit.Count(suit => suit == 4) == 1;
     }
 
-    private bool Is4432(List<int> numberOfEachSuit) {
+    private static bool Is4432(List<int> numberOfEachSuit) {
         return numberOfEachSuit.Count(suit => suit == 4) == 2 &&
                numberOfEachSuit.Count(suit => suit == 3) == 1 &&
                numberOfEachSuit.Count(suit => suit == 2) == 1;
     }
 
-    private bool Is5332(List<int> numberOfEachSuit) {
+    private static bool Is5332(List<int> numberOfEachSuit) {
         return numberOfEachSuit.Count(suit => suit == 5) == 1 &&
                numberOfEachSuit.Count(suit => suit == 3) == 2 &&
                numberOfEachSuit.Count(suit => suit == 2) == 1;

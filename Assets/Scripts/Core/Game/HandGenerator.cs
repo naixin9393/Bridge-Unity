@@ -4,8 +4,7 @@ using System.Linq;
 
 public class HandGenerator : IHandGenerator {
     public List<Card> Generate(Deck deck, bool balancedHand) {
-        HandAnalyzer handAnalyzer = new();
-        if (!handAnalyzer.ContainsBalancedHand(deck.Cards.ToList())) return new List<Card>();
+        if (!HandUtils.ContainsBalancedHand(deck.Cards.ToList())) return new List<Card>();
         if (deck.Cards.Count < 13) return new List<Card>();
 
         List<Card> hand = new();
@@ -25,8 +24,7 @@ public class HandGenerator : IHandGenerator {
     }
 
     public List<Card> Generate(Deck deck, bool balancedHand, int minHCP, int maxHCP) {
-        HandAnalyzer handAnalyzer = new();
-        if (balancedHand && !handAnalyzer.ContainsBalancedHand(deck.Cards.ToList())) throw new Exception("Balanced hand not possible");
+        if (balancedHand && !HandUtils.ContainsBalancedHand(deck.Cards.ToList())) throw new Exception("Balanced hand not possible");
         if (deck.Cards.Count < 13) throw new Exception("Deck is too small");
         if (minHCP > maxHCP || minHCP > 37) throw new Exception("HCP range is invalid");
 
@@ -44,13 +42,13 @@ public class HandGenerator : IHandGenerator {
             }
 
             hand.Add(card);
-            HCP = handAnalyzer.CalculateHighCardPoints(hand);
+            HCP = HandUtils.CalculateHighCardPoints(hand);
 
             if ((balancedHand && !CouldBeBalancedHand(hand))
                 || !CouldReachMinHCP(hand, minHCP)
-                || handAnalyzer.CalculateHighCardPoints(hand) > maxHCP) {
+                || HandUtils.CalculateHighCardPoints(hand) > maxHCP) {
                 hand.Remove(card);
-                HCP = handAnalyzer.CalculateHighCardPoints(hand);
+                HCP = HandUtils.CalculateHighCardPoints(hand);
                 discardedCards.Add(card);
                 deck.Shuffle();
             }
@@ -67,7 +65,7 @@ public class HandGenerator : IHandGenerator {
         while (hand.Count < 13) {
             Card card = deck.DealCard();
             hand.Add(card);
-            if (balancedHand && !CouldBeBalancedHand(hand) || handAnalyzer.CalculateHighCardPoints(hand) > maxHCP) {
+            if (balancedHand && !CouldBeBalancedHand(hand) || HandUtils.CalculateHighCardPoints(hand) > maxHCP) {
                 hand.Remove(card);
                 discardedCards.Add(card);
                 deck.Shuffle();
@@ -104,8 +102,7 @@ public class HandGenerator : IHandGenerator {
     }
 
     private bool CouldReachMinHCP(List<Card> hand, int minHCP) {
-        HandAnalyzer handAnalyzer = new();
-        int currentHcp = handAnalyzer.CalculateHighCardPoints(hand);
+        int currentHcp = HandUtils.CalculateHighCardPoints(hand);
         int HCPNeeded = minHCP - currentHcp;
         if (HCPNeeded <= 0) return true;
 

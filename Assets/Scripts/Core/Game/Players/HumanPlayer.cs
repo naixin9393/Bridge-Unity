@@ -34,7 +34,7 @@ public class HumanPlayer : IPlayer {
         // Feedback from UI
     }
 
-    public void RequestPlayerCallDecision(AuctionContext auctionContext) {
+    public void RequestPlayerCallDecision(BiddingContext auctionContext) {
         // Feedback from UI
     }
 }
