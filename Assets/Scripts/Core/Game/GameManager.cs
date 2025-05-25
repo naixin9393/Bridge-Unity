@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UnityEngine;
@@ -12,17 +13,27 @@ public class GameManager : MonoBehaviour, IGameManager {
     private IAuction _auction;
     private IPlay _play;
     private ITrick _currentTrick => _play.CurrentTrick;
-    public Suit? LeadSuit => _currentTrick.LeadSuit;
 
-    public ReadOnlyCollection<ICall> Calls => _auction.Calls.AsReadOnly();
+    public GamePhase Phase;
     public ReadOnlyCollection<IPlayer> Players => _players.AsReadOnly();
-
     public IPlayer CurrentPlayer => Phase == GamePhase.Auction ? _auction.CurrentPlayer : _play.CurrentPlayer;
-
+    public ReadOnlyCollection<ICall> Calls => _auction.Calls.AsReadOnly();
     public Bid HighestBid => _auction.HighestBid.Bid;
     public Bid Contract => _auction.FinalContract;
-    public GamePhase Phase;
-    
+    public IPlayer Declarer => _auction.Declarer;
+    public Suit? LeadSuit => _currentTrick.LeadSuit;
+    public ReadOnlyCollection<ITrick> Tricks => _play.Tricks;
+
+    public event Action<int> OnTricksWonByAttackersChanged;
+    public event Action<GamePhase> OnPhaseChanged;
+
+    public int TricksWonByAttackers {
+        get => _play.TricksWonByAttackers;
+        set {
+            OnTricksWonByAttackersChanged?.Invoke(value);
+        }
+    }
+
 
     public void Initialize(List<IPlayer> players, IPlayer dealer) {
         _players = players;
@@ -52,6 +63,7 @@ public class GameManager : MonoBehaviour, IGameManager {
             Phase = GamePhase.Play;
             _play = new Play(_auction);
             OnGamePhaseChanged.Raise(this, Phase);
+            OnPhaseChanged?.Invoke(Phase);
             return;
         }
         if (Phase == GamePhase.Play) {
@@ -59,6 +71,7 @@ public class GameManager : MonoBehaviour, IGameManager {
                 if (_currentTrick.IsOver) {
                     var winner = _currentTrick.Winner;
                     _play.StartNewTrick();
+                    Debug.Log("Tricks won by attackers: " + TricksWonByAttackers);
                     OnTrickEnd.Raise(this, winner);
                     return;
                 }
@@ -67,6 +80,7 @@ public class GameManager : MonoBehaviour, IGameManager {
             }
             Phase = GamePhase.End;
             OnGamePhaseChanged.Raise(this, Phase);
+            OnPhaseChanged?.Invoke(Phase);
             return;
         }
     }

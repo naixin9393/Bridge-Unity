@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class SettingsPopupManager : MonoBehaviour {
+public class SettingsView : MonoBehaviour {
     [SerializeField] private UIDocument _document;
     [SerializeField] private VisualTreeAsset _settingsPopupUXML;
     [SerializeField] private ScreenResolutionController _screenResolutionController;
@@ -16,13 +16,13 @@ public class SettingsPopupManager : MonoBehaviour {
         _popUpInstance.AddToClassList("popup-overlay");
 
         _popUpInstance.style.display = DisplayStyle.None;
-        _closeButton = _document.rootVisualElement.Q<Button>("CloseButton");
+        _closeButton = _popUpInstance.Q<Button>("CloseButton");
         _closeButton.RegisterCallback<ClickEvent>(OnCloseButtonClicked);
         
-        _1920x1080Button = _document.rootVisualElement.Q<Button>("1920x1080Button");
+        _1920x1080Button = _popUpInstance.Q<Button>("1920x1080Button");
         _1920x1080Button.RegisterCallback<ClickEvent>(On1920x1080ButtonClicked);
 
-        _1366x768Button = _document.rootVisualElement.Q<Button>("1366x768Button");
+        _1366x768Button = _popUpInstance.Q<Button>("1366x768Button");
         _1366x768Button.RegisterCallback<ClickEvent>(On1366x768ButtonClicked);
     }
 

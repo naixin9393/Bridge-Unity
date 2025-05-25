@@ -226,3 +226,24 @@
 
 .pop-up {
 }
+
+.justify-center {
+    justify-content: center;
+}
+
+.align-items-center {
+    align-items: center;
+}
+
+.align-content-center {
+    align-content: center;
+}
+
+.rotate-90 {
+    rotate: 90deg;
+}
+
+.margin-top-bottom10 {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}

@@ -49,7 +49,7 @@ public class GameInitializer : MonoBehaviour {
 
 
         // Create game view model
-        var gameViewModel = new GameViewModel(_gameManager);
+        var gameViewModel = new GameViewModel(_gameManager, humanPlayer);
 
         _gameScreen.Initialize(gameViewModel);
         

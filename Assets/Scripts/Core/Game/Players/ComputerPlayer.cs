@@ -35,6 +35,7 @@ public class ComputerPlayer : IPlayer {
     }
 
     public void RequestPlayerPlayDecision(PlayingContext playingContext) {
+        //if (playingContext.Dummy == this) return; // Dummy can't play
         if (playingContext.PossibleCards.Count == 0)
             throw new EmptyHandException(this);
         var possibleCards = playingContext.PossibleCards;

@@ -1,0 +1,18 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="AuctionVisualTree" src="project://database/Assets/UI%20Toolkit/Game/AuctionVisualTree.uxml?fileID=9197481963319205126&amp;guid=a495872616cb374429df7a818f0473c3&amp;type=3#AuctionVisualTree" />
+    <ui:Template name="PlayVisualTree" src="project://database/Assets/UI%20Toolkit/Game/PlayVisualTree.uxml?fileID=9197481963319205126&amp;guid=b07a774ab6898864288399869d4e2f4f&amp;type=3#PlayVisualTree" />
+    <ui:Template name="StatsPanelVisualTree" src="project://database/Assets/UI%20Toolkit/Game/StatsPanelVisualTree.uxml?fileID=9197481963319205126&amp;guid=ce309c8100b91cb4ea874eea10b8d997&amp;type=3#StatsPanelVisualTree" />
+    <Style src="project://database/Assets/UI%20Toolkit/Styles/CommonStyleSheet.uss?fileID=7433441132597879392&amp;guid=086b46d161ea6c843a6999d57f0fa7ea&amp;type=3#CommonStyleSheet" />
+    <ui:VisualElement name="Toolbar" class="align-items-center" style="flex-grow: 0; width: 100%; max-width: none; flex-direction: row-reverse; flex-shrink: 0; height: 10%; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px; background-color: rgb(22, 22, 22);">
+        <ui:Button icon-image="project://database/Assets/Resources/Icons/settings.png?fileID=-3358933203163112000&amp;guid=a136055342ca01d4c8f4812a68c048d7&amp;type=3#settings_0" name="SettingsButton" class="button" style="width: 50px; height: 50px; background-color: rgb(228, 214, 167); border-top-left-radius: 15px; border-top-right-radius: 15px; border-bottom-right-radius: 15px; border-bottom-left-radius: 15px; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;" />
+    </ui:VisualElement>
+    <ui:VisualElement name="GameContainer" style="flex-grow: 1; flex-direction: row; height: 90%;">
+        <ui:VisualElement name="Game" style="flex-grow: 1; width: 70%;">
+            <ui:Instance template="AuctionVisualTree" name="AuctionTemplateContainer" />
+            <ui:Instance template="PlayVisualTree" name="PlayTemplateContainer" enabled="true" style="flex-grow: 1;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="Stats" style="flex-grow: 0; width: 30%; background-color: rgb(54, 54, 54); padding-top: 30px;">
+            <ui:Instance template="StatsPanelVisualTree" style="flex-grow: 1;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

@@ -9,6 +9,8 @@ public class GameScreen : MonoBehaviour {
     [SerializeField] private AuctionView _auctionView;
     [SerializeField] private StatsView _statsView;
     [SerializeField] private PlayView _playView;
+    [SerializeField] private EndView _endView;
+    [SerializeField] private GameSettingsView _gameSettingsView;
     [SerializeField] private VisualTreeAsset _gameVisualTree;
 
     private UIDocument _document;
@@ -17,6 +19,7 @@ public class GameScreen : MonoBehaviour {
     private VisualElement _auctionContainer;
     private VisualElement _playContainer;
     private VisualElement _statsContainer;
+    private Button _settingsButton;
     private IPlayer _humanPlayer;
     private GameViewModel _gameViewModel;
 
@@ -33,6 +36,15 @@ public class GameScreen : MonoBehaviour {
         _playContainer = gameScreenUI.Q<VisualElement>("PlayTemplateContainer");
         _playContainer.style.display = DisplayStyle.None;
         _statsContainer = gameScreenUI.Q<VisualElement>("StatsContainer");
+
+        _gameSettingsView.Initialize();
+
+        _settingsButton = gameScreenUI.Q<Button>("SettingsButton");
+        _settingsButton.RegisterCallback<ClickEvent>(OnSettingsButtonClicked);
+    }
+
+    private void OnSettingsButtonClicked(ClickEvent evt) {
+        _gameSettingsView.Show();
     }
 
     public void Initialize(GameViewModel gameViewModel) {
@@ -69,6 +81,7 @@ public class GameScreen : MonoBehaviour {
                     break;
                 case GamePhase.End:
                     Debug.Log("Game ended");
+                    _endView.Initialize(_gameViewModel);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(phase), phase, null);

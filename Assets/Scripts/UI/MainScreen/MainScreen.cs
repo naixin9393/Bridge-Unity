@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -13,7 +12,7 @@ public class MainMenu : MonoBehaviour {
     private AudioSource _audioSource;
     [SerializeField] private AudioClip _buttonHoverSound;
     [SerializeField] private AudioClip _buttonClickSound;
-    [SerializeField] private SettingsPopupManager _settingsPopupManager;
+    [SerializeField] private SettingsView _settingsPopupManager;
 
     public void Awake() {
         _document = GetComponent<UIDocument>();

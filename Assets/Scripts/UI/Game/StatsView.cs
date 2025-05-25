@@ -1,17 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class StatsView : MonoBehaviour{
+public class StatsView : MonoBehaviour {
     private GameViewModel _gameViewModel;
     private VisualElement _statsContainer;
     private VisualElement _player1CallsContainer;
     private VisualElement _player2CallsContainer;
     private VisualElement _player3CallsContainer;
     private VisualElement _player4CallsContainer;
-    private  VisualElement _player1PlaysContainer;
+    private VisualElement _player1PlaysContainer;
     private VisualElement _player2PlaysContainer;
     private VisualElement _player3PlaysContainer;
     private VisualElement _player4PlaysContainer;
@@ -45,7 +46,7 @@ public class StatsView : MonoBehaviour{
         _player2PlaysContainer = _playsContainer.Q<VisualElement>("Player2Plays");
         _player3PlaysContainer = _playsContainer.Q<VisualElement>("Player3Plays");
         _player4PlaysContainer = _playsContainer.Q<VisualElement>("Player4Plays");
-        
+
         _playerCallsContainersMap.Add(_player1.Position, _player1CallsContainer);
         _playerCallsContainersMap.Add(_player2.Position, _player2CallsContainer);
         _playerCallsContainersMap.Add(_player3.Position, _player3CallsContainer);
@@ -53,7 +54,7 @@ public class StatsView : MonoBehaviour{
 
         _playerPlaysContainersMap.Add(_player1.Position, _player1PlaysContainer);
         _playerPlaysContainersMap.Add(_player2.Position, _player2PlaysContainer);
-        _playerPlaysContainersMap.Add(_player3.Position, _player3PlaysContainer);        
+        _playerPlaysContainersMap.Add(_player3.Position, _player3PlaysContainer);
         _playerPlaysContainersMap.Add(_player4.Position, _player4PlaysContainer);
     }
 
@@ -67,7 +68,9 @@ public class StatsView : MonoBehaviour{
 
     public void HandleGamePhaseChanged(Component sender, object phase) {
         if (phase is GamePhase gamePhase) {
-            _tabView.selectedTabIndex = 1;
+            DOTween.To(() => _tabView.selectedTabIndex,
+                x => _tabView.selectedTabIndex = x, 1, 2f)
+                .SetEase(Ease.OutQuad);
         }
     }
 

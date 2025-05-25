@@ -77,7 +77,7 @@ public class Auction : IAuction {
 
         Strain winningStrain = _highestBid.Bid.Strain;
         var winningCaller = _highestBid.Caller;
-        var partner = PartnerOf(winningCaller);
+        var partner = PlayerUtils.PartnerOf(winningCaller, _players);
 
         _offendingSide.Add(partner);
         _offendingSide.Add(winningCaller);
@@ -85,12 +85,10 @@ public class Auction : IAuction {
         _declarer = _calls
             .OfType<BidCall>()
             .Where(bidCall => bidCall.Bid.Strain == winningStrain && _offendingSide.Contains(bidCall.Caller))
-            .FirstOrDefault()
-            .Caller;
+            .First().Caller;
     }
 
-    private void DetermineDummy() => _dummy = PartnerOf(_declarer);
-    private IPlayer PartnerOf(IPlayer player) => _players[(_players.IndexOf(player) + 2) % _players.Count];
+    private void DetermineDummy() => _dummy = _declarer == null ? null : PlayerUtils.PartnerOf(_declarer, _players);
     private bool IsEqualOrLowerThanHighest(Bid bid) => !(bid > _highestBid.Bid);
     private bool IsBid(ICall call) => call != null && call.Type == CallType.Bid;
     private bool IsPass(ICall call) => call != null && call.Type == CallType.Pass;
