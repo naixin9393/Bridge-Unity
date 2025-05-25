@@ -31,9 +31,8 @@ public class GameInitializer : MonoBehaviour {
 
         Deck deck = new();
         deck.Shuffle();
-        IHandGenerator handGenerator = new HandGenerator();
 
-        List<Card> humanHand = handGenerator.Generate(deck, _gameConfig.BalancedHand, _gameConfig.MinHCP, _gameConfig.MaxHCP);
+        List<Card> humanHand = HandGenerator.Generate(deck, _gameConfig.BalancedHand, _gameConfig.MinHCP, _gameConfig.MaxHCP);
         humanPlayer.ReceiveCards(humanHand);
 
         foreach (IPlayer player in computerPlayers) {

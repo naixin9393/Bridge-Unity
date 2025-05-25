@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public class HandGenerator : IHandGenerator {
-    public List<Card> Generate(Deck deck, bool balancedHand) {
+public class HandGenerator {
+    public static List<Card> Generate(Deck deck, bool balancedHand) {
         if (!HandUtils.ContainsBalancedHand(deck.Cards.ToList())) return new List<Card>();
         if (deck.Cards.Count < 13) return new List<Card>();
 
@@ -23,7 +23,7 @@ public class HandGenerator : IHandGenerator {
         return hand;
     }
 
-    public List<Card> Generate(Deck deck, bool balancedHand, int minHCP, int maxHCP) {
+    public static List<Card> Generate(Deck deck, bool balancedHand, int minHCP, int maxHCP) {
         if (balancedHand && !HandUtils.ContainsBalancedHand(deck.Cards.ToList())) throw new Exception("Balanced hand not possible");
         if (deck.Cards.Count < 13) throw new Exception("Deck is too small");
         if (minHCP > maxHCP || minHCP > 37) throw new Exception("HCP range is invalid");
@@ -80,11 +80,11 @@ public class HandGenerator : IHandGenerator {
         return hand;
     }
     
-    private bool IsHonorCard(Card card) {
+    private static bool IsHonorCard(Card card) {
         return card.Rank == Rank.Ace || card.Rank == Rank.King || card.Rank == Rank.Queen || card.Rank == Rank.Jack;
     }
 
-    private bool CouldBeBalancedHand(List<Card> hand) {
+    private static bool CouldBeBalancedHand(List<Card> hand) {
         List<int> numberOfEachSuit = hand.GroupBy(card => card.Suit)
             .Select(group => group.Count())
             .OrderBy(count => count)
@@ -101,7 +101,7 @@ public class HandGenerator : IHandGenerator {
                numberOfEachSuit.Count(suit => suit == 3) < 3;
     }
 
-    private bool CouldReachMinHCP(List<Card> hand, int minHCP) {
+    private static bool CouldReachMinHCP(List<Card> hand, int minHCP) {
         int currentHcp = HandUtils.CalculateHighCardPoints(hand);
         int HCPNeeded = minHCP - currentHcp;
         if (HCPNeeded <= 0) return true;
@@ -119,7 +119,7 @@ public class HandGenerator : IHandGenerator {
         return HCPNeeded <= potentialAdditionalHCP;
     }
 
-    private int PotentialAdditionalHCP(int cardsRemainingToDraw, int numberOfAcesInDeck, int numberOfKingsInDeck, int numberOfQueensInDeck, int numberOfJacksInDeck) {
+    private static int PotentialAdditionalHCP(int cardsRemainingToDraw, int numberOfAcesInDeck, int numberOfKingsInDeck, int numberOfQueensInDeck, int numberOfJacksInDeck) {
         int potentialAdditionalHCP = 0;
 
         int acesToDraw = Math.Min(cardsRemainingToDraw, numberOfAcesInDeck);
