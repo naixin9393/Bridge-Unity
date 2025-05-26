@@ -8,10 +8,8 @@ public class BiddingEngine : IBiddingEngine {
         return _currentState.CalculateCall(biddingContext);
     }
 
-    public BiddingSuggestion UpdateState(BiddingContext biddingContext) {
-        var suggestion = _currentState.CalculateCall(biddingContext);
-        _currentState = _currentState.GetNextState(suggestion.Call);
-        return suggestion;
+    public void UpdateState(ICall call) {
+        _currentState = _currentState.GetNextState(call);
     }
 
     public void SetState(IBiddingState state) {

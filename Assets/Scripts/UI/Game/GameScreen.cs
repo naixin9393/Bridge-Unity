@@ -10,6 +10,7 @@ public class GameScreen : MonoBehaviour {
     [SerializeField] private StatsView _statsView;
     [SerializeField] private PlayView _playView;
     [SerializeField] private EndView _endView;
+    [SerializeField] private GameAbortedView _gameAbortedView;
     [SerializeField] private GameSettingsView _gameSettingsView;
     [SerializeField] private VisualTreeAsset _gameVisualTree;
 
@@ -81,6 +82,10 @@ public class GameScreen : MonoBehaviour {
                     break;
                 case GamePhase.End:
                     Debug.Log("Game ended");
+                    if (_gameViewModel.Declarer == null) {
+                        _gameAbortedView.Initialize();
+                        return;
+                    }
                     _endView.Initialize(_gameViewModel);
                     break;
                 default:

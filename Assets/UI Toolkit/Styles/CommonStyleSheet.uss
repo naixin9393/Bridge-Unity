@@ -123,7 +123,6 @@
 .header {
     font-size: 100px;
     -unity-text-align: upper-center;
-    -unity-font-definition: url("project://database/Assets/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=2230732570650464555&guid=84dfe4ff20a0007459e7af83923e1ed6&type=3#NotInter-Regular");
     -unity-font-style: bold;
     color: rgb(254, 243, 207);
 }

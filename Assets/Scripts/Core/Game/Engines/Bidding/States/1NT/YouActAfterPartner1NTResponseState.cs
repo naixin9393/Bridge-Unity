@@ -38,8 +38,17 @@ public class YouActAfterPartner1NTResponseState : IBiddingState {
                             message: BiddingMessages.OneNTRebid2Diamonds,
                             call: new BidCall(new Bid(2, Strain.Diamonds), null)
                         );
-                    // 
-                    throw new Exception("Not implemented");
+                    // Respond with 2H if hand contains 4 hearts
+                    if (HandUtils.Contains4Hearts(hand))
+                        return new BiddingSuggestion(
+                            message: BiddingMessages.OneNTRebid2Hearts,
+                            call: new BidCall(new Bid(2, Strain.Hearts), null)
+                        );
+                    // Respond with 2S if hand contains 4 spades and no hearts
+                    return new BiddingSuggestion(
+                        message: BiddingMessages.OneNTRebid2Spades,
+                        call: new BidCall(new Bid(2, Strain.Spades), null)
+                    );
                     
                 }
                 
@@ -49,11 +58,11 @@ public class YouActAfterPartner1NTResponseState : IBiddingState {
                 if (bid.Equals(new Bid(2, Strain.NoTrump))) {
                     if (HCP < 17)
                         return new BiddingSuggestion(
-                            message: BiddingMessages.OneNTRebid2NT(HCP),
+                            message: BiddingMessages.OneNTRebidPass(HCP),
                             call: new Pass(null)
                         );
                     return new BiddingSuggestion(
-                        message: BiddingMessages.OneNTRebid3NT(HCP),
+                        message: BiddingMessages.OneNTRebidGame(HCP),
                         call: new BidCall(new Bid(3, Strain.NoTrump), null)
                     );
                 }

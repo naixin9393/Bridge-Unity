@@ -3,9 +3,7 @@ public class NullBiddingEngine : IBiddingEngine {
         return new BiddingSuggestion(message: BiddingMessages.Unknown, call: new Pass(null));
     }
 
-    public BiddingSuggestion UpdateState(BiddingContext biddingContext) {
-        return new BiddingSuggestion(message: BiddingMessages.Unknown, call: new Pass(null));
-    }
+    public void UpdateState(ICall call) { }
 
     public void SetState(IBiddingState state) { }
 }

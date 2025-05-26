@@ -7,7 +7,7 @@ public class HumanPlayer : IPlayer {
     private readonly List<Card> _hand = new();
 
     public event Action<Card, IPlayer> OnCardChosen = delegate { };
-    public event Action<ICall> OnCallChosen;
+    public event Action<ICall> OnCallChosen = delegate { };
 
     public ReadOnlyCollection<Card> Hand => new(_hand);
 

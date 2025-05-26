@@ -21,23 +21,31 @@ public class GameViewModel : IDisposable {
 
         return !noPlaysMade;
     });
+    public GamePhase Phase => _game.Phase;
     public BindableProperty<int> WonTricksCount => BindableProperty<int>.Bind(() => {
         var declarer = _game.Declarer;
         var partnerOfDeclarer = PlayerUtils.PartnerOf(declarer, _game.Players.ToList());
 
         bool isPlayerAttacker = _humanPlayer == declarer || _humanPlayer == partnerOfDeclarer;
-
-        Debug.Log("Declarer: " + declarer);
-        Debug.Log("Partner of declarer: " + partnerOfDeclarer);
-        Debug.Log("Is player attacker: " + isPlayerAttacker);
-
         return isPlayerAttacker ?
             _game.TricksWonByAttackers :
             _game.Tricks.Count - 1 - _game.TricksWonByAttackers;
     });
-    public BindableProperty<string> Hint => BindableProperty<string>.Bind(() => {
+    
+    public BindableProperty<string> BiddingHintCall => BindableProperty<string>.Bind(() => {
+        if (_phase == GamePhase.Auction) {
+            var call = _game.BiddingSuggestion.Call;
+            if (call.Type != CallType.Bid)
+                return call.ToString().ToLower();
+            var bidCall = call as BidCall;
+            return bidCall.Bid.ToString();
+        }
+        return string.Empty;
+    });
+    
+    public BindableProperty<string> BiddingHintMessage => BindableProperty<string>.Bind(() => {
         if (_phase == GamePhase.Auction)
-            return _game.BiddingSuggestion;
+           return _game.BiddingSuggestion.Message;
         return string.Empty;
     });
 

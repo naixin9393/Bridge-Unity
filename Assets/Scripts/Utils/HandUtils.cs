@@ -52,6 +52,10 @@ public static class HandUtils {
         return false;
     }
 
+    internal static bool Contains4Hearts(List<Card> hand) {
+        return hand.Count(card => card.Suit == Suit.Hearts) >= 4;
+    }
+
     internal static bool Contains4MajorCards(List<Card> hand) {
         var numberOfSpades = hand.Count(card => card.Suit == Suit.Spades);
         var numberOfHearts = hand.Count(card => card.Suit == Suit.Hearts);

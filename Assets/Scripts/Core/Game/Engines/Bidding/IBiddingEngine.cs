@@ -1,5 +1,5 @@
 public interface IBiddingEngine {
     BiddingSuggestion GetBiddingSuggestion(BiddingContext biddingContext);
-    BiddingSuggestion UpdateState(BiddingContext biddingContext);
+    void UpdateState(ICall call);
     void SetState(IBiddingState state);
 }

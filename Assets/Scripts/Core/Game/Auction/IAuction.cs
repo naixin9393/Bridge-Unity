@@ -9,7 +9,7 @@ public interface IAuction {
     IPlayer Dummy { get; }
     IPlayer Dealer { get; }
     List<ICall> Calls { get; }
-    string BiddingSuggestion { get; }
+    BiddingSuggestion BiddingSuggestion { get; }
     bool IsOver { get; }
     BidCall HighestBid { get; }
     void RequestPlayerCallDecision();

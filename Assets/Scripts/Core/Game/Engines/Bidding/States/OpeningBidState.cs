@@ -2,10 +2,27 @@ public class OpeningBidState : IBiddingState {
     public BiddingSuggestion CalculateCall(BiddingContext biddingContext) {
         var hand = biddingContext.Hand;
         int HCP = HandUtils.CalculateHighCardPoints(hand);
+        if (HCP < 12)
+            // Can't open with less than 12 HCP
+            return new BiddingSuggestion(
+                message: BiddingMessages.OpeningPass(HCP),
+                call: new Pass(null)
+            );
+        else if (HCP <= 14)
+            // 12-14
+            return new BiddingSuggestion(
+                message: BiddingMessages.Unknown,
+                call: new Pass(null)
+            );
+        else if (HCP <= 17 && HandUtils.IsBalancedHand(hand))
+            // 15-17 HCP and balanced hand, can open with 1NT
+            return new BiddingSuggestion(
+                message: BiddingMessages.OpeningOneNT(HCP),
+                call: new BidCall(new Bid(1, Strain.NoTrump), null)
+            );
         return new BiddingSuggestion(
-            message: BiddingMessages.OneNT(HCP),
-            call: new BidCall(new Bid(1, Strain.NoTrump), null)
-        );
+            message: BiddingMessages.Unknown,
+            call: new Pass(null));
     }
 
     public IBiddingState GetNextState(ICall call) {

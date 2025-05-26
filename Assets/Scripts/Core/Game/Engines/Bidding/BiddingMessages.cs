@@ -1,8 +1,8 @@
-using System;
-
 public static class BiddingMessages {
     // Openings
-    public static string OneNT(int HCP)
+    public static string OpeningPass(int HCP)
+        => string.Format("Apertura {0} {1}, no tienes suficientes HCP para abrir", With(HCP), HCPRange(0, 11));
+    public static string OpeningOneNT(int HCP)
         => string.Format("Apertura {0} {1}", With(HCP), HCPRange(15, 17));
 
     // Interventions
@@ -30,12 +30,18 @@ public static class BiddingMessages {
         => string.Format("Compañero Pass {0}, no alcanza a {1}", HCPRange(0, 7), GameRange()); // Pass
     
     public static string OneNTRebid2Diamonds
-        => string.Format("Stayman. Compañero 2C, no tienes {0}", FourMajorCards()); // Pass
+        => string.Format("Stayman. Compañero 2C, no tienes {0}", FourMajorCards()); // 2D
+
+    public static string OneNTRebid2Hearts
+        => string.Format("Stayman. Compañero 2C, tienes {0}", FourMajorCards()); // 2H
     
-    public static string OneNTRebid2NT(int HCP)
+    public static string OneNTRebid2Spades
+        => string.Format("Stayman. Compañero 2C, tienes {0} picas y no {1} corazones", MoreThan(4), MoreThan(4)); // 2S
+    
+    public static string OneNTRebidPass(int HCP)
         => string.Format("Compañero 2NT {0} {1}, no alcanza a {1}", HCPRange(8, 9), With(HCP), MoreThan(8), GameRange()); // Pass
     
-    public static string OneNTRebid3NT(int HCP)
+    public static string OneNTRebidGame(int HCP)
         => string.Format("Compañero 3NT {0} {1} {2}", MoreThan(10), With(HCP), GameRange()); // Pass
 
 

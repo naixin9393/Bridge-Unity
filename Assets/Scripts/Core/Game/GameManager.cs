@@ -13,8 +13,7 @@ public class GameManager : MonoBehaviour, IGameManager {
     private IAuction _auction;
     private IPlay _play;
     private ITrick _currentTrick => _play.CurrentTrick;
-
-    public GamePhase Phase;
+    public GamePhase Phase { get; private set; }
     public ReadOnlyCollection<IPlayer> Players => _players.AsReadOnly();
     public IPlayer CurrentPlayer => Phase == GamePhase.Auction ? _auction.CurrentPlayer : _play.CurrentPlayer;
     public ReadOnlyCollection<ICall> Calls => _auction.Calls.AsReadOnly();
@@ -26,7 +25,7 @@ public class GameManager : MonoBehaviour, IGameManager {
 
     public event Action<int> OnTricksWonByAttackersChanged;
     public event Action<GamePhase> OnPhaseChanged;
-    public string BiddingSuggestion => _auction.BiddingSuggestion;
+    public BiddingSuggestion BiddingSuggestion => _auction.BiddingSuggestion;
 
     public int TricksWonByAttackers {
         get => _play.TricksWonByAttackers;
@@ -47,6 +46,12 @@ public class GameManager : MonoBehaviour, IGameManager {
 
     public void ProcessCall(ICall call) {
         _auction.MakeCall(call);
+        if (_auction.IsOver && _auction.HighestBid == null) {
+            Phase = GamePhase.End;
+            OnGamePhaseChanged.Raise(this, Phase);
+            OnPhaseChanged?.Invoke(Phase);
+            return;
+        }
         OnCallMade.Raise(this, call);
     }
 

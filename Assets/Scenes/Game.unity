@@ -293,6 +293,7 @@ Transform:
   - {fileID: 1426755599}
   - {fileID: 367702587}
   - {fileID: 1150579800}
+  - {fileID: 1865628527}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &162051295
@@ -311,6 +312,7 @@ MonoBehaviour:
   _statsView: {fileID: 1426755600}
   _playView: {fileID: 176434946}
   _endView: {fileID: 367702588}
+  _gameAbortedView: {fileID: 1865628528}
   _gameSettingsView: {fileID: 1150579801}
   _gameVisualTree: {fileID: 9197481963319205126, guid: f5589fc34428ecf4ba078a2b57fba56b, type: 3}
 --- !u!114 &162051297
@@ -827,7 +829,6 @@ MonoBehaviour:
   OnGamePhaseChanged: {fileID: 11400000, guid: 5b84c37671b888f4d9d2559d0147f00f, type: 2}
   OnCallMade: {fileID: 11400000, guid: 4e9f97307a8eeae43b8fabc9f1920a92, type: 2}
   OnPlayMade: {fileID: 11400000, guid: 9c147c7f20353bd4fb5d057136266340, type: 2}
-  Phase: 0
 --- !u!4 &478698014
 Transform:
   m_ObjectHideFlags: 0
@@ -1148,6 +1149,52 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &677529366
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 677529367}
+  - component: {fileID: 677529368}
+  m_Layer: 0
+  m_Name: BiddingHintView
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &677529367
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 677529366}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1426755599}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &677529368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 677529366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cbfaa888a20d764d86dce3a5d7e70ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _document: {fileID: 162051298}
+  _biddingHintUXML: {fileID: 9197481963319205126, guid: 918d48a66d49bb64896e0e17a3179707, type: 3}
 --- !u!1 &702969367
 GameObject:
   m_ObjectHideFlags: 0
@@ -1813,7 +1860,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 677529367}
   m_Father: {fileID: 162051293}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1426755600
@@ -1828,6 +1876,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4506322927104349bc59133918ce72c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _biddingHintView: {fileID: 677529368}
 --- !u!114 &1426755601
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2133,6 +2182,52 @@ Transform:
   m_Children: []
   m_Father: {fileID: 176434945}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1865628526
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1865628527}
+  - component: {fileID: 1865628528}
+  m_Layer: 0
+  m_Name: GameAbortedView
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1865628527
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1865628526}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 162051293}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1865628528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1865628526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cf0fc1da8c75b549aee277b61d890a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _document: {fileID: 162051298}
+  _gameAbortedUXML: {fileID: 9197481963319205126, guid: 84ecb767c50f94e4c9b494d4f3a13e55, type: 3}
 --- !u!1 &2121059962
 GameObject:
   m_ObjectHideFlags: 0

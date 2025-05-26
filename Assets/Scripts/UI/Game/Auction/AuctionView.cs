@@ -111,7 +111,9 @@ public class AuctionView : MonoBehaviour {
 
     private void UpdateBidButtons() {
         foreach (var button in _bidButtonMap.Keys) {
-            button.SetEnabled(_gameViewModel == null || _gameViewModel.HighestBid < _bidButtonMap[button]);
+            button.SetEnabled(_gameViewModel == null ||
+                _gameViewModel.HighestBid == null ||
+                _gameViewModel.HighestBid < _bidButtonMap[button]);
         }
     }
 

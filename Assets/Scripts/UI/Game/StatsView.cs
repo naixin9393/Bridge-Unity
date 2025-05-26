@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 public class StatsView : MonoBehaviour {
+    [SerializeField] private BiddingHintView _biddingHintView;
     private GameViewModel _gameViewModel;
     private VisualElement _statsContainer;
     private VisualElement _player1CallsContainer;
@@ -58,12 +59,14 @@ public class StatsView : MonoBehaviour {
         _playerPlaysContainersMap.Add(_player3.Position, _player3PlaysContainer);
         _playerPlaysContainersMap.Add(_player4.Position, _player4PlaysContainer);
         
+        _biddingHintView.Initialize(_gameViewModel);
+        
         _hintButton = _statsContainer.Q<Button>("HintButton");
         _hintButton.RegisterCallback<ClickEvent>(OnHintButtonClicked);
     }
 
     private void OnHintButtonClicked(ClickEvent evt) {
-        Debug.Log(_gameViewModel.Hint.Value);
+        _biddingHintView.Show();
     }
 
     public void HandlePlayMade(Component sender, object data) {
