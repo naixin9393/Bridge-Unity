@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
@@ -28,10 +27,12 @@ public class BiddingEngineTests {
     public void GetBiddingSuggestion_RespondTo1NT_With0To7HCP_ReturnsPass() {
         var biddingContext = new BiddingContextBuilder()
             .WithHand(HandGenerator.Generate(new Deck(), false, 0, 7))
+            .WithCalls(new List<ICall> {
+                new Pass(null)}) // No intervention
             .Build();
 
         var biddingEngine = new BiddingEngine();
-        biddingEngine.SetState(new Respond1NTState());
+        biddingEngine.SetState(new PartnerRespondTo1NTState());
         var suggestion = biddingEngine.GetBiddingSuggestion(biddingContext);
         var call = suggestion.Call;
 
@@ -44,10 +45,12 @@ public class BiddingEngineTests {
     public void GetBiddingSuggestion_RespondeTo1NT_With8To9HCP_NoFourMajor_Returns2NT() {
         var biddingContext = new BiddingContextBuilder()
             .WithHand(HandWith8_9HCP_NoFourMajor())
+            .WithCalls(new List<ICall> {
+                new Pass(null)}) // No intervention
             .Build();
 
         var biddingEngine = new BiddingEngine();
-        biddingEngine.SetState(new Respond1NTState());
+        biddingEngine.SetState(new PartnerRespondTo1NTState());
         var suggestion = biddingEngine.GetBiddingSuggestion(biddingContext);
         var call = suggestion.Call;
 
@@ -65,10 +68,12 @@ public class BiddingEngineTests {
     public void GetBiddingSuggestion_RespondTo1NT_WithMoreThan10HCP_NoFourMajor_Returns3NT() {
         var biddingContext = new BiddingContextBuilder()
             .WithHand(HandWith10PlusHCP_NoFourMajor())
+            .WithCalls(new List<ICall> {
+                new Pass(null)}) // No intervention
             .Build();
         
         var biddingEngine = new BiddingEngine();
-        biddingEngine.SetState(new Respond1NTState());
+        biddingEngine.SetState(new PartnerRespondTo1NTState());
         var suggestion = biddingEngine.GetBiddingSuggestion(biddingContext);
         var call = suggestion.Call;
 
@@ -86,10 +91,12 @@ public class BiddingEngineTests {
     public void GetBiddingSuggestion_RespondTo1NT_With8PlusHCP_FourMajor_Returns2Clubs() {
         var biddingContext = new BiddingContextBuilder()
             .WithHand(HandWith8PlusHCP_FourMajor())
+            .WithCalls(new List<ICall> {
+                new Pass(null)}) // No intervention
             .Build();
         
         var biddingEngine = new BiddingEngine();
-        biddingEngine.SetState(new Respond1NTState());
+        biddingEngine.SetState(new PartnerRespondTo1NTState());
         var suggestion = biddingEngine.GetBiddingSuggestion(biddingContext);
         var call = suggestion.Call;
 
@@ -101,6 +108,30 @@ public class BiddingEngineTests {
         var bid = bidCall.Bid;
 
         Assert.AreEqual(new Bid(2, Strain.Clubs), bid);
+    }
+
+    [Test]
+    public void GetBiddingSuggestion_RespondTo2NTInvitation_With17HCP_Returns3NT() {
+        var biddingContext = new BiddingContextBuilder()
+            .WithHand(HandGenerator.Generate(new Deck(), true, 17, 17))
+            .WithCalls(new List<ICall> {
+                new BidCall(new Bid(2, Strain.NoTrump), null), // Partner 2NT
+                new Pass(null)}) // No intervention
+            .Build();
+        
+        var biddingEngine = new BiddingEngine();
+        biddingEngine.SetState(new YouActAfterPartner1NTResponseState());
+        var suggestion = biddingEngine.GetBiddingSuggestion(biddingContext);
+        var call = suggestion.Call;
+
+        Debug.Log(suggestion.Message);
+
+        Assert.AreEqual(CallType.Bid, call.Type);
+
+        var bidCall = call as BidCall;
+        var bid = bidCall.Bid;
+
+        Assert.AreEqual(new Bid(3, Strain.NoTrump), bid);
     }
 
     private List<Card> HandWith8PlusHCP_FourMajor() {

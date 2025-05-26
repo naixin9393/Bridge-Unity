@@ -10,10 +10,10 @@ public interface IGameManager {
     Bid HighestBid { get; }
     Bid Contract { get; }
     Suit? LeadSuit { get; }
+    string BiddingSuggestion { get; }
     event Action<int> OnTricksWonByAttackersChanged;
     int TricksWonByAttackers { get; }
     event Action<GamePhase> OnPhaseChanged;
-
     void StartGame();
     void ProcessCall(ICall call);
     void ProcessPlay(Card card, IPlayer player);

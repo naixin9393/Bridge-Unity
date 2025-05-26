@@ -41,11 +41,11 @@ public class GameInitializer : MonoBehaviour {
         }
 
         IPlayer dealer = players.Where(player => player.Position == _gameConfig.DealerPosition).First();
+        
+        // Create bidding engine
+        IBiddingEngine biddingEngine = new BiddingEngine();
 
-        // Create auction and play
-
-        _gameManager.Initialize(players, dealer);
-
+        _gameManager.Initialize(players, dealer, biddingEngine);
 
         // Create game view model
         var gameViewModel = new GameViewModel(_gameManager, humanPlayer);

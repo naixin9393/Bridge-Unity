@@ -1,5 +1,6 @@
-public class Open1NTState : IBiddingState {
+public class OpponentActsAfterPartner1NTResponseState : IBiddingState {
     public BiddingSuggestion CalculateCall(BiddingContext biddingContext) {
+        // No intervention
         return new BiddingSuggestion(
             message: BiddingMessages.OneNTInterventionPass,
             call: new Pass(null)
@@ -7,9 +8,6 @@ public class Open1NTState : IBiddingState {
     }
 
     public IBiddingState GetNextState(ICall call) {
-        return call.Type switch {
-            CallType.Pass => new Respond1NTState(),
-            _ => new UnknownState(),
-        };
+        return new YouActAfterPartner1NTResponseState();
     }
 }

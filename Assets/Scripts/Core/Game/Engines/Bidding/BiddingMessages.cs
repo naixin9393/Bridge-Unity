@@ -8,8 +8,8 @@ public static class BiddingMessages {
     // Interventions
     public const string OneNTInterventionPass = "Pass";
 
-    // Responses
     // 1NT
+    // Responses
     public static string OneNTResponsePass(int HCP)
         => string.Format("{0} {1}", ResponseTo(1, Strain.NoTrump), With(HCP));  // Pass
 
@@ -25,6 +25,16 @@ public static class BiddingMessages {
     // Unknown
     public const string Unknown = "Subasta desconocida: Pass";
 
+    // Rebid
+    public static string OneNTPartnerNotEnoughHCP
+        => string.Format("Compañero Pass {0}, no alcanza a {1}", HCPRange(0, 7), GameRange()); // Pass
+    
+    public static string OneNTPartner2NT(int HCP)
+        => string.Format("Compañero 2NT {0} {1}, no alcanza a {1}", HCPRange(8, 9), With(HCP), MoreThan(8), GameRange()); // Pass
+    
+    public static string OneNTPartner3NT(int HCP)
+        => string.Format("Compañero 3NT {0} {1} {2}", MoreThan(10), With(HCP), GameRange()); // Pass
+
 
     private static string CanReachGame(int minHCP, int maxHCP, int currentHCP) {
         const int HCPNeeded = 25;
@@ -34,7 +44,11 @@ public static class BiddingMessages {
             allyHCPRange = string.Format("{0}-{1}", HCPNeeded - currentHCP, allyMaxHCP);
         else
             allyHCPRange = allyMaxHCP.ToString();
-        return string.Format("Puede llegar a manga (25-32) si el compañero tiene {0} HCP", allyHCPRange);
+        return string.Format("Puede llegar a {0} si el compañero tiene {1} HCP", GameRange(), allyHCPRange);
+    }
+
+    private static string GameRange() {
+        return string.Format("manga (25-32)");
     }
 
     private static string HCPRange(int minHCP, int maxHCP) {

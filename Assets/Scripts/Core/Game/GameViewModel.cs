@@ -35,8 +35,14 @@ public class GameViewModel : IDisposable {
             _game.TricksWonByAttackers :
             _game.Tricks.Count - 1 - _game.TricksWonByAttackers;
     });
+    public BindableProperty<string> Hint => BindableProperty<string>.Bind(() => {
+        if (_phase == GamePhase.Auction)
+            return _game.BiddingSuggestion;
+        return string.Empty;
+    });
 
     public int TricksNeededToWin;
+    private GamePhase _phase = GamePhase.Auction;
 
     public GameViewModel(IGameManager game, IPlayer humanPlayer) {
         _game = game;
@@ -51,6 +57,7 @@ public class GameViewModel : IDisposable {
     }
 
     private void HandleGamePhaseChanged(GamePhase phase) {
+        _phase = phase;
         switch (phase) {
             case GamePhase.Play: 
                 IsPlayerAttacker = _humanPlayer == _game.Declarer || _humanPlayer == PlayerUtils.PartnerOf(_game.Declarer, _game.Players.ToList());

@@ -23,9 +23,9 @@ public class OpeningBidState : IBiddingState {
                 return new UnknownState();
         }
         // Move to Open1NTState if bid is 1NT
-        if (bid == new Bid(1, Strain.NoTrump))
-            return new Open1NTState();
-        // Unknown openings
+        if (bid.Equals(new Bid(1, Strain.NoTrump)))
+            return new OpponentActsAfter1NTState();
+        // Unknown openings (1C, 1D, 1H, 1P...)
         return new UnknownState();
     }
 }

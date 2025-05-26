@@ -7,7 +7,7 @@ public interface IPlayer {
     ReadOnlyCollection<Card> Hand { get; }
     void ReceiveCards(List<Card> cards);
     void RequestPlayerPlayDecision(PlayingContext playingContext);
-    void RequestPlayerCallDecision(BiddingContext auctionContext);
+    void RequestPlayerCallDecision(BiddingSuggestion biddingSuggestion);
     void PlayCard(Card card);
     event Action<Card, IPlayer> OnCardChosen;
     event Action<ICall> OnCallChosen;

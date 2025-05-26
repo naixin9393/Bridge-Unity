@@ -25,17 +25,27 @@ public class Auction : IAuction {
     public BidCall HighestBid => _highestBid;
 
     public List<ICall> Calls => _calls;
-
+    public string BiddingSuggestion => _biddingEngine.GetBiddingSuggestion(new BiddingContext(_calls, CurrentPlayer.Hand.ToList())).Message;
     private readonly List<ICall> _calls = new();
-
+    private readonly IBiddingEngine _biddingEngine;
+    
     public Auction(List<IPlayer> players, IPlayer dealer) {
         _players = players;
         _dealer = dealer;
         CurrentPlayer = dealer;
+        _biddingEngine = new NullBiddingEngine();
+    }
+
+    public Auction(List<IPlayer> players, IPlayer dealer, IBiddingEngine biddingEngine) {
+        _players = players;
+        _dealer = dealer;
+        CurrentPlayer = dealer;
+        _biddingEngine = biddingEngine;
     }
 
     public void RequestPlayerCallDecision() {
-        CurrentPlayer.RequestPlayerCallDecision(new BiddingContext(_highestBid.Bid, _calls, CurrentPlayer.Hand.ToList()));
+        var biddingSuggestion = _biddingEngine.GetBiddingSuggestion(new BiddingContext(_calls, CurrentPlayer.Hand.ToList()));
+        CurrentPlayer.RequestPlayerCallDecision(biddingSuggestion);
     }
 
     public void MakeCall(ICall call) {
@@ -51,11 +61,13 @@ public class Auction : IAuction {
             throw new InvalidCallException("Redouble is only allowed after double");
         if (_highestBid != null && IsBid(call) && IsEqualOrLowerThanHighest((call as BidCall).Bid))
             throw new InvalidCallException("Caller bid is equal or lower than the highest bid");
+        
 
         _consecutivePasses = IsPass(call) ? _consecutivePasses + 1 : 0;
 
         _calls.Add(call);
         CurrentPlayer = PlayerUtils.GetNextPlayer(CurrentPlayer, _players);
+        _biddingEngine.UpdateState(new BiddingContext(_calls, CurrentPlayer.Hand.ToList()));
 
         if (IsBid(call))
             _highestBid = call as BidCall;

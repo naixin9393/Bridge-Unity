@@ -30,11 +30,11 @@ public class HumanPlayer : IPlayer {
         return $"{Position}";
     }
     
-    public void RequestPlayerPlayDecision(PlayingContext playingContext) {
+    public void RequestPlayerPlayDecision(PlayingContext _) {
         // Feedback from UI
     }
 
-    public void RequestPlayerCallDecision(BiddingContext auctionContext) {
+    public void RequestPlayerCallDecision(BiddingSuggestion _) {
         // Feedback from UI
     }
 }

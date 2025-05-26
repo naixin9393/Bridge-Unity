@@ -25,6 +25,7 @@ public class StatsView : MonoBehaviour {
     private IPlayer _player4;
     private Dictionary<Position, VisualElement> _playerCallsContainersMap = new();
     private Dictionary<Position, VisualElement> _playerPlaysContainersMap = new();
+    private Button _hintButton;
 
     public void Initialize(VisualElement statsContainer, GameViewModel gameViewModel) {
         _statsContainer = statsContainer;
@@ -56,6 +57,13 @@ public class StatsView : MonoBehaviour {
         _playerPlaysContainersMap.Add(_player2.Position, _player2PlaysContainer);
         _playerPlaysContainersMap.Add(_player3.Position, _player3PlaysContainer);
         _playerPlaysContainersMap.Add(_player4.Position, _player4PlaysContainer);
+        
+        _hintButton = _statsContainer.Q<Button>("HintButton");
+        _hintButton.RegisterCallback<ClickEvent>(OnHintButtonClicked);
+    }
+
+    private void OnHintButtonClicked(ClickEvent evt) {
+        Debug.Log(_gameViewModel.Hint.Value);
     }
 
     public void HandlePlayMade(Component sender, object data) {

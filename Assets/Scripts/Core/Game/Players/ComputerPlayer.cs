@@ -47,24 +47,29 @@ public class ComputerPlayer : IPlayer {
         );
     }
 
-    public void RequestPlayerCallDecision(BiddingContext auctionContext) {
-        if (auctionContext.HighestBid == null) {
-            _coroutineStarter.DelayAction(
-                0.4f,
-                () => OnCallChosen?.Invoke(new BidCall(new Bid(1, Strain.NoTrump), this))
-            );
-            return;
-        }
-        if (auctionContext.HighestBid.Level == 7) {
-            _coroutineStarter.DelayAction(
-                0.4f,
-                () => OnCallChosen?.Invoke(new Pass(this))
-        );
-            return;
+    public void RequestPlayerCallDecision(BiddingSuggestion biddingSuggestion) {
+        var suggestedCall = biddingSuggestion.Call;
+        ICall call;
+        switch (suggestedCall.Type) {
+            case CallType.Pass:
+                call = new Pass(this);
+                break;
+            case CallType.Double:
+                call = new Double(this);
+                break;
+            case CallType.Redouble:
+                call = new Redouble(this);
+                break;
+            case CallType.Bid:
+                var suggestedBidCall = suggestedCall as BidCall;
+                call = new BidCall(suggestedBidCall.Bid, this);
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(suggestedCall), suggestedCall, null);
         }
         _coroutineStarter.DelayAction(
             0.4f,
-            () =>OnCallChosen?.Invoke(new BidCall(new Bid(auctionContext.HighestBid.Level + 1, auctionContext.HighestBid.Strain), this))
+            () =>OnCallChosen?.Invoke(call)
         );
     }
 }

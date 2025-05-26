@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour, IGameManager {
 
     public event Action<int> OnTricksWonByAttackersChanged;
     public event Action<GamePhase> OnPhaseChanged;
+    public string BiddingSuggestion => _auction.BiddingSuggestion;
 
     public int TricksWonByAttackers {
         get => _play.TricksWonByAttackers;
@@ -35,10 +36,10 @@ public class GameManager : MonoBehaviour, IGameManager {
     }
 
 
-    public void Initialize(List<IPlayer> players, IPlayer dealer) {
+    public void Initialize(List<IPlayer> players, IPlayer dealer, IBiddingEngine biddingEngine) {
         _players = players;
         _dealer = dealer;
-        _auction = new Auction(_players, _dealer);
+        _auction = new Auction(players: _players, dealer: _dealer, biddingEngine: biddingEngine);
         Phase = GamePhase.Auction;
     }
 
