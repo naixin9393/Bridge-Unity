@@ -35,7 +35,7 @@ public class Auction : IAuction {
     }
 
     public void RequestPlayerCallDecision() {
-        CurrentPlayer.RequestPlayerCallDecision(new BiddingContext(_highestBid, _calls, CurrentPlayer.Hand.ToList()));
+        CurrentPlayer.RequestPlayerCallDecision(new BiddingContext(_highestBid.Bid, _calls, CurrentPlayer.Hand.ToList()));
     }
 
     public void MakeCall(ICall call) {

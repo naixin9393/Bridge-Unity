@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public class PlayerUtils {
+public static class PlayerUtils {
     public static IPlayer GetNextPlayer(IPlayer player, List<IPlayer> players) {
         return player.Position switch {
             Position.North => players.Where(p => p.Position == Position.East).First(),

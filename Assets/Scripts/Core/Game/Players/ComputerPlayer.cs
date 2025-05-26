@@ -55,7 +55,7 @@ public class ComputerPlayer : IPlayer {
             );
             return;
         }
-        if (auctionContext.HighestBid.Bid.Level == 7) {
+        if (auctionContext.HighestBid.Level == 7) {
             _coroutineStarter.DelayAction(
                 0.4f,
                 () => OnCallChosen?.Invoke(new Pass(this))
@@ -64,7 +64,7 @@ public class ComputerPlayer : IPlayer {
         }
         _coroutineStarter.DelayAction(
             0.4f,
-            () =>OnCallChosen?.Invoke(new BidCall(new Bid(auctionContext.HighestBid.Bid.Level + 1, auctionContext.HighestBid.Bid.Strain), this))
+            () =>OnCallChosen?.Invoke(new BidCall(new Bid(auctionContext.HighestBid.Level + 1, auctionContext.HighestBid.Strain), this))
         );
     }
 }

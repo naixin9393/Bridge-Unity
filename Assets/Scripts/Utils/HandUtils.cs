@@ -1,7 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public class HandUtils {
+public static class HandUtils {
     private static readonly Dictionary<Rank, int> _rankToHCP = new() {
         { Rank.Two, 0},
         { Rank.Three, 0},
@@ -49,6 +50,12 @@ public class HandUtils {
         if (Is4432(numberOfEachSuit)) return true;
         if (Is4333(numberOfEachSuit)) return true;
         return false;
+    }
+
+    internal static bool Contains4MajorCards(List<Card> hand) {
+        var numberOfSpades = hand.Count(card => card.Suit == Suit.Spades);
+        var numberOfHearts = hand.Count(card => card.Suit == Suit.Hearts);
+        return numberOfSpades >= 4 || numberOfHearts >= 4;
     }
 
     private static bool Is4333(List<int> numberOfEachSuit) {
