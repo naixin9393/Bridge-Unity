@@ -11,7 +11,7 @@ public static class BiddingMessages {
     // 1NT
     // Responses
     public static string OneNTResponsePass(int HCP)
-        => string.Format("{0} {1}", ResponseTo(1, Strain.NoTrump), With(HCP));  // Pass
+        => string.Format("{0} {1}, no alcanza a {2}", ResponseTo(1, Strain.NoTrump), With(HCP), GameRange());  // Pass
 
     public static string OneNTResponse2Clubs(int hCP)
         => string.Format("Stayman. {0} {1} {2} {3}", ResponseTo(1, Strain.NoTrump), With(hCP), MoreThan(8), FourMajorCards()); // 2 Clubs
@@ -20,19 +20,22 @@ public static class BiddingMessages {
         => string.Format("{0} {1} {2} {3}", ResponseTo(1, Strain.NoTrump), With(HCP), HCPRange(8, 9), CanReachGame(8, 9, HCP)); // 2 NT
 
     public static string OneNTResponse3NT(int HCP)
-        => string.Format("{0} {1} {2}", ResponseTo(1, Strain.NoTrump), With(HCP), MoreThan(10)); // 3 NT
+        => string.Format("{0} {1} {2} alcanza a {3}", ResponseTo(1, Strain.NoTrump), With(HCP), MoreThan(10), GameRange()); // 3 NT
 
     // Unknown
     public const string Unknown = "Subasta desconocida: Pass";
 
     // Rebid
-    public static string OneNTPartnerNotEnoughHCP
+    public static string OneNTRebidNotEnoughHCP
         => string.Format("Compañero Pass {0}, no alcanza a {1}", HCPRange(0, 7), GameRange()); // Pass
     
-    public static string OneNTPartner2NT(int HCP)
+    public static string OneNTRebid2Diamonds
+        => string.Format("Stayman. Compañero 2C, no tienes {0}", FourMajorCards()); // Pass
+    
+    public static string OneNTRebid2NT(int HCP)
         => string.Format("Compañero 2NT {0} {1}, no alcanza a {1}", HCPRange(8, 9), With(HCP), MoreThan(8), GameRange()); // Pass
     
-    public static string OneNTPartner3NT(int HCP)
+    public static string OneNTRebid3NT(int HCP)
         => string.Format("Compañero 3NT {0} {1} {2}", MoreThan(10), With(HCP), GameRange()); // Pass
 
 
@@ -52,7 +55,7 @@ public static class BiddingMessages {
     }
 
     private static string HCPRange(int minHCP, int maxHCP) {
-        return string.Format("({0}-{1}).", minHCP, maxHCP);
+        return string.Format("({0}-{1})", minHCP, maxHCP);
     }
 
     private static string With(int HCP) {
@@ -64,7 +67,7 @@ public static class BiddingMessages {
     }
 
     private static string MoreThan(int HCP) {
-        return string.Format("({0}+).", HCP);
+        return string.Format("({0}+)", HCP);
     }
 
     private static object FourMajorCards() {

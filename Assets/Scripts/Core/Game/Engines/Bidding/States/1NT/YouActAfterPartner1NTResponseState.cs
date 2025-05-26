@@ -22,17 +22,26 @@ public class YouActAfterPartner1NTResponseState : IBiddingState {
             // Partner passed, not enough HCP to support 1NT
             case CallType.Pass:
                 return new BiddingSuggestion(
-                    message: BiddingMessages.OneNTPartnerNotEnoughHCP,
+                    message: BiddingMessages.OneNTRebidNotEnoughHCP,
                     call: new Pass(null)
                 );
             // Partner bid (2C, 2NT, 3NT)
             case CallType.Bid:
                 bidCall = partnerCall as BidCall;
                 bid = bidCall.Bid;
-                
+
                 // Partner bid 2C, stayman
-                if (bid.Equals(new Bid(2, Strain.Clubs)))
-                    throw new Exception("Not implemented stayman");
+                if (bid.Equals(new Bid(2, Strain.Clubs))) {
+                    // Respond with 2D if hand does not contain 4 major cards
+                    if (!HandUtils.Contains4MajorCards(hand))
+                        return new BiddingSuggestion(
+                            message: BiddingMessages.OneNTRebid2Diamonds,
+                            call: new BidCall(new Bid(2, Strain.Diamonds), null)
+                        );
+                    // 
+                    throw new Exception("Not implemented");
+                    
+                }
                 
                 // Partner bid 2NT
                 // Respond with pass if HCP 15-16.
@@ -40,11 +49,11 @@ public class YouActAfterPartner1NTResponseState : IBiddingState {
                 if (bid.Equals(new Bid(2, Strain.NoTrump))) {
                     if (HCP < 17)
                         return new BiddingSuggestion(
-                            message: BiddingMessages.OneNTPartner2NT(HCP),
+                            message: BiddingMessages.OneNTRebid2NT(HCP),
                             call: new Pass(null)
                         );
                     return new BiddingSuggestion(
-                        message: BiddingMessages.OneNTPartner3NT(HCP),
+                        message: BiddingMessages.OneNTRebid3NT(HCP),
                         call: new BidCall(new Bid(3, Strain.NoTrump), null)
                     );
                 }

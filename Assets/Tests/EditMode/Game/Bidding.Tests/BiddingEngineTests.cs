@@ -134,6 +134,48 @@ public class BiddingEngineTests {
         Assert.AreEqual(new Bid(3, Strain.NoTrump), bid);
     }
 
+    [Test]
+    public void GetBiddingSuggestion_RespondToStayman_WithNoFourMajor_Returns2Diamonds() {
+        var biddingContext = new BiddingContextBuilder()
+            .WithHand(HandWith15_17HCP_NoFourMajor())
+            .WithCalls(new List<ICall> {
+                new BidCall(new Bid(2, Strain.Clubs), null), // Partner 2C (stayman)
+                new Pass(null)}) // No intervention
+            .Build();
+        
+        var biddingEngine = new BiddingEngine();
+        biddingEngine.SetState(new YouActAfterPartner1NTResponseState());
+        var suggestion = biddingEngine.GetBiddingSuggestion(biddingContext);
+        var call = suggestion.Call;
+
+        Debug.Log(suggestion.Message);
+
+        Assert.AreEqual(CallType.Bid, call.Type);
+
+        var bidCall = call as BidCall;
+        var bid = bidCall.Bid;
+
+        Assert.AreEqual(new Bid(2, Strain.Diamonds), bid);
+    }
+
+    private List<Card> HandWith15_17HCP_NoFourMajor() {
+        return new List<Card> {
+            new(Rank.Ace, Suit.Clubs),
+            new(Rank.King, Suit.Clubs),
+            new(Rank.Queen, Suit.Clubs),
+            new(Rank.Jack, Suit.Clubs),
+            new(Rank.Ten, Suit.Clubs),
+            new(Rank.Ace, Suit.Diamonds),
+            new(Rank.Queen, Suit.Diamonds),
+            new(Rank.Seven, Suit.Diamonds),
+            new(Rank.Six, Suit.Spades),
+            new(Rank.Five, Suit.Spades),
+            new(Rank.Four, Suit.Spades),
+            new(Rank.Three, Suit.Hearts),
+            new(Rank.Two, Suit.Hearts)
+        };
+    }
+
     private List<Card> HandWith8PlusHCP_FourMajor() {
         return new List<Card> {
             new(Rank.Ace, Suit.Spades),
