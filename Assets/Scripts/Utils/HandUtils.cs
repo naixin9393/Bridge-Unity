@@ -51,9 +51,38 @@ public static class HandUtils {
         if (Is4333(numberOfEachSuit)) return true;
         return false;
     }
+    
+    public static int CalculateTotalPoints(List<Card> hand, Suit fittingSuit) {
+        return CalculateHighCardPoints(hand) + CalculateDP(hand, fittingSuit);
+    }
 
-    internal static bool Contains4Hearts(List<Card> hand) {
+    private static int CalculateDP(List<Card> hand, Suit fittingSuit) {
+        int dp = 0;
+        int numberOfCardsOfSuit = hand.Count(card => card.Suit == fittingSuit);
+        
+        // longsuit points
+        dp += numberOfCardsOfSuit - 4;
+
+        // void points
+        dp += (4 - hand.GroupBy(card => card.Suit).Count()) * 3;
+
+        // singleton doubleton points
+        return hand.GroupBy(card => card.Suit)
+        .Aggregate(dp, (current, group) => {
+            return group.Count() switch {
+                1 => current + 2,
+                2 => current + 1,
+                _ => current,
+            };
+        });
+    }
+
+    public static bool Contains4Hearts(List<Card> hand) {
         return hand.Count(card => card.Suit == Suit.Hearts) >= 4;
+    }
+
+    public static bool Contains4Spades(List<Card> hand) {
+        return hand.Count(card => card.Suit == Suit.Spades) >= 4;
     }
 
     internal static bool Contains4MajorCards(List<Card> hand) {

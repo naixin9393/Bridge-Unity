@@ -8,7 +8,7 @@ public class PartnerRespondTo1NTState : IBiddingState {
         if (calls[^1].Type != CallType.Pass)
             // Opponent intervened to 1NT, just pass
             return new BiddingSuggestion(
-                message: BiddingMessages.OneNTInterventionPass,
+                message: BiddingMessages.Unknown,
                 call: new Pass(null)
             );
         
@@ -41,6 +41,20 @@ public class PartnerRespondTo1NTState : IBiddingState {
     }
 
     public IBiddingState GetNextState(ICall call) {
+        BidCall bidCall;
+        Bid bid;
+        switch (call.Type) {
+            case CallType.Bid:
+                bidCall = call as BidCall;
+                bid = bidCall.Bid;
+                if (bid.Equals(new Bid(2, Strain.Clubs)))
+                    return new OpponentActsAfterPartner1NTResponseState();
+                if (bid.Equals(new Bid(2, Strain.NoTrump)))
+                    return new OpponentActsAfterPartner1NTResponseState();
+                if (bid.Equals(new Bid(3, Strain.NoTrump)))
+                    return new ConcludedState();
+                break;
+        }
         return new OpponentActsAfterPartner1NTResponseState();
     }
 }

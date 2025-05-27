@@ -22,17 +22,11 @@ public class GameManager : MonoBehaviour, IGameManager {
     public IPlayer Declarer => _auction.Declarer;
     public Suit? LeadSuit => _currentTrick.LeadSuit;
     public ReadOnlyCollection<ITrick> Tricks => _play.Tricks;
-
-    public event Action<int> OnTricksWonByAttackersChanged;
     public event Action<GamePhase> OnPhaseChanged;
     public BiddingSuggestion BiddingSuggestion => _auction.BiddingSuggestion;
 
-    public int TricksWonByAttackers {
-        get => _play.TricksWonByAttackers;
-        set {
-            OnTricksWonByAttackersChanged?.Invoke(value);
-        }
-    }
+    public int TricksWonByAttackers => _play.TricksWonByAttackers;
+    public int TricksWonByDefenders => _play.TricksWonByDefenders;
 
 
     public void Initialize(List<IPlayer> players, IPlayer dealer, IBiddingEngine biddingEngine) {

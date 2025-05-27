@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1060e508e45f4ff49babaf97edc2c22a, type: 3}
   m_Name: GameConfiguration
   m_EditorClassIdentifier: 
-  BalancedHand: 0
-  HCPRange: {x: 9.165133, y: 37}
+  BalancedHand: 1
+  HCPRange: {x: 15, y: 17}
   HumanPlayerPosition: 2
   DealerPosition: 2

@@ -11,6 +11,8 @@ public class GameConfiguration : ScriptableObject {
     [SerializeField] public Position DealerPosition = Position.South;
 
     private void OnEnable() {
-        HCPRange = new Vector2(MIN_HCP_LIMIT, MAX_HCP_LIMIT);
+        // Default 1NT value
+        HCPRange = new Vector2(15, 17);
+        BalancedHand = true;
     }
 }

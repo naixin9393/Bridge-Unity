@@ -29,7 +29,7 @@ public class GameViewModel : IDisposable {
         bool isPlayerAttacker = _humanPlayer == declarer || _humanPlayer == partnerOfDeclarer;
         return isPlayerAttacker ?
             _game.TricksWonByAttackers :
-            _game.Tricks.Count - 1 - _game.TricksWonByAttackers;
+            _game.TricksWonByDefenders;
     });
     
     public BindableProperty<string> BiddingHintCall => BindableProperty<string>.Bind(() => {

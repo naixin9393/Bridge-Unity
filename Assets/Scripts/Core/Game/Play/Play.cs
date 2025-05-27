@@ -6,6 +6,7 @@ public class Play : IPlay {
     internal List<ITrick> _tricks = new();
     internal int _currentTrickIndex;
     internal int _tricksWonByAttackers = 0;
+    internal int _tricksWonByDefenders = 0;
     private readonly List<IPlayer> _players = new();
     private readonly IPlayer _dummy;
     private List<IPlayer> _attackers = new();
@@ -20,6 +21,8 @@ public class Play : IPlay {
     public Bid Contract { get; private set; }
     public bool IsOver { get; private set; }
     public bool ContractIsMade => TricksWonByAttackers >= Contract.Level + 6;
+
+    public int TricksWonByDefenders => _tricksWonByDefenders;
 
     public Play(IAuction auction) {
         Contract = auction.FinalContract;
@@ -46,6 +49,8 @@ public class Play : IPlay {
         }
         if (IsAttacker(CurrentTrick.Winner))
             _tricksWonByAttackers++;
+        else
+            _tricksWonByDefenders++;
         CurrentPlayer = CurrentTrick.Winner;
         if (Tricks.Count == 13)
             EndGame();

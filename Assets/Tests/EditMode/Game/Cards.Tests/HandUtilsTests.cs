@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using NUnit.Framework;
 
-public class HandAnalyzerTests {
+public class HandUtilsTests {
     [Test]
     public void CalculateHighCardPoints_Returns0_IfHandIsEmpty() {
         var hand = new List<Card>();
@@ -54,7 +54,7 @@ public class HandAnalyzerTests {
         var result = HandUtils.IsBalancedHand(hand);
         Assert.AreEqual(false, result);
     }
-    
+
     [Test]
     public void IsBalancedHand_ReturnsFalse_IfHandHasLessThan13Cards() {
         var hand = new List<Card> {
@@ -91,7 +91,7 @@ public class HandAnalyzerTests {
         var result = HandUtils.IsBalancedHand(hand);
         Assert.AreEqual(true, result);
     }
-    
+
     [Test]
     public void IsBalancedHand_ReturnsTrue_IfHand_Is4432() {
         var hand = new List<Card> {
@@ -136,7 +136,7 @@ public class HandAnalyzerTests {
         Assert.AreEqual(true, result);
     }
 
-    [Test] 
+    [Test]
     public void IsBalancedHand_ReturnsFalse_IfHand_Is5431() {
         var hand = new List<Card> {
             new(Rank.Ace, Suit.Clubs),
@@ -279,5 +279,53 @@ public class HandAnalyzerTests {
 
         var result = HandUtils.ContainsBalancedHand(hand);
         Assert.AreEqual(false, result);
+    }
+
+    [Test]
+    public void CalculateTotalPoints_ReturnsExpectedValue() {
+        // HCP = 4+3+1 = 8, DP = singleton(2) + longsuit(1) = 3, total = 11
+        var hand = new List<Card> {
+            new(Rank.Ace, Suit.Hearts),
+            new(Rank.King, Suit.Hearts),
+            new(Rank.Jack, Suit.Hearts),
+            new(Rank.Six, Suit.Hearts),
+            new(Rank.Five, Suit.Hearts),
+            new(Rank.Four, Suit.Spades),
+            new(Rank.Three, Suit.Spades),
+            new(Rank.Two, Suit.Spades),
+            new(Rank.Ten, Suit.Spades),
+            new(Rank.Nine, Suit.Diamonds),
+            new(Rank.Eight, Suit.Diamonds),
+            new(Rank.Seven, Suit.Diamonds),
+            new(Rank.Six, Suit.Clubs),
+        };
+        var fittingSuit = Suit.Hearts;
+
+        var result = HandUtils.CalculateTotalPoints(hand, fittingSuit);
+        Assert.AreEqual(11, result);
+    }
+    
+    [Test]
+    public void CalculateTotalPoints_ReturnsExpectedValue2() {
+        // HCP = 4+3+1 = 8, DP = void (3) + longsuit(2) = 5, total = 13
+        var hand = new List<Card> {
+            new(Rank.Ace, Suit.Hearts),
+            new(Rank.King, Suit.Hearts),
+            new(Rank.Jack, Suit.Hearts),
+            new(Rank.Six, Suit.Hearts),
+            new(Rank.Five, Suit.Hearts),
+            new(Rank.Four, Suit.Hearts),
+            new(Rank.Three, Suit.Spades),
+            new(Rank.Two, Suit.Spades),
+            new(Rank.Ten, Suit.Spades),
+            new(Rank.Nine, Suit.Diamonds),
+            new(Rank.Eight, Suit.Diamonds),
+            new(Rank.Seven, Suit.Diamonds),
+            new(Rank.Six, Suit.Diamonds),
+        };
+        var fittingSuit = Suit.Hearts;
+
+        var result = HandUtils.CalculateTotalPoints(hand, fittingSuit);
+        Assert.AreEqual(13, result);
     }
 }

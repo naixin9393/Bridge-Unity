@@ -31,7 +31,7 @@ public class OpeningBidState : IBiddingState {
         switch (call.Type) {
             // Stay in opening bid state if pass
             case CallType.Pass:
-                return new OpeningBidState();
+                return this;
             case CallType.Bid:
                 bidCall = call as BidCall;
                 bid = bidCall.Bid;

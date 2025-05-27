@@ -1,4 +1,4 @@
-public class OpponentActsAfterPartner1NTResponseState : IBiddingState {
+public class OpponentActsAfterRebidState : IBiddingState {
     public BiddingSuggestion CalculateCall(BiddingContext biddingContext) {
         // No intervention
         return new BiddingSuggestion(
@@ -8,6 +8,6 @@ public class OpponentActsAfterPartner1NTResponseState : IBiddingState {
     }
 
     public IBiddingState GetNextState(ICall call) {
-        return new YouActAfterPartner1NTResponseState();
+        return new PartnerRespondTo1NTRebidState();
     }
 }

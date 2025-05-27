@@ -11,8 +11,8 @@ public interface IGameManager {
     Bid Contract { get; }
     Suit? LeadSuit { get; }
     BiddingSuggestion BiddingSuggestion { get; }
-    event Action<int> OnTricksWonByAttackersChanged;
     int TricksWonByAttackers { get; }
+    int TricksWonByDefenders { get; }
     GamePhase Phase { get; }
     event Action<GamePhase> OnPhaseChanged;
     void StartGame();

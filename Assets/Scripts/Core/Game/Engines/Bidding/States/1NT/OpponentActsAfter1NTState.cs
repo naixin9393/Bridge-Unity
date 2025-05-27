@@ -3,7 +3,7 @@ public class OpponentActsAfter1NTState : IBiddingState {
     public BiddingSuggestion CalculateCall(BiddingContext biddingContext) {
         // No intervention
         return new BiddingSuggestion(
-            message: BiddingMessages.OneNTInterventionPass,
+            message: BiddingMessages.Unknown,
             call: new Pass(null)
         );
     }
