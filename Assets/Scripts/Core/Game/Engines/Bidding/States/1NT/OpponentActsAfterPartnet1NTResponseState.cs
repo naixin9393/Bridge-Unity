@@ -1,3 +1,4 @@
+/*
 public class OpponentActsAfterPartner1NTResponseState : IBiddingState {
     public BiddingSuggestion CalculateCall(BiddingContext biddingContext) {
         // No intervention
@@ -11,3 +12,4 @@ public class OpponentActsAfterPartner1NTResponseState : IBiddingState {
         return new YouActAfterPartner1NTResponseState();
     }
 }
+*/

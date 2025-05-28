@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour, IGameManager {
     public Suit? LeadSuit => _currentTrick.LeadSuit;
     public ReadOnlyCollection<ITrick> Tricks => _play.Tricks;
     public event Action<GamePhase> OnPhaseChanged;
-    public BiddingSuggestion BiddingSuggestion => _auction.BiddingSuggestion;
+    public List<BiddingSuggestion> BiddingSuggestions => _auction.BiddingSuggestions;
 
     public int TricksWonByAttackers => _play.TricksWonByAttackers;
     public int TricksWonByDefenders => _play.TricksWonByDefenders;

@@ -1,3 +1,4 @@
+/*
 public class ConcludedState : IBiddingState {
     public BiddingSuggestion CalculateCall(BiddingContext biddingContext) {
         // No intervention
@@ -11,3 +12,4 @@ public class ConcludedState : IBiddingState {
         return new ConcludedState();
     }
 }
+*/

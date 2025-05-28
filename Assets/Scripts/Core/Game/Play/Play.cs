@@ -65,13 +65,8 @@ public class Play : IPlay {
         return HasCardsOfSameSuit(player, leadSuit);
     }
 
-    private bool HasCardsOfSameSuit(IPlayer player, Suit leadSuit) {
-        return player.Hand.Any(card => card.Suit == leadSuit);
-    }
-
-    private void EndGame() {
-        IsOver = true;
-    }
+    private bool HasCardsOfSameSuit(IPlayer player, Suit leadSuit) => player.Hand.HasCardOfSuit(leadSuit);
+    private void EndGame() => IsOver = true;
 
     private void DetermineLeadPlayer(IAuction auction) {
         LeadPlayer = PlayerUtils.GetNextPlayer(auction.Declarer, _players);
@@ -86,10 +81,8 @@ public class Play : IPlay {
         _attackers = _players.Where(player => !_defenders.Contains(player)).ToList();
     }
 
-    private bool IsAttacker(IPlayer player) {
-        return _attackers.Contains(player);
-    }
-    
+    private bool IsAttacker(IPlayer player) => _attackers.Contains(player);
+
     public void StartNewTrick() {
         _tricks.Add(new Trick(_players, Contract.Strain, CurrentTrick.Winner));
         _currentTrickIndex++;
@@ -101,7 +94,7 @@ public class Play : IPlay {
     }
 
     private List<Card> CalculatePossibleCards() {
-        if (CurrentTrick.Plays.Count == 0 || !HasCardsOfSameSuit(CurrentPlayer, CurrentTrick.Plays[0].Card.Suit)) return CurrentPlayer.Hand.ToList();
-        return CurrentPlayer.Hand.Where(card => card.Suit == CurrentTrick.Plays[0].Card.Suit).ToList();
+        if (CurrentTrick.Plays.Count == 0 || !HasCardsOfSameSuit(CurrentPlayer, CurrentTrick.Plays[0].Card.Suit)) return CurrentPlayer.Hand.Cards;
+        return CurrentPlayer.Hand.GetCardsOfSuit(CurrentTrick.Plays[0].Card.Suit);
     }
 }

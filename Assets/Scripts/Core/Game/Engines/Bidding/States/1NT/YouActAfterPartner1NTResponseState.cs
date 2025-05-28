@@ -1,5 +1,6 @@
 using System;
 
+/*
 public class YouActAfterPartner1NTResponseState : IBiddingState {
     public BiddingSuggestion CalculateCall(BiddingContext biddingContext) {
         var calls = biddingContext.Calls;
@@ -89,3 +90,4 @@ public class YouActAfterPartner1NTResponseState : IBiddingState {
         return new OpponentActsAfterRebidState();
     }
 }
+*/

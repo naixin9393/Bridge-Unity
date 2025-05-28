@@ -1,33 +1,31 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using UnityEngine;
 
 public class ComputerPlayer : IPlayer {
     public Position Position { get; private set; }
-    private readonly List<Card> _hand = new();
+    private readonly IHand _hand = new Hand();
 
     public event Action<Card, IPlayer> OnCardChosen = delegate { };
     public event Action<ICall> OnCallChosen;
 
-    public ReadOnlyCollection<Card> Hand => new(_hand);
+    public IHand Hand => _hand;
     
     private IDelayService _coroutineStarter;
 
     public ComputerPlayer(Position position, IDelayService coroutineStarter) {
         Position = position;
         _coroutineStarter = coroutineStarter;
-        _hand = new List<Card>();
     }
 
     public void ReceiveCards(List<Card> cards) {
-        _hand.AddRange(cards);
+        _hand.AddCards(cards);
     }
 
     public void PlayCard(Card card) {
-        if (!_hand.Contains(card))
+        if (!_hand.HasCard(card))
             throw new CardNotInHandException(card, this);
-        _hand.Remove(card);
+        _hand.RemoveCard(card);
     }
 
     public override string ToString() {
@@ -57,8 +55,8 @@ public class ComputerPlayer : IPlayer {
         };
     }
 
-    public void RequestPlayerCallDecision(BiddingSuggestion biddingSuggestion) {
-        var suggestedCall = biddingSuggestion.Call;
+    public void RequestPlayerCallDecision(List<BiddingSuggestion> biddingSuggestions) {
+        var suggestedCall = biddingSuggestions[0].Call;
         ICall call;
         switch (suggestedCall.Type) {
             case CallType.Pass:

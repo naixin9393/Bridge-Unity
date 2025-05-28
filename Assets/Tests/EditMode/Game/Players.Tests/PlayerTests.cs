@@ -13,7 +13,7 @@ public class PlayerTests
     [Test]
     public void Player_Hand_StartsEmpty() {
         IPlayer player = new HumanPlayer(Position.North);
-        Assert.AreEqual(0, player.Hand.Count);
+        Assert.AreEqual(0, player.Hand.NumberOfCards);
     }
 
     [Test]
@@ -23,7 +23,7 @@ public class PlayerTests
             new(Rank.Ace, Suit.Clubs)
         };
         player.ReceiveCards(cards);
-        Assert.AreEqual(1, player.Hand.Count);
+        Assert.AreEqual(1, player.Hand.NumberOfCards);
     }
 
     [Test]
@@ -32,7 +32,7 @@ public class PlayerTests
         var card = new Card(Rank.Ace, Suit.Clubs);
         player.ReceiveCards(new List<Card> { card });
         player.PlayCard(card);
-        Assert.AreEqual(0, player.Hand.Count);
+        Assert.AreEqual(0, player.Hand.NumberOfCards);
     }
 
     [Test]

@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 public interface IPlayer {
     Position Position { get; }
-    ReadOnlyCollection<Card> Hand { get; }
+    IHand Hand { get; }
+    // ReadOnlyCollection<Card> Hand { get; }
     void ReceiveCards(List<Card> cards);
     void RequestPlayerPlayDecision(PlayingContext playingContext);
-    void RequestPlayerCallDecision(BiddingSuggestion biddingSuggestion);
+    void RequestPlayerCallDecision(List<BiddingSuggestion> biddingSuggestions);
     void PlayCard(Card card);
     event Action<Card, IPlayer> OnCardChosen;
     event Action<ICall> OnCallChosen;

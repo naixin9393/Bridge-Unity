@@ -10,7 +10,7 @@ public interface IAuction {
     IPlayer Dealer { get; }
     IPlayer Human { get; }
     List<ICall> Calls { get; }
-    BiddingSuggestion BiddingSuggestion { get; }
+    List<BiddingSuggestion> BiddingSuggestions { get; }
     bool IsOver { get; }
     BidCall HighestBid { get; }
     void RequestPlayerCallDecision();

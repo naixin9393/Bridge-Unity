@@ -1,9 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
 public static class HandUtils {
-    private static readonly Dictionary<Rank, int> _rankToHCP = new() {
+    public static readonly Dictionary<Rank, int> RankToHCP = new() {
         { Rank.Two, 0},
         { Rank.Three, 0},
         { Rank.Four, 0},
@@ -19,16 +18,6 @@ public static class HandUtils {
         { Rank.Ace, 4}
     };
     
-    public static int CalculateHighCardPoints(List<Card> hand) {
-        int hcp = 0;
-        foreach (Card card in hand) {
-            if (_rankToHCP.ContainsKey(card.Rank)) {
-                hcp += _rankToHCP[card.Rank];
-            }
-        }
-        return hcp;
-    }
-
     public static bool ContainsBalancedHand(List<Card> hand) {
         if (hand.Count < 13) return false;
         List<int> numberOfEachSuit = hand.GroupBy(card => card.Suit)
@@ -41,40 +30,47 @@ public static class HandUtils {
         return false;
     }
 
-    public static bool IsBalancedHand(List<Card> hand) {
-        if (hand.Count != 13) return false;
-        List<int> numberOfEachSuit = hand.GroupBy(card => card.Suit)
-            .Select(group => group.Count())
-            .ToList();
+    public static bool IsBalancedHand(IHand hand) {
+        if (hand.NumberOfCards != 13) return false;
+        var numberOfEachSuit = new List<int>() {
+            hand.NumberOfCardsOfSuit(Suit.Spades),
+            hand.NumberOfCardsOfSuit(Suit.Hearts),
+            hand.NumberOfCardsOfSuit(Suit.Diamonds),
+            hand.NumberOfCardsOfSuit(Suit.Clubs)
+        };
         if (Is5332(numberOfEachSuit)) return true;
         if (Is4432(numberOfEachSuit)) return true;
         if (Is4333(numberOfEachSuit)) return true;
         return false;
     }
     
-    public static int CalculateTotalPoints(List<Card> hand, Suit fittingSuit) {
-        return CalculateHighCardPoints(hand) + CalculateDP(hand, fittingSuit);
+    public static int CalculateTotalPoints(IHand hand, Suit fittingSuit) {
+        return hand.HCP + CalculateDP(hand, fittingSuit);
     }
 
-    private static int CalculateDP(List<Card> hand, Suit fittingSuit) {
+    private static int CalculateDP(IHand hand, Suit fittingSuit) {
         int dp = 0;
-        int numberOfCardsOfSuit = hand.Count(card => card.Suit == fittingSuit);
-        
+        int numberOfCardsOfSuit = hand.NumberOfCardsOfSuit(fittingSuit);
+
         // longsuit points
         dp += numberOfCardsOfSuit - 4;
 
-        // void points
-        dp += (4 - hand.GroupBy(card => card.Suit).Count()) * 3;
+        var numberOfCardsOfEachSuit = new List<int>() {
+            hand.NumberOfCardsOfSuit(Suit.Spades),
+            hand.NumberOfCardsOfSuit(Suit.Hearts),
+            hand.NumberOfCardsOfSuit(Suit.Diamonds),
+            hand.NumberOfCardsOfSuit(Suit.Clubs)
+        };
+
+        dp += numberOfCardsOfEachSuit.Count(n => n == 0) * 3;
 
         // singleton doubleton points
-        return hand.GroupBy(card => card.Suit)
-        .Aggregate(dp, (current, group) => {
-            return group.Count() switch {
-                1 => current + 2,
-                2 => current + 1,
-                _ => current,
-            };
-        });
+        foreach (var suitCardCount in numberOfCardsOfEachSuit) {
+            if (suitCardCount == 1) dp += 2;
+            else if (suitCardCount == 2) dp += 1;
+        }
+        
+        return dp;
     }
 
     public static bool Contains4Hearts(List<Card> hand) {

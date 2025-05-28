@@ -34,7 +34,7 @@ public class GameViewModel : IDisposable {
     
     public BindableProperty<string> BiddingHintCall => BindableProperty<string>.Bind(() => {
         if (_phase == GamePhase.Auction) {
-            var call = _game.BiddingSuggestion.Call;
+            var call = _game.BiddingSuggestions[0].Call;
             if (call.Type != CallType.Bid)
                 return call.ToString().ToLower();
             var bidCall = call as BidCall;
@@ -45,7 +45,7 @@ public class GameViewModel : IDisposable {
     
     public BindableProperty<string> BiddingHintMessage => BindableProperty<string>.Bind(() => {
         if (_phase == GamePhase.Auction)
-           return _game.BiddingSuggestion.Message;
+           return _game.BiddingSuggestions[0].Message;
         return string.Empty;
     });
 

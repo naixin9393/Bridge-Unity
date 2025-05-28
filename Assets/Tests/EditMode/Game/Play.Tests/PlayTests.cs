@@ -95,7 +95,10 @@ public class PlayTests {
     public void Play_PlayCard_ShouldThrowException_WhenHasCardsOfSameSuit_AndDoesNotFollowLead() {
         var mockAuction = new Mock<IAuction>();
         var playerWithSameSuit = new Mock<IPlayer>();
-        playerWithSameSuit.Setup(p => p.Hand).Returns(new List<Card> { new(Rank.Three, Suit.Clubs), new(Rank.Four, Suit.Hearts) }.AsReadOnly());
+        var cards = new List<Card> { new(Rank.Three, Suit.Clubs), new(Rank.Four, Suit.Hearts) };
+        var hand = new Hand();
+        hand.AddCards(cards);
+        playerWithSameSuit.Setup(p => p.Hand).Returns(hand);
 
         mockAuction.Setup(a => a.Players).Returns(new List<IPlayer> { playerWithSameSuit.Object, eastPlayer, southPlayer, westPlayer });
         mockAuction.Setup(a => a.Declarer).Returns(southPlayer);

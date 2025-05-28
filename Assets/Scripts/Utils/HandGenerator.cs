@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 
 public class HandGenerator {
-    public static List<Card> Generate(Deck deck, bool balancedHand) {
-        if (!HandUtils.ContainsBalancedHand(deck.Cards.ToList())) return new List<Card>();
-        if (deck.Cards.Count < 13) return new List<Card>();
+    public static IHand Generate(Deck deck, bool balancedHand) {
+        if (!HandUtils.ContainsBalancedHand(deck.Cards.ToList())) throw new Exception("Deck doesnt contain balanced hand");
+        if (deck.Cards.Count < 13) throw new Exception("Hand is not full");
 
-        List<Card> hand = new();
+        IHand hand = new Hand();
 
-        while (hand.Count < 13) {
+        while (hand.NumberOfCards < 13) {
             Card card = deck.DealCard();
-            hand.Add(card);
+            hand.AddCard(card);
 
             if (balancedHand && !CouldBeBalancedHand(hand)) {
-                hand.Remove(card);
+                hand.RemoveCard(card);
                 deck.InsertCard(card);
                 deck.Shuffle();
             }
@@ -23,12 +23,12 @@ public class HandGenerator {
         return hand;
     }
 
-    public static List<Card> Generate(Deck deck, bool balancedHand, int minHCP, int maxHCP) {
+    public static IHand Generate(Deck deck, bool balancedHand, int minHCP, int maxHCP) {
         if (balancedHand && !HandUtils.ContainsBalancedHand(deck.Cards.ToList())) throw new Exception("Balanced hand not possible");
         if (deck.Cards.Count < 13) throw new Exception("Deck is too small");
         if (minHCP > maxHCP || minHCP > 37) throw new Exception("HCP range is invalid");
 
-        List<Card> hand = new();
+        IHand hand = new Hand();
         List<Card> discardedCards = new();
         int HCP = -1;
         
@@ -41,14 +41,14 @@ public class HandGenerator {
                 continue;
             }
 
-            hand.Add(card);
-            HCP = HandUtils.CalculateHighCardPoints(hand);
+            hand.AddCard(card);
+            HCP = hand.HCP;
 
             if ((balancedHand && !CouldBeBalancedHand(hand))
                 || !CouldReachMinHCP(hand, minHCP)
-                || HandUtils.CalculateHighCardPoints(hand) > maxHCP) {
-                hand.Remove(card);
-                HCP = HandUtils.CalculateHighCardPoints(hand);
+                || hand.HCP > maxHCP) {
+                hand.RemoveCard(card);
+                HCP = hand.HCP;
                 discardedCards.Add(card);
                 deck.Shuffle();
             }
@@ -62,11 +62,11 @@ public class HandGenerator {
         discardedCards.Clear();
         
         // Fill hand and respecting constraints
-        while (hand.Count < 13) {
+        while (hand.NumberOfCards < 13) {
             Card card = deck.DealCard();
-            hand.Add(card);
-            if (balancedHand && !CouldBeBalancedHand(hand) || HandUtils.CalculateHighCardPoints(hand) > maxHCP) {
-                hand.Remove(card);
+            hand.AddCard(card);
+            if (balancedHand && !CouldBeBalancedHand(hand) || hand.HCP > maxHCP) {
+                hand.RemoveCard(card);
                 discardedCards.Add(card);
                 deck.Shuffle();
             }
@@ -84,11 +84,13 @@ public class HandGenerator {
         return card.Rank == Rank.Ace || card.Rank == Rank.King || card.Rank == Rank.Queen || card.Rank == Rank.Jack;
     }
 
-    private static bool CouldBeBalancedHand(List<Card> hand) {
-        List<int> numberOfEachSuit = hand.GroupBy(card => card.Suit)
-            .Select(group => group.Count())
-            .OrderBy(count => count)
-            .ToList();
+    private static bool CouldBeBalancedHand(IHand hand) {
+        List<int> numberOfEachSuit = new() {
+            hand.NumberOfCardsOfSuit(Suit.Spades),
+            hand.NumberOfCardsOfSuit(Suit.Hearts),
+            hand.NumberOfCardsOfSuit(Suit.Diamonds),
+            hand.NumberOfCardsOfSuit(Suit.Clubs)
+        };
 
         if (numberOfEachSuit.Any(suit => suit > 5)) return false;
 
@@ -101,18 +103,18 @@ public class HandGenerator {
                numberOfEachSuit.Count(suit => suit == 3) < 3;
     }
 
-    private static bool CouldReachMinHCP(List<Card> hand, int minHCP) {
-        int currentHcp = HandUtils.CalculateHighCardPoints(hand);
+    private static bool CouldReachMinHCP(IHand hand, int minHCP) {
+        int currentHcp = hand.HCP;
         int HCPNeeded = minHCP - currentHcp;
         if (HCPNeeded <= 0) return true;
 
-        int cardsRemainingToDraw = 13 - hand.Count;
+        int cardsRemainingToDraw = 13 - hand.NumberOfCards;
         if (cardsRemainingToDraw <= 0) return false;
 
-        int numberOfAcesInDeck = 4 - hand.Count(card => card.Rank == Rank.Ace);
-        int numberOfKingsInDeck = 4 - hand.Count(card => card.Rank == Rank.King);
-        int numberOfQueensInDeck = 4 - hand.Count(card => card.Rank == Rank.Queen);
-        int numberOfJacksInDeck = 4 - hand.Count(card => card.Rank == Rank.Jack);
+        int numberOfAcesInDeck = 4 - hand.NumberOfCardsOfRank(Rank.Ace);
+        int numberOfKingsInDeck = 4 - hand.NumberOfCardsOfRank(Rank.King);
+        int numberOfQueensInDeck = 4 - hand.NumberOfCardsOfRank(Rank.Queen);
+        int numberOfJacksInDeck = 4 - hand.NumberOfCardsOfRank(Rank.Jack);
 
         int potentialAdditionalHCP = PotentialAdditionalHCP(cardsRemainingToDraw, numberOfAcesInDeck, numberOfKingsInDeck, numberOfQueensInDeck, numberOfJacksInDeck);
 

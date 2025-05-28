@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 public interface IGameManager {
@@ -10,7 +11,7 @@ public interface IGameManager {
     Bid HighestBid { get; }
     Bid Contract { get; }
     Suit? LeadSuit { get; }
-    BiddingSuggestion BiddingSuggestion { get; }
+    List<BiddingSuggestion> BiddingSuggestions { get; }
     int TricksWonByAttackers { get; }
     int TricksWonByDefenders { get; }
     GamePhase Phase { get; }

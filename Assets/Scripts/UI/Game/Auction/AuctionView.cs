@@ -31,9 +31,7 @@ public class AuctionView : MonoBehaviour {
         _confirmButton.clicked += () => _gameViewModel.HandlePlayerCallChosen(_selectedCall);
 
         // Show player's hand HCP
-        _auctionContainer.Q<Label>("HCP").text = HandUtils
-            .CalculateHighCardPoints(_player.Hand.ToList())
-            .ToString();
+        _auctionContainer.Q<Label>("HCP").text = _player.Hand.HCP.ToString();
 
         _auctionHandContainer = _auctionContainer.Q<VisualElement>("AuctionHandContainer");
         PopulatePlayerHandContainer();
@@ -41,7 +39,7 @@ public class AuctionView : MonoBehaviour {
 
     private void PopulatePlayerHandContainer() {
         // Show card in order Spades, Hearts, Diamonds, Clubs
-        var playerHand = _player.Hand.ToList()
+        var playerHand = _player.Hand.Cards
             .OrderBy(card => card, new BridgeCardComparer(Suit.Spades, Strain.NoTrump))
             .Reverse();
         foreach (var card in playerHand) {

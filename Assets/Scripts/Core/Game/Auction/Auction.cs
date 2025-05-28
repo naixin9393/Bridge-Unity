@@ -16,7 +16,7 @@ public class Auction : IAuction {
     public bool IsOver => _isOver;
     public BidCall HighestBid => _highestBid;
     public List<ICall> Calls => _calls;
-    public BiddingSuggestion BiddingSuggestion => _biddingEngine.GetBiddingSuggestion(new BiddingContext(_calls, CurrentPlayer.Hand.ToList()));
+    public List<BiddingSuggestion> BiddingSuggestions => _biddingEngine.GetBiddingSuggestions(new BiddingContext(_calls, CurrentPlayer.Hand));
 
     private readonly IPlayer _human;
     private readonly IPlayer _dealer;
@@ -44,8 +44,8 @@ public class Auction : IAuction {
     }
 
     public void RequestPlayerCallDecision() {
-        var biddingSuggestion = _biddingEngine.GetBiddingSuggestion(new BiddingContext(_calls, CurrentPlayer.Hand.ToList()));
-        CurrentPlayer.RequestPlayerCallDecision(biddingSuggestion);
+        var biddingSuggestions = _biddingEngine.GetBiddingSuggestions(new BiddingContext(_calls, CurrentPlayer.Hand));
+        CurrentPlayer.RequestPlayerCallDecision(biddingSuggestions);
     }
 
     public void MakeCall(ICall call) {
@@ -64,7 +64,6 @@ public class Auction : IAuction {
         
         _consecutivePasses = IsPass(call) ? _consecutivePasses + 1 : 0;
 
-        _biddingEngine.UpdateState(call);
         _calls.Add(call);
         CurrentPlayer = PlayerUtils.GetNextPlayer(CurrentPlayer, _players);
 

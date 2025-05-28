@@ -1,7 +1,8 @@
+/*
 public class OpeningBidState : IBiddingState {
     public BiddingSuggestion CalculateCall(BiddingContext biddingContext) {
         var hand = biddingContext.Hand;
-        int HCP = HandUtils.CalculateHighCardPoints(hand);
+        int HCP = hand.HCP;
         if (HCP < 12)
             // Can't open with less than 12 HCP
             return new BiddingSuggestion(
@@ -46,3 +47,4 @@ public class OpeningBidState : IBiddingState {
         return new UnknownState();
     }
 }
+*/

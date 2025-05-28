@@ -3,38 +3,8 @@ using NUnit.Framework;
 
 public class HandUtilsTests {
     [Test]
-    public void CalculateHighCardPoints_Returns0_IfHandIsEmpty() {
-        var hand = new List<Card>();
-        var result = HandUtils.CalculateHighCardPoints(hand);
-        Assert.AreEqual(0, result);
-    }
-
-    [Test]
-    public void CalculateHighCardPoints_Returns10_IfHandContainsAceKingQueenJack() {
-        var hand = new List<Card> {
-            new(Rank.Ace, Suit.Clubs),
-            new(Rank.King, Suit.Clubs),
-            new(Rank.Queen, Suit.Clubs),
-            new(Rank.Jack, Suit.Clubs)
-        };
-        var result = HandUtils.CalculateHighCardPoints(hand);
-        Assert.AreEqual(10, result);
-    }
-
-    [Test]
-    public void CalculateHighCardPoints_Returns8_IfHandContainsAceKingJack() {
-        var hand = new List<Card> {
-            new(Rank.Ace, Suit.Clubs),
-            new(Rank.King, Suit.Clubs),
-            new(Rank.Jack, Suit.Clubs)
-        };
-        var result = HandUtils.CalculateHighCardPoints(hand);
-        Assert.AreEqual(8, result);
-    }
-
-    [Test]
     public void IsBalancedHand_ReturnsFalse_IfHandHasMoreThan13Cards() {
-        var hand = new List<Card> {
+        var cards = new List<Card> {
             new(Rank.Ace, Suit.Clubs),
             new(Rank.King, Suit.Clubs),
             new(Rank.Queen, Suit.Clubs),
@@ -51,13 +21,16 @@ public class HandUtilsTests {
             new(Rank.Ace, Suit.Spades)
         };
 
+        var hand = new Hand();
+        hand.AddCards(cards);
+
         var result = HandUtils.IsBalancedHand(hand);
         Assert.AreEqual(false, result);
     }
 
     [Test]
     public void IsBalancedHand_ReturnsFalse_IfHandHasLessThan13Cards() {
-        var hand = new List<Card> {
+        var cards = new List<Card> {
             new(Rank.Ace, Suit.Clubs),
             new(Rank.King, Suit.Clubs),
             new(Rank.Queen, Suit.Clubs),
@@ -66,13 +39,15 @@ public class HandUtilsTests {
             new(Rank.Nine, Suit.Clubs),
         };
 
+        var hand = new Hand();
+        hand.AddCards(cards);
         var result = HandUtils.IsBalancedHand(hand);
         Assert.AreEqual(false, result);
     }
 
     [Test]
     public void IsBalancedHand_ReturnsTrue_IfHand_Is5332() {
-        var hand = new List<Card> {
+        var cards = new List<Card> {
             new(Rank.Ace, Suit.Clubs),
             new(Rank.King, Suit.Clubs),
             new(Rank.Queen, Suit.Clubs),
@@ -88,13 +63,16 @@ public class HandUtilsTests {
             new(Rank.Two, Suit.Hearts)
         };
 
+        var hand = new Hand();
+        hand.AddCards(cards);
+
         var result = HandUtils.IsBalancedHand(hand);
         Assert.AreEqual(true, result);
     }
 
     [Test]
     public void IsBalancedHand_ReturnsTrue_IfHand_Is4432() {
-        var hand = new List<Card> {
+        var cards = new List<Card> {
             new(Rank.Ace, Suit.Clubs),
             new(Rank.King, Suit.Clubs),
             new(Rank.Queen, Suit.Clubs),
@@ -110,13 +88,16 @@ public class HandUtilsTests {
             new(Rank.Two, Suit.Hearts)
         };
 
+        var hand = new Hand();
+        hand.AddCards(cards);
+
         var result = HandUtils.IsBalancedHand(hand);
         Assert.AreEqual(true, result);
     }
 
     [Test]
     public void IsBalancedHand_ReturnsTrue_IfHand_Is4333() {
-        var hand = new List<Card> {
+        var cards = new List<Card> {
             new(Rank.Ace, Suit.Clubs),
             new(Rank.King, Suit.Clubs),
             new(Rank.Queen, Suit.Clubs),
@@ -131,6 +112,9 @@ public class HandUtilsTests {
             new(Rank.Three, Suit.Hearts),
             new(Rank.Two, Suit.Hearts),
         };
+        
+        var hand = new Hand();
+        hand.AddCards(cards);
 
         var result = HandUtils.IsBalancedHand(hand);
         Assert.AreEqual(true, result);
@@ -138,7 +122,7 @@ public class HandUtilsTests {
 
     [Test]
     public void IsBalancedHand_ReturnsFalse_IfHand_Is5431() {
-        var hand = new List<Card> {
+        var cards = new List<Card> {
             new(Rank.Ace, Suit.Clubs),
             new(Rank.King, Suit.Clubs),
             new(Rank.Queen, Suit.Clubs),
@@ -153,6 +137,9 @@ public class HandUtilsTests {
             new(Rank.Three, Suit.Spades),
             new(Rank.Two, Suit.Hearts)
         };
+        
+        var hand = new Hand();
+        hand.AddCards(cards);
 
         var result = HandUtils.IsBalancedHand(hand);
         Assert.AreEqual(false, result);
@@ -160,7 +147,7 @@ public class HandUtilsTests {
 
     [Test]
     public void IsBalancedHand_ReturnsFalse_IfHand_Is6421() {
-        var hand = new List<Card> {
+        var cards = new List<Card> {
             new(Rank.Ace, Suit.Clubs),
             new(Rank.King, Suit.Clubs),
             new(Rank.Queen, Suit.Clubs),
@@ -175,6 +162,9 @@ public class HandUtilsTests {
             new(Rank.Three, Suit.Spades),
             new(Rank.Two, Suit.Hearts)
         };
+
+        var hand = new Hand();
+        hand.AddCards(cards);
 
         var result = HandUtils.IsBalancedHand(hand);
         Assert.AreEqual(false, result);
@@ -284,7 +274,7 @@ public class HandUtilsTests {
     [Test]
     public void CalculateTotalPoints_ReturnsExpectedValue() {
         // HCP = 4+3+1 = 8, DP = singleton(2) + longsuit(1) = 3, total = 11
-        var hand = new List<Card> {
+        var cards = new List<Card> {
             new(Rank.Ace, Suit.Hearts),
             new(Rank.King, Suit.Hearts),
             new(Rank.Jack, Suit.Hearts),
@@ -300,6 +290,8 @@ public class HandUtilsTests {
             new(Rank.Six, Suit.Clubs),
         };
         var fittingSuit = Suit.Hearts;
+        var hand = new Hand();
+        hand.AddCards(cards);
 
         var result = HandUtils.CalculateTotalPoints(hand, fittingSuit);
         Assert.AreEqual(11, result);
@@ -308,7 +300,7 @@ public class HandUtilsTests {
     [Test]
     public void CalculateTotalPoints_ReturnsExpectedValue2() {
         // HCP = 4+3+1 = 8, DP = void (3) + longsuit(2) = 5, total = 13
-        var hand = new List<Card> {
+        var cards = new List<Card> {
             new(Rank.Ace, Suit.Hearts),
             new(Rank.King, Suit.Hearts),
             new(Rank.Jack, Suit.Hearts),
@@ -324,6 +316,8 @@ public class HandUtilsTests {
             new(Rank.Six, Suit.Diamonds),
         };
         var fittingSuit = Suit.Hearts;
+        var hand = new Hand();
+        hand.AddCards(cards);
 
         var result = HandUtils.CalculateTotalPoints(hand, fittingSuit);
         Assert.AreEqual(13, result);

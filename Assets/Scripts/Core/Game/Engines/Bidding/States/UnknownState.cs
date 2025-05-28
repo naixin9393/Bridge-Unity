@@ -1,3 +1,4 @@
+/*
 public class UnknownState : IBiddingState {
     public BiddingSuggestion CalculateCall(BiddingContext biddingContext) {
         return new BiddingSuggestion(
@@ -10,3 +11,4 @@ public class UnknownState : IBiddingState {
         return new UnknownState();
     }
 }
+*/

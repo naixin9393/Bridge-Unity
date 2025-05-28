@@ -205,7 +205,7 @@ public class PlayView : MonoBehaviour {
     private void PopulatePlayerHandContainer() {
         // Insert card for human
         PopulateHand(
-            hand: _humanPlayer.Hand.ToList(),
+            hand: _humanPlayer.Hand.Cards,
             handContainer: _bottomHandContainer,
             player: _humanPlayer,
             canChooseCard: true,
@@ -214,7 +214,7 @@ public class PlayView : MonoBehaviour {
 
         // Insert card for dummy
         PopulateHand(
-            hand: _dummyPlayer.Hand.ToList(),
+            hand: _dummyPlayer.Hand.Cards,
             handContainer: _dummyHandContainer,
             player: _dummyPlayer,
             canChooseCard: _gameViewModel.Declarer == _humanPlayer,
@@ -327,7 +327,7 @@ public class PlayView : MonoBehaviour {
     }
 
     private bool HasCardsOfSameSuit(IPlayer player, Suit leadSuit) {
-        return player.Hand.Any(card => card.Suit == leadSuit);
+        return player.Hand.HasCardOfSuit(leadSuit);
     }
 
     private void AnimateCardToPlayArea(Card card, IPlayer player, Action animationCompleteCallback) {

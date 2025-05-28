@@ -1,3 +1,4 @@
+/*
 // The opponent intervenes against 1NT Opening
 public class OpponentActsAfter1NTState : IBiddingState {
     public BiddingSuggestion CalculateCall(BiddingContext biddingContext) {
@@ -12,3 +13,4 @@ public class OpponentActsAfter1NTState : IBiddingState {
         return new PartnerRespondTo1NTState();
     }
 }
+*/

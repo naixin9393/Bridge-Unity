@@ -7,7 +7,7 @@ public class HandGeneratorTests {
         Deck deck = new();
         deck.Shuffle();
 
-        List<Card> hand = HandGenerator.Generate(deck, true);
+        IHand hand = HandGenerator.Generate(deck, true);
 
         Assert.IsTrue(HandUtils.IsBalancedHand(hand));
     }
@@ -28,9 +28,9 @@ public class HandGeneratorTests {
         Deck deck = new();
         deck.Shuffle();
 
-        List<Card> hand = HandGenerator.Generate(deck, true, 15, 15);
+        IHand hand = HandGenerator.Generate(deck, true, 15, 15);
 
         Assert.IsTrue(HandUtils.IsBalancedHand(hand));
-        Assert.AreEqual(15, HandUtils.CalculateHighCardPoints(hand));
+        Assert.AreEqual(15, hand.HCP);
     }
 }

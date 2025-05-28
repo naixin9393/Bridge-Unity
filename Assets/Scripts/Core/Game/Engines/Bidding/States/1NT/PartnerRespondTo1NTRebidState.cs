@@ -1,3 +1,4 @@
+/*
 using System;
 
 public class PartnerRespondTo1NTRebidState : IBiddingState {
@@ -97,3 +98,4 @@ public class PartnerRespondTo1NTRebidState : IBiddingState {
         return new UnknownState();
     }
 }
+*/

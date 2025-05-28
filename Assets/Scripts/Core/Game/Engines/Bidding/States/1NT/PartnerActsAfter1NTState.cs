@@ -1,3 +1,4 @@
+/*
 using System;
 
 public class PartnerRespondTo1NTState : IBiddingState {
@@ -58,3 +59,4 @@ public class PartnerRespondTo1NTState : IBiddingState {
         return new OpponentActsAfterPartner1NTResponseState();
     }
 }
+*/
