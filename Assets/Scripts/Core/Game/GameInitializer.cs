@@ -47,7 +47,7 @@ public class GameInitializer : MonoBehaviour {
         // Create bidding engine
         IBiddingEngine biddingEngine = new BiddingEngine();
 
-        _gameManager.Initialize(players, dealer, biddingEngine);
+        _gameManager.Initialize(players, dealer, humanPlayer, biddingEngine);
 
         // Create game view model
         var gameViewModel = new GameViewModel(_gameManager, humanPlayer);

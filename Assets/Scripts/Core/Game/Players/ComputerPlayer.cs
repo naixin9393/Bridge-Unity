@@ -35,7 +35,7 @@ public class ComputerPlayer : IPlayer {
     }
 
     public void RequestPlayerPlayDecision(PlayingContext playingContext) {
-        //if (playingContext.Dummy == this) return; // Dummy can't play
+        if (playingContext.Dummy == this && IsPartner(playingContext.Human)) return; // Dummy can't play if declarer is human
         if (playingContext.PossibleCards.Count == 0)
             throw new EmptyHandException(this);
         var possibleCards = playingContext.PossibleCards;
@@ -45,6 +45,16 @@ public class ComputerPlayer : IPlayer {
             0.6f,
             () =>OnCardChosen?.Invoke(card, this)
         );
+    }
+
+    private bool IsPartner(IPlayer human) {
+        return human.Position switch {
+            Position.North => Position == Position.South,
+            Position.East => Position == Position.West,
+            Position.South => Position == Position.North,
+            Position.West => Position == Position.East,
+            _ => throw new NotImplementedException(),
+        };
     }
 
     public void RequestPlayerCallDecision(BiddingSuggestion biddingSuggestion) {

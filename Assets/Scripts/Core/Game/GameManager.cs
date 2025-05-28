@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour, IGameManager {
     private IAuction _auction;
     private IPlay _play;
     private ITrick _currentTrick => _play.CurrentTrick;
+    private IPlayer _human;
     public GamePhase Phase { get; private set; }
     public ReadOnlyCollection<IPlayer> Players => _players.AsReadOnly();
     public IPlayer CurrentPlayer => Phase == GamePhase.Auction ? _auction.CurrentPlayer : _play.CurrentPlayer;
@@ -29,10 +30,11 @@ public class GameManager : MonoBehaviour, IGameManager {
     public int TricksWonByDefenders => _play.TricksWonByDefenders;
 
 
-    public void Initialize(List<IPlayer> players, IPlayer dealer, IBiddingEngine biddingEngine) {
+    public void Initialize(List<IPlayer> players, IPlayer dealer, IPlayer human, IBiddingEngine biddingEngine) {
         _players = players;
         _dealer = dealer;
-        _auction = new Auction(players: _players, dealer: _dealer, biddingEngine: biddingEngine);
+        _human = human;
+        _auction = new Auction(players: _players, dealer: _dealer, human: _human, biddingEngine: biddingEngine);
         Phase = GamePhase.Auction;
     }
 

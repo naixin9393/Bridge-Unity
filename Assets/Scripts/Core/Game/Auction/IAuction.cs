@@ -8,6 +8,7 @@ public interface IAuction {
     IPlayer CurrentPlayer { get; }
     IPlayer Dummy { get; }
     IPlayer Dealer { get; }
+    IPlayer Human { get; }
     List<ICall> Calls { get; }
     BiddingSuggestion BiddingSuggestion { get; }
     bool IsOver { get; }

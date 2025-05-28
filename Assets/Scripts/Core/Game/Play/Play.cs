@@ -9,6 +9,7 @@ public class Play : IPlay {
     internal int _tricksWonByDefenders = 0;
     private readonly List<IPlayer> _players = new();
     private readonly IPlayer _dummy;
+    private readonly IPlayer _human;
     private List<IPlayer> _attackers = new();
     private List<IPlayer> _defenders = new();
 
@@ -28,6 +29,7 @@ public class Play : IPlay {
         Contract = auction.FinalContract;
         _players = new List<IPlayer>(auction.Players);
         _dummy = auction.Dummy;
+        _human = auction.Human;
         DetermineLeadPlayer(auction);
         DetermineTeams(LeadPlayer);
         _tricks.Add(new Trick(_players, Contract.Strain, CurrentPlayer));
@@ -95,7 +97,7 @@ public class Play : IPlay {
 
     public void RequestPlayerPlayDecision() {
         List<Card> possibleCards = CalculatePossibleCards();
-        CurrentPlayer.RequestPlayerPlayDecision(new PlayingContext(possibleCards, _tricks.ToList(), _dummy));
+        CurrentPlayer.RequestPlayerPlayDecision(new PlayingContext(possibleCards, _tricks.ToList(), _dummy, _human));
     }
 
     private List<Card> CalculatePossibleCards() {

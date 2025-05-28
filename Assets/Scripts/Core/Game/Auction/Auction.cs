@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 
 public class Auction : IAuction {
-    private List<IPlayer> _players;
     public List<IPlayer> Players => _players;
     private IPlayer _declarer;
     public IPlayer Declarer => _declarer;
@@ -12,20 +11,20 @@ public class Auction : IAuction {
     public IPlayer CurrentPlayer { get; private set; }
     private IPlayer _dummy;
     public IPlayer Dummy => _dummy;
-
-    private readonly IPlayer _dealer;
+    public IPlayer Human => _human;
     public IPlayer Dealer => _dealer;
-
-    private int _consecutivePasses;
-    private bool _isOver = false;
     public bool IsOver => _isOver;
-    private BidCall _highestBid;
-    private readonly List<IPlayer> _offendingSide = new();
-
     public BidCall HighestBid => _highestBid;
-
     public List<ICall> Calls => _calls;
     public BiddingSuggestion BiddingSuggestion => _biddingEngine.GetBiddingSuggestion(new BiddingContext(_calls, CurrentPlayer.Hand.ToList()));
+
+    private readonly IPlayer _human;
+    private readonly IPlayer _dealer;
+    private List<IPlayer> _players;
+    private int _consecutivePasses;
+    private bool _isOver = false;
+    private BidCall _highestBid;
+    private readonly List<IPlayer> _offendingSide = new();
     private readonly List<ICall> _calls = new();
     private readonly IBiddingEngine _biddingEngine;
     
@@ -36,9 +35,10 @@ public class Auction : IAuction {
         _biddingEngine = new NullBiddingEngine();
     }
 
-    public Auction(List<IPlayer> players, IPlayer dealer, IBiddingEngine biddingEngine) {
+    public Auction(List<IPlayer> players, IPlayer dealer, IPlayer human, IBiddingEngine biddingEngine) {
         _players = players;
         _dealer = dealer;
+        _human = human;
         CurrentPlayer = dealer;
         _biddingEngine = biddingEngine;
     }
@@ -62,7 +62,6 @@ public class Auction : IAuction {
         if (_highestBid != null && IsBid(call) && IsEqualOrLowerThanHighest((call as BidCall).Bid))
             throw new InvalidCallException("Caller bid is equal or lower than the highest bid");
         
-
         _consecutivePasses = IsPass(call) ? _consecutivePasses + 1 : 0;
 
         _biddingEngine.UpdateState(call);
