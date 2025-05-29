@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-public class Deck{
+public class Deck {
     private readonly List<Card> _cards = new();
     public ReadOnlyCollection<Card> Cards => new(_cards);
 
@@ -39,6 +39,12 @@ public class Deck{
     }
 
     public void InsertCard(Card card) {
-        _cards.Add(card);
+        _cards.Insert(0, card);
+    }
+    
+    public void RemoveCards(List<Card> cards) {
+        foreach (var card in cards) {
+            _cards.Remove(card);
+        }
     }
 }

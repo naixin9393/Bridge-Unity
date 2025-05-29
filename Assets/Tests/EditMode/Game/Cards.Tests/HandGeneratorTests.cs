@@ -30,7 +30,7 @@ public class HandGeneratorTests {
 
         IHand hand = HandGenerator.Generate(deck, true, 15, 15);
 
-        Assert.IsTrue(HandUtils.IsBalancedHand(hand));
+        Assert.IsTrue(hand.IsBalanced);
         Assert.AreEqual(15, hand.HCP);
     }
 }

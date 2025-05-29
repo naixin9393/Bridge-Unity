@@ -7,6 +7,7 @@ public interface IHand {
 
     List<Card> GetCardsOfSuit(Suit suit);
 
+    bool IsBalanced { get; }
     bool HasCard(Card card);
     bool HasCardOfSuit(Suit suit);
     void AddCard(Card card);

@@ -16,7 +16,7 @@ public class Auction : IAuction {
     public bool IsOver => _isOver;
     public BidCall HighestBid => _highestBid;
     public List<ICall> Calls => _calls;
-    public List<BiddingSuggestion> BiddingSuggestions => _biddingEngine.GetBiddingSuggestions(new BiddingContext(_calls, CurrentPlayer.Hand));
+    public List<BiddingSuggestion> BiddingSuggestions => _biddingEngine.GetBiddingSuggestions(new BiddingContext(_calls, CurrentPlayer.Hand, CurrentPlayer.Position));
 
     private readonly IPlayer _human;
     private readonly IPlayer _dealer;
@@ -44,7 +44,7 @@ public class Auction : IAuction {
     }
 
     public void RequestPlayerCallDecision() {
-        var biddingSuggestions = _biddingEngine.GetBiddingSuggestions(new BiddingContext(_calls, CurrentPlayer.Hand));
+        var biddingSuggestions = _biddingEngine.GetBiddingSuggestions(new BiddingContext(_calls, CurrentPlayer.Hand, CurrentPlayer.Position));
         CurrentPlayer.RequestPlayerCallDecision(biddingSuggestions);
     }
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NUnit.Framework;
 using UnityEngine;
 
 public class GameInitializer : MonoBehaviour {
@@ -16,10 +17,6 @@ public class GameInitializer : MonoBehaviour {
         // Create human player
         IPlayer humanPlayer = new HumanPlayer(_gameConfig.HumanPlayerPosition);
 
-        List<IPlayer> players = new() {
-            humanPlayer
-        };
-
         // Create computer players
         List<IPlayer> computerPlayers = new();
         
@@ -27,33 +24,65 @@ public class GameInitializer : MonoBehaviour {
             computerPlayers.Add(new ComputerPlayer(comPos, CoroutineRunner.Instance));
         }
         
-        // Deal cards
 
+        // Create deck
         Deck deck = new();
         deck.Shuffle();
 
+        // Give cards to human player
         IHand humanHand = HandGenerator.Generate(deck, _gameConfig.BalancedHand, _gameConfig.MinHCP, _gameConfig.MaxHCP);
         humanPlayer.ReceiveCards(humanHand.Cards);
+        
+        deck.RemoveCards(humanHand.Cards);
+        
+        Assert.AreEqual(52 - 13, deck.Cards.Count);
 
         deck.Shuffle();
-
-        foreach (IPlayer player in computerPlayers) {
-            player.ReceiveCards(deck.DealCards(13));
-            players.Add(player);
-        }
-
-        IPlayer dealer = players.Where(player => player.Position == _gameConfig.DealerPosition).First();
         
-        // Create bidding engine
-        IBiddingEngine biddingEngine = new BiddingEngine();
+        // Identify players
+        IPlayer partnerPlayer = PlayerUtils.PartnerOf(humanPlayer, computerPlayers);
+        IPlayer rightComputer = PlayerUtils.GetNextPlayer(humanPlayer, computerPlayers);
+        IPlayer leftComputer = PlayerUtils.GetNextPlayer(partnerPlayer, computerPlayers);
 
+        List<IPlayer> players = new() { humanPlayer, rightComputer, partnerPlayer, leftComputer };
+
+        // Give cards to computer players
+        IHand partnerHand = HandGenerator.Generate(deck, _gameConfig.PartnerBalancedHand, _gameConfig.PartnerMinHCP, _gameConfig.PartnerMaxHCP);
+        partnerPlayer.ReceiveCards(partnerHand.Cards);
+        
+        deck.RemoveCards(partnerHand.Cards);
+        
+        Assert.AreEqual(39 - 13, deck.Cards.Count);
+
+        rightComputer.ReceiveCards(deck.DealCards(13));
+        leftComputer.ReceiveCards(deck.DealCards(13));
+
+        // Set dealer
+        IPlayer dealer = players.Where(player => player.Position == _gameConfig.DealerPosition).First();
+
+        // Create bidding strategies list
+        List<IBiddingStrategy> biddingStrategies = new() {
+            new OpenerStrategy(),
+            new NoInterventionStrategy(),
+            new OneNTResponseStrategy(),
+            new OneNTOpenerResponseStrategy(),
+            new StaymanResponseStrategy(),
+            new StaymanOpenerResponseStrategy(),
+        };
+
+        // Create bidding engine
+        IBiddingEngine biddingEngine = new BiddingEngine(biddingStrategies);
+
+        // Initialize game manager
         _gameManager.Initialize(players, dealer, humanPlayer, biddingEngine);
 
         // Create game view model
         var gameViewModel = new GameViewModel(_gameManager, humanPlayer);
 
+        // Initialize game screen
         _gameScreen.Initialize(gameViewModel);
         
+        // Start game
         _gameManager.StartGame();
     }
 }

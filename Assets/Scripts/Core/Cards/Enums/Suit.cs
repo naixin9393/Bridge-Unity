@@ -1,4 +1,4 @@
-public enum Suit { Clubs, Diamonds, Hearts, Spades }
+public enum Suit { Diamonds, Clubs, Hearts, Spades }
 
 public static class SuitExtensions {
     public static string ToSymbol(this Suit suit) {

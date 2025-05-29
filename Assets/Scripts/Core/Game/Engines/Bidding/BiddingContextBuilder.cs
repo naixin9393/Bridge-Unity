@@ -3,6 +3,7 @@ using System.Collections.Generic;
 public class BiddingContextBuilder {
     private IHand _hand;
     private List<ICall> _calls = new();
+    private Position _currentPosition;
     
     public BiddingContextBuilder WithHand(IHand hand) {
         _hand = hand;
@@ -14,7 +15,12 @@ public class BiddingContextBuilder {
         return this;
     }
 
+    public BiddingContextBuilder WithCurrentPosition(Position position) {
+        _currentPosition = position;
+        return this;
+    }
+
     public BiddingContext Build() {
-        return new BiddingContext(_calls, _hand);
+        return new BiddingContext(_calls, _hand, _currentPosition);
     }
 }

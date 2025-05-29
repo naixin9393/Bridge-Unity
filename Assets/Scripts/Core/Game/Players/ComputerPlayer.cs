@@ -56,7 +56,9 @@ public class ComputerPlayer : IPlayer {
     }
 
     public void RequestPlayerCallDecision(List<BiddingSuggestion> biddingSuggestions) {
-        var suggestedCall = biddingSuggestions[0].Call;
+        ICall suggestedCall = new Pass(this);
+        if (biddingSuggestions.Count != 0)
+            suggestedCall = biddingSuggestions[0].Call;
         ICall call;
         switch (suggestedCall.Type) {
             case CallType.Pass:

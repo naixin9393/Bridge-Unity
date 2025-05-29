@@ -2,41 +2,69 @@
     <Style src="project://database/Assets/UI%20Toolkit/Styles/CommonStyleSheet.uss?fileID=7433441132597879392&amp;guid=086b46d161ea6c843a6999d57f0fa7ea&amp;type=3#CommonStyleSheet" />
     <ui:VisualElement name="HandSelectionContainer" data-source="project://database/Assets/Scripts/ScriptableObjects/GameConfiguration.asset?fileID=11400000&amp;guid=ee5fc8f7991bb8b4c85010353dc59a72&amp;type=2#GameConfiguration" class="background" style="flex-grow: 1; height: 1080px; justify-content: flex-start; align-items: center;">
         <ui:Label text="CONFIGURAR MANO" name="Title" class="header gap" />
-        <ui:VisualElement name="ConfigMenu" style="flex-grow: 1; width: 68%; align-items: center; align-self: auto; align-content: flex-start; justify-content: center;">
-            <ui:VisualElement name="HCPRange" class="gap" style="flex-grow: 0; width: 80%; flex-direction: row; align-items: center;">
-                <ui:Label text="Puntos de honor" name="Label" class="header2 gap" style="flex-direction: column;" />
-                <ui:VisualElement name="SliderContainer" class="gap" style="flex-grow: 1; flex-direction: row; align-items: center;">
-                    <ui:Label text="Label" name="MinHCP" class="text30">
-                        <Bindings>
-                            <ui:DataBinding property="text" data-source-path="MinHCP" binding-mode="ToTarget" />
-                        </Bindings>
-                    </ui:Label>
-                    <ui:MinMaxSlider low-limit="0" high-limit="37" name="MyMinMaxSlider" enabled="true" usage-hints="None" tabindex="0" language-direction="Inherit" class="round-slider" style="font-size: 44px; width: 70%; flex-grow: 1; flex-direction: row; align-items: center; align-content: center;">
-                        <Bindings>
-                            <ui:DataBinding property="value" data-source-path="HCPRange" binding-mode="TwoWay" />
-                        </Bindings>
-                    </ui:MinMaxSlider>
-                    <ui:Label text="Label" name="MaxHCP" class="text30">
-                        <Bindings>
-                            <ui:DataBinding property="text" data-source-path="MaxHCP" binding-mode="ToTarget" />
-                        </Bindings>
-                    </ui:Label>
+        <ui:VisualElement name="VisualElement" style="flex-grow: 1; flex-direction: row; width: 100%;">
+            <ui:VisualElement name="ConfigMenu" style="flex-grow: 1; width: 68%; align-items: center; align-self: auto; align-content: flex-start; justify-content: center;">
+                <ui:Label text="Tu mano" class="header2" />
+                <ui:VisualElement name="HCPRange" class="gap" style="flex-grow: 0; width: 80%; flex-direction: row; align-items: center;">
+                    <ui:Label text="Puntos de honor:" name="Label" class="header2 gap" style="flex-direction: column;" />
+                    <ui:VisualElement name="VisualElement" style="flex-grow: 1; flex-direction: row; font-size: 24px; -unity-font-style: bold;">
+                        <ui:IntegerField value="42" name="MinHCPField">
+                            <Bindings>
+                                <ui:DataBinding property="value" data-source-path="HCPRange.x" binding-mode="TwoWay" />
+                            </Bindings>
+                        </ui:IntegerField>
+                        <ui:Label text="a" class="text30" />
+                        <ui:IntegerField value="42" max-length="2" name="MaxHCPField">
+                            <Bindings>
+                                <ui:DataBinding property="value" data-source-path="HCPRange.y" binding-mode="TwoWay" />
+                            </Bindings>
+                        </ui:IntegerField>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:VisualElement name="BalancedHand" class="gap" style="flex-grow: 0; align-items: center; width: 80%; flex-direction: row;">
+                    <ui:Label text="Mano equilibrada" name="Label" class="header2 gap" />
+                    <ui:VisualElement name="ToggleContainer" style="flex-grow: 1; align-items: flex-start;">
+                        <ui:Toggle class="gap" style="border-top-left-radius: 10px; border-top-right-radius: 10px; border-bottom-right-radius: 10px; border-bottom-left-radius: 10px;">
+                            <Bindings>
+                                <ui:DataBinding property="value" data-source-path="BalancedHand" binding-mode="TwoWay" />
+                            </Bindings>
+                        </ui:Toggle>
+                    </ui:VisualElement>
                 </ui:VisualElement>
             </ui:VisualElement>
-            <ui:VisualElement name="BalancedHand" class="gap" style="flex-grow: 0; align-items: center; width: 80%; flex-direction: row;">
-                <ui:Label text="Mano equilibrada" name="Label" class="header2 gap" />
-                <ui:VisualElement name="ToggleContainer" style="flex-grow: 1; align-items: center;">
-                    <ui:Toggle class="gap" style="border-top-left-radius: 10px; border-top-right-radius: 10px; border-bottom-right-radius: 10px; border-bottom-left-radius: 10px;">
-                        <Bindings>
-                            <ui:DataBinding property="value" data-source-path="BalancedHand" binding-mode="ToSource" />
-                        </Bindings>
-                    </ui:Toggle>
+            <ui:VisualElement name="ConfigMenu" style="flex-grow: 1; width: 68%; align-items: center; align-self: auto; align-content: flex-start; justify-content: center;">
+                <ui:Label text="Mano de compañero" class="header2" />
+                <ui:VisualElement name="HCPRange" class="gap" style="flex-grow: 0; width: 80%; flex-direction: row; align-items: center;">
+                    <ui:Label text="Puntos de honor" name="Label" class="header2 gap" style="flex-direction: column;" />
+                    <ui:VisualElement name="VisualElement" style="flex-grow: 1; flex-direction: row; font-size: 24px; -unity-font-style: bold;">
+                        <ui:IntegerField value="42" name="PMinHCPField">
+                            <Bindings>
+                                <ui:DataBinding property="value" data-source-path="PartnerHCPRange.x" binding-mode="TwoWay" />
+                            </Bindings>
+                        </ui:IntegerField>
+                        <ui:Label text="a" class="text30" />
+                        <ui:IntegerField value="42" name="PMaxHCPField">
+                            <Bindings>
+                                <ui:DataBinding property="value" data-source-path="PartnerHCPRange.y" binding-mode="TwoWay" />
+                            </Bindings>
+                        </ui:IntegerField>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:VisualElement name="BalancedHand" class="gap" style="flex-grow: 0; align-items: center; width: 80%; flex-direction: row;">
+                    <ui:Label text="Mano equilibrada" name="Label" class="header2 gap" />
+                    <ui:VisualElement name="ToggleContainer" style="flex-grow: 1; align-items: flex-start;">
+                        <ui:Toggle class="gap" style="border-top-left-radius: 10px; border-top-right-radius: 10px; border-bottom-right-radius: 10px; border-bottom-left-radius: 10px;">
+                            <Bindings>
+                                <ui:DataBinding property="value" data-source-path="BalancedHand" binding-mode="TwoWay" />
+                            </Bindings>
+                        </ui:Toggle>
+                    </ui:VisualElement>
                 </ui:VisualElement>
             </ui:VisualElement>
-            <ui:VisualElement name="ButtonContainer" class="gap" style="flex-grow: 0; flex-direction: row; align-items: center; justify-content: center;">
-                <ui:Button text="Volver" name="ReturnButton" class="gap cancel-button" />
-                <ui:Button text="Aceptar" name="AcceptButton" class="gap accept-button" />
-            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="ButtonContainer" class="gap" style="flex-grow: 0; flex-direction: row; align-items: center; justify-content: center;">
+            <ui:Button text="Volver" name="ReturnButton" class="gap cancel-button" />
+            <ui:Button text="Aceptar" name="AcceptButton" class="gap accept-button" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

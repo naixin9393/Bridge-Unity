@@ -12,8 +12,8 @@ public class BridgeCardComparerTests {
     [TestCase(Rank.Four, Suit.Diamonds, Rank.Four, Suit.Diamonds, Suit.Clubs, Strain.NoTrump, 0, TestName = "NoTrump_NoCardFollowLead_BothSameSuit_CompareRank")]
     [TestCase(Rank.Queen, Suit.Diamonds, Rank.Four, Suit.Diamonds, Suit.Clubs, Strain.NoTrump, 1, TestName = "NoTrump_NoCardFollowLead_BothSameSuit_CompareRank")]
 
-    [TestCase(Rank.Three, Suit.Diamonds, Rank.Four, Suit.Spades, Suit.Clubs, Strain.NoTrump, -1, TestName = "NoTrump_NoCardFollowLead_BothDifferentSuit_CompareSuit")]
-    [TestCase(Rank.Three, Suit.Diamonds, Rank.Four, Suit.Clubs, Suit.Hearts, Strain.NoTrump, 1, TestName = "NoTrump_NoCardFollowLead_BothDifferentSuit_CompareSuit")]
+    [TestCase(Rank.Three, Suit.Clubs, Rank.Four, Suit.Spades, Suit.Hearts, Strain.NoTrump, -1, TestName = "NoTrump_NoCardFollowLead_BothDifferentSuit_CompareSuit")]
+    [TestCase(Rank.Three, Suit.Clubs, Rank.Four, Suit.Diamonds, Suit.Hearts, Strain.NoTrump, 1, TestName = "NoTrump_NoCardFollowLead_BothDifferentSuit_CompareSuit")]
 
     [TestCase(Rank.Three, Suit.Hearts, Rank.Four, Suit.Hearts, Suit.Hearts, Strain.Hearts, -1, TestName = "Trump_BothCardsTrump_CompareRank")]
     [TestCase(Rank.Seven, Suit.Hearts, Rank.Four, Suit.Hearts, Suit.Hearts, Strain.Hearts, 1, TestName = "Trump_BothCardsTrump_CompareRank")]

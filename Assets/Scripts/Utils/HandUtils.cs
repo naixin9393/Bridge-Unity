@@ -32,16 +32,22 @@ public static class HandUtils {
 
     public static bool IsBalancedHand(IHand hand) {
         if (hand.NumberOfCards != 13) return false;
+        if (hand.NumberOfCardsOfSuit(Suit.Spades) >= 5) return false;
+        if (hand.NumberOfCardsOfSuit(Suit.Hearts) >= 5) return false;
+
         var numberOfEachSuit = new List<int>() {
             hand.NumberOfCardsOfSuit(Suit.Spades),
             hand.NumberOfCardsOfSuit(Suit.Hearts),
             hand.NumberOfCardsOfSuit(Suit.Diamonds),
             hand.NumberOfCardsOfSuit(Suit.Clubs)
         };
-        if (Is5332(numberOfEachSuit)) return true;
-        if (Is4432(numberOfEachSuit)) return true;
-        if (Is4333(numberOfEachSuit)) return true;
-        return false;
+
+        bool hasVoid = numberOfEachSuit.Any(suitCount => suitCount == 0);
+        bool hasSingleton = numberOfEachSuit.Any(suitCount => suitCount == 1);
+        int doubletonCount = numberOfEachSuit.Count(suitCount => suitCount == 2);
+        int maxSuitLength = numberOfEachSuit.Max();
+        
+        return !hasVoid && !hasSingleton && doubletonCount <= 1 && maxSuitLength <= 5;
     }
     
     public static int CalculateTotalPoints(IHand hand, Suit fittingSuit) {
@@ -73,18 +79,16 @@ public static class HandUtils {
         return dp;
     }
 
-    public static bool Contains4Hearts(List<Card> hand) {
-        return hand.Count(card => card.Suit == Suit.Hearts) >= 4;
+    public static bool Contains4Hearts(IHand hand) {
+        return hand.NumberOfCardsOfSuit(Suit.Hearts) >= 4;
     }
 
-    public static bool Contains4Spades(List<Card> hand) {
-        return hand.Count(card => card.Suit == Suit.Spades) >= 4;
+    public static bool Contains4Spades(IHand hand) {
+        return hand.NumberOfCardsOfSuit(Suit.Spades) >= 4;
     }
 
-    internal static bool Contains4MajorCards(List<Card> hand) {
-        var numberOfSpades = hand.Count(card => card.Suit == Suit.Spades);
-        var numberOfHearts = hand.Count(card => card.Suit == Suit.Hearts);
-        return numberOfSpades >= 4 || numberOfHearts >= 4;
+    public static bool Contains4MajorCards(IHand hand) {
+        return hand.NumberOfCardsOfSuit(Suit.Spades) >= 4 || hand.NumberOfCardsOfSuit(Suit.Hearts) >= 4;
     }
 
     private static bool Is4333(List<int> numberOfEachSuit) {
