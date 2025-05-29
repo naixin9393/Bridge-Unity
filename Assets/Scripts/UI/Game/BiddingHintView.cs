@@ -9,6 +9,9 @@ public class BiddingHintView: MonoBehaviour {
     private GameViewModel _gameViewModel;
     private VisualElement _biddingHintInstance;
     private Button _closeButton;
+    private Label _callLabel;
+    private Label _explanationLabel;
+
     public void Initialize(GameViewModel gameViewModel) {
         _gameViewModel = gameViewModel;
         _biddingHintInstance = _biddingHintUXML.Instantiate();
@@ -19,19 +22,13 @@ public class BiddingHintView: MonoBehaviour {
         _closeButton = _biddingHintInstance.Q<Button>("CloseButton");
         _closeButton.RegisterCallback<ClickEvent>(OnCloseButtonClicked);
         
-        var callLabel = _biddingHintInstance.Q<Label>("CallLabel");
-        callLabel.dataSource = _gameViewModel.BiddingHintCall;
-        callLabel.SetBinding(nameof(Label.text), new DataBinding {
-            dataSourcePath = new PropertyPath(nameof(BindableProperty<string>.Value)),
-            bindingMode = BindingMode.ToTarget
-        });
+        _callLabel = _biddingHintInstance.Q<Label>("CallLabel");
+        _explanationLabel = _biddingHintInstance.Q<Label>("ExplanationLabel");
+    }
 
-        var explanationLabel = _biddingHintInstance.Q<Label>("ExplanationLabel");
-        explanationLabel.dataSource = _gameViewModel.BiddingHintMessage;
-        explanationLabel.SetBinding(nameof(Label.text), new DataBinding {
-            dataSourcePath = new PropertyPath(nameof(BindableProperty<string>.Value)),
-            bindingMode = BindingMode.ToTarget
-        });
+    public void Set(string call, string message) {
+        _callLabel.text = call;
+        _explanationLabel.text = message;
     }
 
     private void OnCloseButtonClicked(ClickEvent evt) {

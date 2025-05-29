@@ -34,6 +34,7 @@ public class ComputerPlayer : IPlayer {
 
     public void RequestPlayerPlayDecision(PlayingContext playingContext) {
         if (playingContext.Dummy == this && IsPartner(playingContext.Human)) return; // Dummy can't play if declarer is human
+        if (playingContext.Dummy == playingContext.Human && IsPartner(playingContext.Human)) return; // Human can't play if declarer is dummy
         if (playingContext.PossibleCards.Count == 0)
             throw new EmptyHandException(this);
         var possibleCards = playingContext.PossibleCards;

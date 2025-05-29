@@ -26,6 +26,7 @@ public class StatsView : MonoBehaviour {
     private IPlayer _player4;
     private Dictionary<Position, VisualElement> _playerCallsContainersMap = new();
     private Dictionary<Position, VisualElement> _playerPlaysContainersMap = new();
+    private Dictionary<VisualElement, (string call, string message)> _biddingHintsMap = new();
     private Button _hintButton;
 
     public void Initialize(VisualElement statsContainer, GameViewModel gameViewModel) {
@@ -36,6 +37,8 @@ public class StatsView : MonoBehaviour {
 
         _callsContainer = _statsContainer.Q<VisualElement>("CallsContainer");
         _playsContainer = _statsContainer.Q<VisualElement>("PlaysContainer");
+        
+        _callsContainer.RegisterCallback<ClickEvent>(OnPlaysContainerClicked);
 
         SetPlayersLabel();
 
@@ -65,14 +68,44 @@ public class StatsView : MonoBehaviour {
         _hintButton.RegisterCallback<ClickEvent>(OnHintButtonClicked);
     }
 
+    private void OnPlaysContainerClicked(ClickEvent evt) {
+        var target = evt.target as VisualElement;
+        if (!_biddingHintsMap.ContainsKey(target)) return;
+        var call = _biddingHintsMap[target].call;
+        var message = _biddingHintsMap[target].message;
+        _biddingHintView.Set(call, message);
+        _biddingHintView.Show();
+    }
+
     private void OnHintButtonClicked(ClickEvent evt) {
+        _biddingHintView.Set(
+            call: _gameViewModel.BiddingHintCall.Value,
+            message: _gameViewModel.BiddingHintMessage.Value
+        );
         _biddingHintView.Show();
     }
 
     public void HandlePlayMade(Component sender, object data) {
         if (data is ValueTuple<Card, IPlayer> cardData) {
-            Label label = new(cardData.Item1.ToString());
+            var card = cardData.Item1;
+            Label label = new(card.ToString());
             label.AddToClassList("header2");
+            
+            switch (card.Suit) {
+                case Suit.Clubs:
+                    label.AddToClassList("clubs");
+                    break;
+                case Suit.Diamonds:
+                    label.AddToClassList("diamonds");
+                    break;
+                case Suit.Hearts:
+                    label.AddToClassList("hearts");
+                    break;
+                case Suit.Spades:
+                    label.AddToClassList("spades");
+                    break;
+            }
+
             _playerPlaysContainersMap[cardData.Item2.Position].Add(label);
         }
     }
@@ -88,11 +121,35 @@ public class StatsView : MonoBehaviour {
     public void HandleCallMade(Component sender, object call) {
         if (call is not ICall) return;
         var callData = call as ICall;
-        Label label = new(callData switch {
+        var callString = callData switch {
             BidCall bidCall => bidCall.Bid.ToString(),
             _ => callData.ToString()
-        });
+        };
+
+        Label label = new(callString);
+
+        if (callData.Type == CallType.Bid) {
+            BidCall bidCall = callData as BidCall;
+            switch (bidCall.Bid.Strain) { 
+                case Strain.Clubs:
+                    label.AddToClassList("clubs");
+                    break;
+                case Strain.Diamonds:
+                    label.AddToClassList("diamonds");
+                    break;
+                case Strain.Hearts:
+                    label.AddToClassList("hearts");
+                    break;
+                case Strain.Spades:
+                    label.AddToClassList("spades");
+                    break;
+            }
+        }
+        
+        _biddingHintsMap.Add(label, (callString, _gameViewModel.BiddingHintHistory[_biddingHintsMap.Count].message));
+
         label.AddToClassList("header2");
+        label.AddToClassList("info");
         _playerCallsContainersMap[callData.Caller.Position].Add(label);
     }
 

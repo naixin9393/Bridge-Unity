@@ -112,7 +112,12 @@ public class PlayView : MonoBehaviour {
             bindingMode = BindingMode.ToTarget
         });
 
-        _dummyPlayer = _gameViewModel.Dummy;
+        if (_humanPlayer == _gameViewModel.Dummy) {
+            _dummyPlayer = PlayerUtils.PartnerOf(_humanPlayer, _gameViewModel.Players.ToList());
+        }
+        else {
+            _dummyPlayer = _gameViewModel.Dummy;
+        }
         _dummyHandContainer = _positionHandContainersMap[_dummyPlayer.Position];
 
         _dummyHandContainer.dataSource = _dummyHandDisplayStyle;
@@ -184,9 +189,9 @@ public class PlayView : MonoBehaviour {
             return;
         }
         if (player == _humanPlayer ||
-            player == _dummyPlayer && _gameViewModel.Declarer == _humanPlayer ||
+            player == _dummyPlayer && !PlayerUtils.OnDifferentTeam(_dummyPlayer, _humanPlayer) ||
             player == _gameViewModel.Declarer && _humanPlayer == _dummyPlayer) {
-            EnablePossibleCardInHand(player, playerCardViews);        
+            EnablePossibleCardInHand(player, playerCardViews);
             return;
         }
         DisableHand(playerCardViews);
@@ -212,12 +217,11 @@ public class PlayView : MonoBehaviour {
             playerCardViews: _humanPlayerCardViews
         );
 
-        // Insert card for dummy
         PopulateHand(
             hand: _dummyPlayer.Hand.Cards,
             handContainer: _dummyHandContainer,
             player: _dummyPlayer,
-            canChooseCard: _gameViewModel.Declarer == _humanPlayer,
+            canChooseCard: !PlayerUtils.OnDifferentTeam(_humanPlayer, _dummyPlayer),
             playerCardViews: _dummyPlayerCardViews
         );
     }
@@ -262,10 +266,10 @@ public class PlayView : MonoBehaviour {
 
                 float newWidth = currentWidth * scaleFactor;
                 float newHeight = currentHeight * scaleFactor;
-                
+
                 cardView.style.width = new StyleLength(newWidth);
                 cardView.style.height = new StyleLength(newHeight);
-                
+
             }
             if (canChooseCard)
                 cardView.RegisterCallback<ClickEvent>(evt => {
@@ -277,7 +281,7 @@ public class PlayView : MonoBehaviour {
                 handContainer.Add(cardView);
             playerCardViews.Add(cardView);
         }
-        
+
         if (player == _leftPlayer || player == _rightPlayer) {
             handContainer.Add(spadesContainer);
             handContainer.Add(heartsContainer);

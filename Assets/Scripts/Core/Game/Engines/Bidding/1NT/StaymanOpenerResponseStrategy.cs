@@ -40,13 +40,13 @@ public class StaymanOpenerResponseStrategy : IBiddingStrategy {
         if (totalPointsHearts >= 8 && totalPointsHearts <= 9 && HandUtils.Contains4Hearts(hand) && partnerBidIs2Hearts)
             // 3H when 8-9 TP and 4 hearts
             suggestions.Add(
-                    new(message: BiddingMessages.Stayman2HResponse3H(hcp),
+                    new(message: BiddingMessages.Stayman2HResponse3H(totalPointsHearts),
                     call: new BidCall(new Bid(3, Strain.Hearts), null)));
         
         if (totalPointsHearts >= 10 && totalPointsHearts <= 15 && HandUtils.Contains4Hearts(hand) && partnerBidIs2Hearts)
             // 4H when 10-15 TP and 4 hearts
             suggestions.Add(
-                    new(message: BiddingMessages.Stayman2HResponse4H(hcp),
+                    new(message: BiddingMessages.Stayman2HResponse4H(totalPointsHearts),
                     call: new BidCall(new Bid(4, Strain.Hearts), null)));
         
         if (hcp >= 8 && hcp <= 9 && HandUtils.Contains4Spades(hand) && !HandUtils.Contains4Hearts(hand) && partnerBidIs2Hearts)
@@ -65,13 +65,13 @@ public class StaymanOpenerResponseStrategy : IBiddingStrategy {
         if (totalPointsSpades >= 8 && totalPointsSpades <= 9 && HandUtils.Contains4Spades(hand) && partnerBidIs2Spades)
             // 3S when 8-9 TP and 4 spades
             suggestions.Add(
-                    new(message: BiddingMessages.Stayman2SResponse3S(hcp),
+                    new(message: BiddingMessages.Stayman2SResponse3S(totalPointsSpades),
                     call: new BidCall(new Bid(3, Strain.Spades), null)));
         
         if (totalPointsSpades >= 10 && HandUtils.Contains4Spades(hand) && partnerBidIs2Spades)
             // 4S when 10+ and 4 spades
             suggestions.Add(
-                    new(message: BiddingMessages.Stayman2SResponse4S(hcp),
+                    new(message: BiddingMessages.Stayman2SResponse4S(totalPointsSpades),
                     call: new BidCall(new Bid(4, Strain.Spades), null)));
         
         if (hcp >= 8 && hcp <= 9 && HandUtils.Contains4Hearts(hand) && !HandUtils.Contains4Spades(hand) && partnerBidIs2Spades)

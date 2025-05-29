@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using UnityEngine;
@@ -52,6 +53,8 @@ public class GameViewModel : IDisposable {
     });
 
     public int TricksNeededToWin;
+    public ReadOnlyCollection<(string call, string message)> BiddingHintHistory => _biddingHintHistory.AsReadOnly();
+    private readonly List<(string call, string message)> _biddingHintHistory = new();
     private GamePhase _phase = GamePhase.Auction;
 
     public GameViewModel(IGameManager game, IPlayer humanPlayer) {
@@ -82,6 +85,7 @@ public class GameViewModel : IDisposable {
     }
 
     public void HandlePlayerCallChosen(ICall call) {
+        _biddingHintHistory.Add((call.ToString(), _game.BiddingSuggestions[0].Message));
         _game.ProcessCall(call);
     }
     
