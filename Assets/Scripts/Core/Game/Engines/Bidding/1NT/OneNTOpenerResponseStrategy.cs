@@ -1,15 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 public class OneNTOpenerResponseStrategy : IBiddingStrategy {
     public bool IsApplicable(BiddingContext context) {
-        if (context.Calls.Count < 4) return false;
-        if (context.Calls.Where(c => c.Type == CallType.Bid).Count() < 2) return false;
-        if (context.Calls[^2].Type != CallType.Bid) return false;
-        var partnerCall = context.Calls.Where(c => c.Type == CallType.Bid).Last() as BidCall;
-        if (partnerCall.Bid.Strain == Strain.Clubs) return false;
-        return true;
+        if (context.MatchesBidSequence((1, Strain.NoTrump), (2, Strain.NoTrump))) return true;
+        if (context.MatchesBidSequence((1, Strain.NoTrump), (3, Strain.NoTrump))) return true;
+        if (context.MatchesBidSequence((1, Strain.NoTrump), (4, Strain.NoTrump))) return true;
+        if (context.MatchesBidSequence((1, Strain.NoTrump), (6, Strain.NoTrump))) return true;
+        return false;
     }
 
     public List<BiddingSuggestion> GetSuggestions(BiddingContext context) {

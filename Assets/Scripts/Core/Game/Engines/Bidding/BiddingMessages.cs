@@ -62,6 +62,48 @@ public static class BiddingMessages {
     public static string Stayman2SResponse3NT(int HCP)
         => string.Format("Stayman. {0} {1} {2}, {3} corazones. {4}", ResponseTo(2, Strain.NoTrump), WithHCP(HCP), HCPRange(10, 15), 4, GameRange); // 3NT
 
+    // Stayman second response
+    public static string Stayman2D2NTSecondResponsePass(int HCP)
+        => string.Format("Stayman 2D. {0} {1} {2}, no alcanza a {3}", ResponseTo(2, Strain.NoTrump), HCPRange(8, 9), WithHCP(HCP), GameRange); // Pass
+    
+    public static string Stayman2D2NTSecondResponse3NT(int HCP)
+        => string.Format("Stayman 2D. {0} {1} {2}, alcanza a {3}", ResponseTo(2, Strain.NoTrump), HCPRange(8, 9), WithHCP(HCP), GameRange); // 3NT
+    
+    public static string Stayman2H3HSecondResponsePass(int TP)
+        => string.Format("Stayman 2H. {0} {1} {2}, no alcanza a {3}", ResponseTo(3, Strain.Hearts), HCPRange(8, 9), WithTP(TP), GameRange); // Pass
+    
+    public static string Stayman2H3HSecondResponse4H(int TP)
+        => string.Format("Stayman 2H. {0} {1} {2}, alcanza a {3}", ResponseTo(3, Strain.Hearts), HCPRange(8, 9), WithTP(TP), GameRange); // 4H
+    
+    public static string Stayman2H2NTSecondResponsePass(int HCP)
+        => string.Format("Stayman 2H. {0} {1} {2}, no alcanza a {3}", ResponseTo(2, Strain.NoTrump), HCPRange(8, 9), WithHCP(HCP), GameRange); // Pass
+    
+    public static string Stayman2H2NTSecondResponse3NT(int HCP)
+        => string.Format("Stayman 2H. {0} {1} {2}, alcanza a {3}", ResponseTo(2, Strain.NoTrump), HCPRange(8, 9), WithHCP(HCP), GameRange); // 3NT
+    
+    public static string Stayman2H2NTSecondResponse3S(int TP)
+        => string.Format("Stayman 2H. {0} {1} {2}, fit picas, no alcanza a {3}", ResponseTo(2, Strain.NoTrump), HCPRange(8, 9), WithTP(TP), GameRange); // 3S
+    
+    public static string Stayman2H2NTSecondResponse4S(int TP)
+        => string.Format("Stayman 2H. {0} {1} {2}, fit picas y alcanza a {3}", ResponseTo(2, Strain.NoTrump), HCPRange(8, 9), WithTP(TP), GameRange); // 4S
+    
+    public static string Stayman2H3NTSecondResponsePass(int HCP)
+        => string.Format("Stayman 2H. {0} {1} {2}, {3}", ResponseTo(3, Strain.NoTrump), HCPRange(10, 15), WithHCP(HCP), GameRange); // Pass
+    
+    public static string Stayman2H3NTSecondResponse4S(int TP)
+        => string.Format("Stayman 2H. {0} {1} {2}, fit picas y alcanza a {3}", ResponseTo(3, Strain.NoTrump), HCPRange(10, 15), WithTP(TP), GameRange); // 4S
+    
+    public static string Stayman2S3SSecondResponsePass(int TP)
+        => string.Format("Stayman 2S. {0} {1} {2}, no alcanza a {3}", ResponseTo(3, Strain.Spades), HCPRange(8, 9), WithTP(TP), GameRange); // Pass
+    
+    public static string Stayman2S3SSecondResponse4S(int TP)
+        => string.Format("Stayman 2S. {0} {1} {2}, fit picas, alcanza a {3}", ResponseTo(3, Strain.Spades), HCPRange(8, 9), WithTP(TP), GameRange); // 4S
+    
+    public static string Stayman2S2NTSecondResponsePass(int HCP)
+        => string.Format("Stayman 2S. {0} {1} {2}, no alcanza a {3}", ResponseTo(2, Strain.NoTrump), HCPRange(8, 9), WithHCP(HCP), GameRange); // Pass
+    
+    public static string Stayman2S2NTSecondResponse3NT(int HCP)
+        => string.Format("Stayman 2S. {0} {1} {2}, alcanza a {3}", ResponseTo(2, Strain.NoTrump), HCPRange(8, 9), WithHCP(HCP), GameRange); // 3NT
 
     // Rebid
     public static string OneNTRebidNotEnoughHCP

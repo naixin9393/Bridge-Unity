@@ -6,13 +6,9 @@ public class StaymanOpenerResponseStrategy : IBiddingStrategy {
         if (biddingContext.Calls.Count < 6) return false;
         var partnerCall = biddingContext.Calls[^2];
         if (partnerCall.Type != CallType.Bid) return false;
-        if (biddingContext.Calls.Where(c => c.Type == CallType.Bid).Count() != 3) return false;
-        var firstBidCall = biddingContext.Calls.Where(c => c.Type == CallType.Bid).First() as BidCall;
-        if (!firstBidCall.Bid.Equals(new Bid(1, Strain.NoTrump))) return false;
-        var secondBidCall = biddingContext.Calls.Where(c => c.Type == CallType.Bid).Skip(1).First() as BidCall;
-        if (!secondBidCall.Bid.Equals(new Bid(2, Strain.Clubs))) return false;
-        var thirdBidCall = biddingContext.Calls.Where(c => c.Type == CallType.Bid).Skip(2).First() as BidCall;
-        if (thirdBidCall.Bid.Equals(new Bid(2, Strain.Diamonds)) || thirdBidCall.Bid.Equals(new Bid(2, Strain.Hearts)) || thirdBidCall.Bid.Equals(new Bid(2, Strain.Spades))) return true;
+        if (biddingContext.MatchesBidSequence((1, Strain.NoTrump), (2, Strain.Clubs), (2, Strain.Diamonds))) return true;
+        if (biddingContext.MatchesBidSequence((1, Strain.NoTrump), (2, Strain.Clubs), (2, Strain.Hearts))) return true;
+        if (biddingContext.MatchesBidSequence((1, Strain.NoTrump), (2, Strain.Clubs), (2, Strain.Spades))) return true;
         return false;
     }
 

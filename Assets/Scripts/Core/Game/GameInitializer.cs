@@ -68,6 +68,7 @@ public class GameInitializer : MonoBehaviour {
             new OneNTOpenerResponseStrategy(),
             new StaymanResponseStrategy(),
             new StaymanOpenerResponseStrategy(),
+            new StaymanSecondResponseStrategy()
         };
 
         // Create bidding engine
