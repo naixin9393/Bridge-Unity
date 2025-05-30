@@ -2,37 +2,15 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ComputerPlayer : IPlayer {
-    public Position Position { get; private set; }
-    private readonly IHand _hand = new Hand();
-
-    public event Action<Card, IPlayer> OnCardChosen = delegate { };
-    public event Action<ICall> OnCallChosen;
-
-    public IHand Hand => _hand;
-    
+public class ComputerPlayer : Player {
     private IDelayService _coroutineStarter;
+    public override event Action<Card, IPlayer> OnCardChosen = delegate { };
+    public override event Action<ICall> OnCallChosen = delegate { };
 
-    public ComputerPlayer(Position position, IDelayService coroutineStarter) {
-        Position = position;
+    public ComputerPlayer(Position position, IDelayService coroutineStarter) : base(position){
         _coroutineStarter = coroutineStarter;
     }
-
-    public void ReceiveCards(List<Card> cards) {
-        _hand.AddCards(cards);
-    }
-
-    public void PlayCard(Card card) {
-        if (!_hand.HasCard(card))
-            throw new CardNotInHandException(card, this);
-        _hand.RemoveCard(card);
-    }
-
-    public override string ToString() {
-        return $"{Position}";
-    }
-
-    public void RequestPlayerPlayDecision(PlayingContext playingContext) {
+    public override void RequestPlayerPlayDecision(PlayingContext playingContext) {
         if (playingContext.Dummy == this && IsPartner(playingContext.Human)) return; // Dummy can't play if declarer is human
         if (playingContext.Dummy == playingContext.Human && IsPartner(playingContext.Human)) return; // Human can't play if declarer is dummy
         if (playingContext.PossibleCards.Count == 0)
@@ -42,7 +20,7 @@ public class ComputerPlayer : IPlayer {
         Debug.Log($"ComputerPlayer: PlayCard: {card}");
         _coroutineStarter.DelayAction(
             0.6f,
-            () =>OnCardChosen?.Invoke(card, this)
+            () => OnCardChosen?.Invoke(card, this)
         );
     }
 
@@ -56,7 +34,7 @@ public class ComputerPlayer : IPlayer {
         };
     }
 
-    public void RequestPlayerCallDecision(List<BiddingSuggestion> biddingSuggestions) {
+    public override void RequestPlayerCallDecision(List<BiddingSuggestion> biddingSuggestions) {
         ICall suggestedCall = new Pass(this);
         if (biddingSuggestions.Count != 0)
             suggestedCall = biddingSuggestions[0].Call;
@@ -80,7 +58,7 @@ public class ComputerPlayer : IPlayer {
         }
         _coroutineStarter.DelayAction(
             0.4f,
-            () =>OnCallChosen?.Invoke(call)
+            () => OnCallChosen?.Invoke(call)
         );
     }
 }

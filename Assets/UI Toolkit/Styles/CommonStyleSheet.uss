@@ -20,6 +20,7 @@
     padding-right: 30px;
     padding-bottom: 20px;
     padding-left: 30px;
+    cursor: url("project://database/Assets/NativeCursor/Cursors/Windows/aero_link.cur?fileID=-73149138658418320&guid=7782c1ba61d9b05428bee43be845a54d&type=3#cursor_3_texture");
 }
 
 .accept-button {
@@ -87,6 +88,7 @@
     scale: 1.05 1.05;
     align-items: flex-start;
     align-content: auto;
+    cursor: url("project://database/Assets/NativeCursor/Cursors/Windows/aero_link.cur?fileID=-73149138658418320&guid=7782c1ba61d9b05428bee43be845a54d&type=3#cursor_3_texture");
 }
 
 .cancel-button:hover {
@@ -96,6 +98,7 @@
     background-color: rgb(204, 177, 146);
     transition-duration: 0.3s;
     scale: 1.05 1.05;
+    cursor: url("project://database/Assets/NativeCursor/Cursors/Windows/aero_link.cur?fileID=-73149138658418320&guid=7782c1ba61d9b05428bee43be845a54d&type=3#cursor_3_texture");
 }
 
 .selected-button {
@@ -259,8 +262,8 @@
     color: rgb(254, 102, 0);
 }
 
-.info:hover {
-    cursor: url("project://database/Assets/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=2346436936791262179&guid=84dfe4ff20a0007459e7af83923e1ed6&type=3#console.infoicon");
+.clickable:hover {
+    cursor: url("project://database/Assets/NativeCursor/Cursors/Windows/aero_link.cur?fileID=-73149138658418320&guid=7782c1ba61d9b05428bee43be845a54d&type=3#cursor_3_texture");
 }
 
 .spades {

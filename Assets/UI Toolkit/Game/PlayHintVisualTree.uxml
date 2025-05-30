@@ -1,0 +1,21 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/Styles/CommonStyleSheet.uss?fileID=7433441132597879392&amp;guid=086b46d161ea6c843a6999d57f0fa7ea&amp;type=3#CommonStyleSheet" />
+    <Style src="project://database/Assets/UI%20Toolkit/Styles/SettingsStyleSheet.uss?fileID=7433441132597879392&amp;guid=165972ecaa5ed4e46b16564da03b035b&amp;type=3#SettingsStyleSheet" />
+    <ui:VisualElement class="align-items-center" style="flex-grow: 1; background-color: rgb(41, 41, 41); border-top-left-radius: 100px; border-top-right-radius: 100px; border-bottom-right-radius: 100px; border-bottom-left-radius: 100px; flex-shrink: 0; width: 60%; height: 60%; padding-top: 40px; padding-right: 40px; padding-bottom: 40px; padding-left: 40px; max-height: 80%;">
+        <ui:VisualElement style="flex-grow: 0;">
+            <ui:Label text="Pista" name="Title" class="header" />
+        </ui:VisualElement>
+        <ui:VisualElement style="flex-grow: 1; width: 60%;">
+            <ui:VisualElement class="flex-row align-items-center" style="flex-grow: 1;">
+                <ui:Label text="Carta:" class="header2" />
+                <ui:Label text="Label" name="CardLabel" class="header2 underline" />
+            </ui:VisualElement>
+            <ui:VisualElement class="flex-row align-items-center" style="flex-grow: 1;">
+                <ui:Label name="ExplanationLabel" class="text30" style="white-space: normal; text-overflow: clip;" />
+            </ui:VisualElement>
+            <ui:VisualElement style="flex-grow: 1;">
+                <ui:Button text="Cerrar" name="CloseButton" class="button" style="font-size: 30px;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

@@ -1,5 +1,6 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI%20Toolkit/Styles/CommonStyleSheet.uss?fileID=7433441132597879392&amp;guid=086b46d161ea6c843a6999d57f0fa7ea&amp;type=3#CommonStyleSheet" />
+    <Style src="project://database/Assets/UI%20Toolkit/Styles/SettingsStyleSheet.uss?fileID=7433441132597879392&amp;guid=165972ecaa5ed4e46b16564da03b035b&amp;type=3#SettingsStyleSheet" />
     <ui:VisualElement name="StatsContainer" style="flex-grow: 1;">
         <ui:TabView name="bridge-tab-view" class="header2" style="flex-direction: column; align-items: center; flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
             <ui:Tab label="Subasta&#10;" style="flex-grow: 1; width: auto;">

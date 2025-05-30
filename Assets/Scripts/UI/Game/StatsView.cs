@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 
 public class StatsView : MonoBehaviour {
     [SerializeField] private BiddingHintView _biddingHintView;
+    [SerializeField] private PlayHintView _playHintView;
     private GameViewModel _gameViewModel;
     private VisualElement _statsContainer;
     private VisualElement _player1CallsContainer;
@@ -62,7 +63,8 @@ public class StatsView : MonoBehaviour {
         _playerPlaysContainersMap.Add(_player3.Position, _player3PlaysContainer);
         _playerPlaysContainersMap.Add(_player4.Position, _player4PlaysContainer);
         
-        _biddingHintView.Initialize(_gameViewModel);
+        _biddingHintView.Initialize();
+        _playHintView.Initialize();
         
         _hintButton = _statsContainer.Q<Button>("HintButton");
         _hintButton.RegisterCallback<ClickEvent>(OnHintButtonClicked);
@@ -78,11 +80,28 @@ public class StatsView : MonoBehaviour {
     }
 
     private void OnHintButtonClicked(ClickEvent evt) {
+        if (_gameViewModel.Phase == GamePhase.Play) {
+            _playHintView.Set(
+                card: "A C",
+                message: "Test"
+            );
+            _playHintView.Show();
+            return;
+        }
         _biddingHintView.Set(
             call: _gameViewModel.BiddingHintCall.Value,
             message: _gameViewModel.BiddingHintMessage.Value
         );
         _biddingHintView.Show();
+    }
+    
+    public void HandleTrickEnded(Component sender, object winner) {
+        if (winner is IPlayer) {
+            var player = winner as IPlayer;
+            var winnerPlaysContainer = _playerPlaysContainersMap[player.Position];
+            var lastLabel = winnerPlaysContainer.Query<Label>().Last();
+            lastLabel.AddToClassList("underline");
+        }
     }
 
     public void HandlePlayMade(Component sender, object data) {
@@ -90,7 +109,7 @@ public class StatsView : MonoBehaviour {
             var card = cardData.Item1;
             Label label = new(card.ToString());
             label.AddToClassList("header2");
-            
+
             switch (card.Suit) {
                 case Suit.Clubs:
                     label.AddToClassList("clubs");
@@ -149,7 +168,7 @@ public class StatsView : MonoBehaviour {
         _biddingHintsMap.Add(label, (callString, _gameViewModel.BiddingHintHistory[_biddingHintsMap.Count].message));
 
         label.AddToClassList("header2");
-        label.AddToClassList("info");
+        label.AddToClassList("clickable");
         _playerCallsContainersMap[callData.Caller.Position].Add(label);
     }
 

@@ -157,6 +157,7 @@ public class PlayView : MonoBehaviour {
     private void DisableHand(List<CardView> playerCardViews) {
         foreach (CardView cardView in playerCardViews) {
             cardView.SetEnabled(false);
+            cardView.RemoveFromClassList("clickable");
         }
     }
 
@@ -204,6 +205,10 @@ public class PlayView : MonoBehaviour {
                 !HasCardsOfSameSuit(player, _gameViewModel.LeadSuit.Value) ||
                 cardView.Card.Suit == _gameViewModel.LeadSuit;
             cardView.SetEnabled(shouldBeEnabled);
+            if (!shouldBeEnabled)
+                cardView.RemoveFromClassList("clickable");
+            else
+                cardView.AddToClassList("clickable");
         }
     }
 
@@ -271,12 +276,10 @@ public class PlayView : MonoBehaviour {
                 cardView.style.height = new StyleLength(newHeight);
 
             }
-            if (canChooseCard)
-                cardView.RegisterCallback<ClickEvent>(evt => {
-                    if (canChooseCard) {
-                        _gameViewModel.HandlePlayerCardChosen(card, player);
-                    }
-                });
+            if (canChooseCard) {
+                cardView.RegisterCallback<ClickEvent>(evt => _gameViewModel.HandlePlayerCardChosen(card, player));
+                cardView.AddToClassList("clickable");
+            }
             if (player == _bottomPlayer || player == _topPlayer)
                 handContainer.Add(cardView);
             playerCardViews.Add(cardView);
