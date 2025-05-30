@@ -25,7 +25,17 @@ namespace BridgeEdu.Utils {
 
         public static string DiscardLowestCard(List<Card> cards) {
             if (cards.Count == 0) return "No hay cartas para descartar";
-            return $"Descartar cartas. {cards}: descartar la más baja";
+            string cardsString = string.Join(", ", cards);
+            return $"Descartar cartas. {cardsString}. Descartar la más baja";
         }
+
+        public static string PlayLowestCardConsecutive(List<Card> cards) {
+            if (cards.Count == 0) return "No hay cartas para jugar";
+            string cardsString = string.Join(", ", cards);
+            return $"Cartas equivalentes. {cardsString}. Jugar la más baja";
+        }
+
+        public static string DefenderHonorOverHonor = $"Honor sobre honor del atacante. Jugar un honor mayor";
+        public static string DefenderSecondTurnPlayLowestCard = "Segunda ronda lado defensor. Jugar la carta más baja si la primera carta no es honor";
     }
 }

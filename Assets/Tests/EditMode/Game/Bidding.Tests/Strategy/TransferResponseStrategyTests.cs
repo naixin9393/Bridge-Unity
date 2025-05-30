@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using BridgeEdu.Core;
-using BridgeEdu.Engines.Bidding;
+using BridgeEdu.Game.Bidding;
 using BridgeEdu.Engines.Bidding.OneNT;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace BridgeEdu.Game.Bidding.Strategy.Tests {
+namespace BridgeEdu.Engines.Bidding {
     public class TransferResponseStrategyTests {
         [Test]
         public void GetSuggestions_NotApplicable_When_FirstBidNot1NT() {

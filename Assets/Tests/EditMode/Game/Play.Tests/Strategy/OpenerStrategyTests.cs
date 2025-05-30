@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using BridgeEdu.Core;
-using BridgeEdu.Engines.Play;
 using Moq;
 using NUnit.Framework;
 using UnityEngine;
 using BridgeEdu.Game.Bidding;
+using BridgeEdu.Game.Play;
 
-namespace BridgeEdu.Game.Play.Tests {
+namespace BridgeEdu.Engines.Play {
     public class OpenerStrategyTests {
         private OpenerStrategy _strategy;
 

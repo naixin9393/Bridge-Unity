@@ -1,12 +1,10 @@
 using System.Collections.Generic;
-using System.Security.AccessControl;
 using BridgeEdu.Core;
-using BridgeEdu.Engines.Play;
 using BridgeEdu.Game.Bidding;
 using Moq;
 using NUnit.Framework;
 
-namespace BridgeEdu.Game.Play.Tests.Strategy {
+namespace BridgeEdu.Engines.Play {
     public class NTDiscardStrategyTests {
         private NTDiscardStrategy _strategy;
 

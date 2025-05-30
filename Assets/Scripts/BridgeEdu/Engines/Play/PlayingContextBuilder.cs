@@ -12,6 +12,7 @@ namespace BridgeEdu.Engines.Play {
         private IPlayer _human;
         private Bid _contract;
         private ITrick _currentTrick;
+        private bool _isAttackerTurn;
 
         public PlayingContextBuilder WithHand(IHand hand) {
             _hand = hand;
@@ -30,6 +31,11 @@ namespace BridgeEdu.Engines.Play {
 
         public PlayingContextBuilder WithPossibleCards(IList<Card> possibleCards) {
             _possibleCards = possibleCards;
+            return this;
+        }
+
+        public PlayingContextBuilder WithIsAttackerTurn(bool isAttackerTurn) {
+            _isAttackerTurn = isAttackerTurn;
             return this;
         }
 
@@ -56,6 +62,7 @@ namespace BridgeEdu.Engines.Play {
                 possibleCards: new List<Card>(_possibleCards),
                 dummy: _dummy,
                 human: _human,
+                isAttackerTurn: _isAttackerTurn,
                 contract: _contract
             );
         }

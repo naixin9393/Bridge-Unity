@@ -4,10 +4,10 @@ using NUnit.Framework;
 using UnityEngine;
 
 using BridgeEdu.Core;
-using BridgeEdu.Engines.Bidding;
+using BridgeEdu.Game.Bidding;
 using BridgeEdu.Game.Players;
 
-namespace BridgeEdu.Game.Bidding.Strategy.Tests {
+namespace BridgeEdu.Engines.Bidding {
     public class NoInterventionStrategyTests {
         [Test]
         public void GetSuggestions_NotApplicable_OnOpeningBid() {

@@ -10,5 +10,6 @@ namespace BridgeEdu.Core {
         IPlayer Human { get; }
         Bid Contract { get; }
         IHand Hand { get; }
+        bool IsAttackerTurn { get; }
     }
 }

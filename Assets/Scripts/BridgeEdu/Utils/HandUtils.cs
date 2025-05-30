@@ -193,6 +193,33 @@ namespace BridgeEdu.Utils {
             return new List<Card>();
         }
 
+        public static bool AllSameSuit(List<Card> cards) {
+            if (cards.Count == 0) return false;
+            Suit firstSuit = cards[0].Suit;
+            return cards.All(card => card.Suit == firstSuit);
+        }
+
+        public static bool AreConsecutive(List<Card> cards) {
+            if (cards.Count < 2) return false;
+            var orderedRanks = cards.Select(card => card.Rank).OrderBy(rank => rank).ToList();
+            for (int i = 1; i < orderedRanks.Count; i++) {
+                if (orderedRanks[i] != orderedRanks[i - 1] + 1) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public static bool ContainsBiggerHonor(List<Card> hand, Card leadCard) => GetBiggerHonor(hand, leadCard) != null;
+
+        public static Card GetBiggerHonor(List<Card> hand, Card leadCard) {
+            var cardsOfSameSuit = hand.Where(card => card.Suit == leadCard.Suit).ToList();
+            return cardsOfSameSuit
+                .Where(card => CardUtils.IsHonor(card) && card.Rank > leadCard.Rank)
+                .OrderBy(card => card.Rank)
+                .FirstOrDefault();
+        }
+
         private static bool Is4333(List<int> numberOfEachSuit) {
             return numberOfEachSuit.Count(suit => suit == 3) == 3 &&
                    numberOfEachSuit.Count(suit => suit == 4) == 1;

@@ -4,10 +4,10 @@ using NUnit.Framework;
 using UnityEngine;
 
 using BridgeEdu.Core;
-using BridgeEdu.Engines.Bidding;
+using BridgeEdu.Game.Bidding;
 using BridgeEdu.Engines.Bidding.OneNT;
 
-namespace BridgeEdu.Game.Bidding.Strategy.Tests {
+namespace BridgeEdu.Engines.Bidding {
     public class OneNTResponseStrategyTests {
         [Test]
         public void GetSuggestions_Applicable_After1NTBid() {

@@ -3,11 +3,11 @@ using Moq;
 using NUnit.Framework;
 
 using BridgeEdu.Core;
-using BridgeEdu.Engines.Bidding;
+using BridgeEdu.Game.Bidding;
 using BridgeEdu.Engines.Bidding.OneNT;
 using UnityEngine;
 
-namespace BridgeEdu.Game.Bidding.Strategy.Tests {
+namespace BridgeEdu.Engines.Bidding {
     public class TransferStrategyTests {
         [Test]
         public void GetSuggestions_NotApplicable_When_FirstBidNot1NT() {

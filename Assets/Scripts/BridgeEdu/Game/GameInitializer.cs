@@ -95,6 +95,8 @@ namespace BridgeEdu.Game {
                 new PlayingStrategy.OpenerStrategy(),
                 new OnlyOneCardPossibleStrategy(),
                 new NTDiscardStrategy(),
+                new NTAttackerStrategy(),
+                new NTDefenderStrategy(),
             };
 
             // Create playing engine
