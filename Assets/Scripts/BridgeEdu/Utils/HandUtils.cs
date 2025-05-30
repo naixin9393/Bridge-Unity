@@ -135,6 +135,27 @@ namespace BridgeEdu.Utils {
             return new List<Card>();
         }
 
+        public static bool Contains5CardSuitWithHonor(IHand hand) {
+            return GetFifthSuitWithHonor(hand).Count > 0;
+        }
+
+        public static List<Card> GetFifthSuitWithHonor(IHand hand) {
+            var groupedCardsBySuit = hand.Cards.GroupBy(card => card.Suit);
+
+            foreach (var group in groupedCardsBySuit) {
+                var orderedRanks = group
+                    .Select(card => card.Rank)
+                    .OrderByDescending(rank => rank)
+                    .ToList();
+
+                if (orderedRanks.Count >= 5 && orderedRanks.Any(rank => RankToHCP.ContainsKey(rank) && RankToHCP[rank] > 0)) {
+                    return group.OrderByDescending(card => card.Rank).ToList();
+                }
+            }
+
+            return new List<Card>();
+        }
+
         private static bool Is4333(List<int> numberOfEachSuit) {
             return numberOfEachSuit.Count(suit => suit == 3) == 3 &&
                    numberOfEachSuit.Count(suit => suit == 4) == 1;
