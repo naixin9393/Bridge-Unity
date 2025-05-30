@@ -156,6 +156,43 @@ namespace BridgeEdu.Utils {
             return new List<Card>();
         }
 
+        public static bool ContainsTwoConsecutiveHonorsAndTwoBelow(IHand hand) {
+            return GetTwoBelowCards(hand).Count > 0;
+        }
+
+        public static List<Card> GetTwoBelowCards(IHand hand) {
+            var groupedCardsBySuit = hand.Cards.GroupBy(card => card.Suit);
+
+            foreach (var group in groupedCardsBySuit) {
+                var orderedRanks = group
+                    .Select(card => card.Rank)
+                    .OrderByDescending(rank => rank)
+                    .ToList();
+
+                if (orderedRanks.Count < 3) continue;
+
+                List<Rank> AKJ = new() { Rank.Ace, Rank.King, Rank.Jack };
+                List<Rank> KQ10 = new() { Rank.King, Rank.Queen, Rank.Ten };
+                List<Rank> QJ9 = new() { Rank.Queen, Rank.Jack, Rank.Nine };
+                List<Rank> J108 = new() { Rank.Jack, Rank.Ten, Rank.Eight };
+
+                if (orderedRanks.Contains(Rank.Ace) && orderedRanks.Contains(Rank.King) && orderedRanks.Contains(Rank.Jack)) {
+                    return group.Where(card => AKJ.Contains(card.Rank)).ToList();
+                }
+                if (orderedRanks.Contains(Rank.King) && orderedRanks.Contains(Rank.Queen) && orderedRanks.Contains(Rank.Ten)) {
+                    return group.Where(card => KQ10.Contains(card.Rank)).ToList();
+                }
+                if (orderedRanks.Contains(Rank.Queen) && orderedRanks.Contains(Rank.Jack) && orderedRanks.Contains(Rank.Nine)) {
+                    return group.Where(card => QJ9.Contains(card.Rank)).ToList();
+                }
+                if (orderedRanks.Contains(Rank.Jack) && orderedRanks.Contains(Rank.Ten) && orderedRanks.Contains(Rank.Eight)) {
+                    return group.Where(card => J108.Contains(card.Rank)).ToList();
+                }
+            }
+
+            return new List<Card>();
+        }
+
         private static bool Is4333(List<int> numberOfEachSuit) {
             return numberOfEachSuit.Count(suit => suit == 3) == 3 &&
                    numberOfEachSuit.Count(suit => suit == 4) == 1;

@@ -26,7 +26,14 @@ namespace BridgeEdu.Game.Players {
             if (playingContext.PossibleCards.Count == 0)
                 throw new EmptyHandException(this);
             var possibleCards = playingContext.PossibleCards;
-            var card = possibleCards[0];
+
+            Card card;
+
+            if (playingSuggestions.Count > 0 && playingSuggestions[0].Card != null)
+                card = playingSuggestions[0].Card;
+            else
+                card = possibleCards[0]; // Default to the first possible card if no suggestions are available
+
             Debug.Log($"ComputerPlayer: PlayCard: {card}");
             _coroutineStarter.DelayAction(
                 0.6f,

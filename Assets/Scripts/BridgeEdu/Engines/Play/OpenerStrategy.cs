@@ -47,6 +47,16 @@ namespace BridgeEdu.Engines.Play {
                 }
             }
 
+            // If suit has 2 consecutive honors, and a third card 2 below the lowest honor, suggest playing highest honor
+            if (HandUtils.ContainsTwoConsecutiveHonorsAndTwoBelow(context.Hand)) {
+                List<Card> twoBelow = HandUtils.GetTwoBelowCards(context.Hand);
+                Card highestHonor = twoBelow[0]; // Assuming the first card is the highest honor
+                suggestions.Add(new PlayingSuggestion(
+                    message: PlayingMessagesUtils.OpeningTwoHonorTwoBelow(twoBelow),
+                    card: highestHonor
+                ));
+            }
+
             return suggestions;
         }
     }

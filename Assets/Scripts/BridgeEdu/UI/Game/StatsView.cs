@@ -106,7 +106,7 @@ namespace BridgeEdu.UI.Game {
             if (_gameViewModel.Phase == GamePhase.Play) {
                 List<(string card, string message)> playingSuggestions = new();
                 foreach (var suggestion in _gameViewModel.PlayingSuggestions) {
-                    var cardString = suggestion.Card == null ? "Desconocido" : suggestion.Card.ToString();
+                    var cardString = suggestion.Card == null ? "X" : suggestion.Card.ToString();
                     playingSuggestions.Add((cardString, suggestion.Message));
                 }
                 _playingHintView.Set(

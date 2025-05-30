@@ -12,7 +12,9 @@ using BridgeEdu.Engines;
 using BridgeEdu.Engines.Bidding;
 using BridgeEdu.Engines.Bidding.OneNT;
 
+using BiddingStrategy = BridgeEdu.Engines.Bidding;
 using PlayingStrategy = BridgeEdu.Engines.Play;
+using BridgeEdu.Engines.Play;
 
 namespace BridgeEdu.Game {
     public class GameInitializer : MonoBehaviour {
@@ -73,7 +75,7 @@ namespace BridgeEdu.Game {
 
             // Create bidding strategies list
             List<IBiddingStrategy> biddingStrategies = new() {
-                new OpenerStrategy(),
+                new BiddingStrategy.OpenerStrategy(),
                 new NoInterventionStrategy(),
                 new OneNTResponseStrategy(),
                 new OneNTOpenerResponseStrategy(),
@@ -90,7 +92,8 @@ namespace BridgeEdu.Game {
 
             // Create playing strategies list
             List<IPlayingStrategy> playingStrategies = new() {
-                new PlayingStrategy.OpenerStrategy()
+                new PlayingStrategy.OpenerStrategy(),
+                new OnlyOneCardPossibleStrategy(),
             };
 
             // Create playing engine

@@ -104,6 +104,80 @@ namespace BridgeEdu.Game.Play.Tests {
             Assert.AreEqual(expected, suggestions[0].Card);
         }
 
+        [Test, TestCaseSource(nameof(SequenceTwoBelowHonorTestCases))]
+        public void GetSuggestions_ReturnsHighestHonor_WhenSequenceOfTwoHonorAndThirdTwoLowerThanHonor(List<Card> hand, Card expected) {
+            var mockHand = new Hand();
+            mockHand.AddCards(hand);
+            var playingContext = new PlayingContextBuilder()
+                .WithHand(mockHand)
+                .WithTricks(
+                    new List<ITrick> {
+                        new Trick(
+                            new List<IPlayer>(),
+                            strain: Strain.NoTrump,
+                            currentPlayer: null
+                        )
+                    }
+                )
+                .WithContract(new Bid(1, Strain.NoTrump))
+                .WithPossibleCards(hand)
+                .Build();
+
+            var suggestions = _strategy.GetSuggestions(playingContext);
+            Assert.IsNotEmpty(suggestions);
+
+            var firstSuggestion = suggestions[0];
+            Assert.IsNotNull(firstSuggestion);
+
+            Debug.Log(firstSuggestion.Message);
+
+            Assert.AreEqual(expected, suggestions[0].Card);
+        }
+
+        private static IEnumerable<TestCaseData> SequenceTwoBelowHonorTestCases {
+            get {
+                yield return new TestCaseData(
+                    new List<Card> {
+                        new(Rank.Ace, Suit.Clubs),
+                        new(Rank.King, Suit.Clubs),
+                        new(Rank.Jack, Suit.Clubs),
+                        new(Rank.Ten, Suit.Clubs)
+                    },
+                    new Card(Rank.Ace, Suit.Clubs)
+                ).SetName("Sequence A K J 10 returns A");
+
+                yield return new TestCaseData(
+                    new List<Card> {
+                        new(Rank.King, Suit.Hearts),
+                        new(Rank.Eight, Suit.Hearts),
+                        new(Rank.Queen, Suit.Hearts),
+                        new(Rank.Ten, Suit.Hearts)
+                    },
+                    new Card(Rank.King, Suit.Hearts)
+                ).SetName("Sequence K Q 10 8 returns K");
+
+                yield return new TestCaseData(
+                    new List<Card> {
+                        new(Rank.Queen, Suit.Hearts),
+                        new(Rank.Nine, Suit.Hearts),
+                        new(Rank.Jack, Suit.Hearts),
+                        new(Rank.Seven, Suit.Hearts)
+                    },
+                    new Card(Rank.Queen, Suit.Hearts)
+                ).SetName("Sequence Q J 9 7 returns Q");
+
+                yield return new TestCaseData(
+                    new List<Card> {
+                        new(Rank.Jack, Suit.Hearts),
+                        new(Rank.Ten, Suit.Hearts),
+                        new(Rank.Eight, Suit.Hearts),
+                        new(Rank.Seven, Suit.Hearts)
+                    },
+                    new Card(Rank.Jack, Suit.Hearts)
+                ).SetName("Sequence J 10 8 7 returns J");
+            }
+        }
+
         private static IEnumerable<TestCaseData> FifthSuitWithHonorTestCases {
             get {
                 yield return new TestCaseData(

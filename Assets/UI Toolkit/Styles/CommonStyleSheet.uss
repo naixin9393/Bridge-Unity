@@ -289,3 +289,11 @@
     width: 100%;
     align-items: center;
 }
+
+.hint-item .text30 {
+    white-space: normal;
+}
+
+.hint-item VisualElement {
+    align-items: center;
+}

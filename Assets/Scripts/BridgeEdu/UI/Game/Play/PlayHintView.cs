@@ -40,13 +40,22 @@ namespace BridgeEdu.UI.Game.Play {
             VisualElement hintItem = new VisualElement();
             hintItem.AddToClassList("hint-item");
 
+            VisualElement cardContainer = new VisualElement();
+            cardContainer.style.width = new Length(20, LengthUnit.Percent);
+
             Label cardLabel = new(card);
             cardLabel.AddToClassList("text30");
-            hintItem.Add(cardLabel);
+            cardContainer.Add(cardLabel);
+
+            VisualElement messageContainer = new VisualElement();
+            messageContainer.style.width = new Length(80, LengthUnit.Percent);
 
             Label messageLabel = new(message);
             messageLabel.AddToClassList("text30");
-            hintItem.Add(messageLabel);
+            messageContainer.Add(messageLabel);
+
+            hintItem.Add(cardContainer);
+            hintItem.Add(messageContainer);
 
             return hintItem;
         }
