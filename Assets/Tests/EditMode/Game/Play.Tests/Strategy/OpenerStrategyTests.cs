@@ -5,7 +5,6 @@ using Moq;
 using NUnit.Framework;
 using UnityEngine;
 using BridgeEdu.Game.Bidding;
-using System;
 
 namespace BridgeEdu.Game.Play.Tests {
     public class OpenerStrategyTests {

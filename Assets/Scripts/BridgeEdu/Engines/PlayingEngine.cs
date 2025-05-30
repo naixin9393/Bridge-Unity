@@ -11,7 +11,7 @@ public class PlayingEngine : IPlayingEngine {
         _strategies = strategies;
     }
 
-    public List<PlayingSuggestion> GetSuggestions(PlayingContext context) {
+    public List<PlayingSuggestion> GetSuggestions(IPlayingContext context) {
         var suggestions = new List<PlayingSuggestion>();
         foreach (IPlayingStrategy strategy in _strategies) {
             if (strategy.IsApplicable(context)) {

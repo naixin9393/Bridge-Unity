@@ -1,14 +1,13 @@
 using System.Collections.Generic;
 using BridgeEdu.Core;
-using BridgeEdu.Game.Play;
 
 namespace BridgeEdu.Engines.Play {
     public class OnlyOneCardPossibleStrategy : IPlayingStrategy {
-        public bool IsApplicable(PlayingContext playingContext) {
+        public bool IsApplicable(IPlayingContext playingContext) {
             return playingContext.PossibleCards.Count == 1;
         }
 
-        public List<PlayingSuggestion> GetSuggestions(PlayingContext context) {
+        public List<PlayingSuggestion> GetSuggestions(IPlayingContext context) {
             if (!IsApplicable(context)) return new List<PlayingSuggestion>();
 
             var card = context.PossibleCards[0];

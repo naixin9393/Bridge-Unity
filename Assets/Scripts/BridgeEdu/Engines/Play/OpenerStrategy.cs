@@ -6,13 +6,13 @@ using BridgeEdu.Utils;
 
 namespace BridgeEdu.Engines.Play {
     public class OpenerStrategy : IPlayingStrategy {
-        public bool IsApplicable(PlayingContext playingContext) {
+        public bool IsApplicable(IPlayingContext playingContext) {
             if (playingContext.Tricks.Count != 1) return false;
             if (playingContext.Tricks[0].LeadSuit != null) return false;
             if (playingContext.Contract == null) return false;
             return true;
         }
-        public List<PlayingSuggestion> GetSuggestions(PlayingContext context) {
+        public List<PlayingSuggestion> GetSuggestions(IPlayingContext context) {
             List<PlayingSuggestion> suggestions = new();
 
             Bid contract = context.Contract;
@@ -24,7 +24,7 @@ namespace BridgeEdu.Engines.Play {
             return suggestions;
         }
 
-        private IEnumerable<PlayingSuggestion> NoTrumpSuggestions(PlayingContext context) {
+        private IEnumerable<PlayingSuggestion> NoTrumpSuggestions(IPlayingContext context) {
             List<PlayingSuggestion> suggestions = new();
             // If the hand contains an honor sequence, suggest playing the first card of that sequence
             if (HandUtils.ContainsHonorSequence(context.Hand)) {

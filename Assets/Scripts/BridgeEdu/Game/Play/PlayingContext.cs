@@ -4,16 +4,18 @@ using BridgeEdu.Core;
 using BridgeEdu.Game.Bidding;
 
 namespace BridgeEdu.Game.Play {
-    public readonly struct PlayingContext {
-        public readonly List<ITrick> Tricks;
-        public readonly List<Card> PossibleCards;
-        public readonly IPlayer Dummy;
-        public readonly IPlayer Human;
-        public readonly Bid Contract;
-        public readonly IHand Hand;
+    public readonly struct PlayingContext : IPlayingContext {
+        public List<ITrick> Tricks { get; }
+        public List<Card> PossibleCards { get; }
+        public ITrick CurrentTrick { get; }
+        public IPlayer Dummy { get; }
+        public IPlayer Human { get; }
+        public Bid Contract { get; }
+        public IHand Hand { get; }
 
-        public PlayingContext(List<Card> possibleCards, List<ITrick> tricks, IPlayer dummy, IPlayer human, Bid contract, IHand hand) {
+        public PlayingContext(List<Card> possibleCards, List<ITrick> tricks, IPlayer dummy, IPlayer human, Bid contract, IHand hand, ITrick currentTrick) {
             PossibleCards = possibleCards;
+            CurrentTrick = currentTrick;
             Tricks = tricks;
             Dummy = dummy;
             Human = human;

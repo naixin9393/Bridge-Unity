@@ -39,7 +39,8 @@ namespace BridgeEdu.Game.Play {
             dummy: _dummy,
             human: _human,
             contract: Contract,
-            hand: CurrentPlayer.Hand
+            hand: CurrentPlayer.Hand,
+            currentTrick: CurrentTrick
         ));
 
         public PlayPhase(IBidding bidding) {
@@ -118,6 +119,7 @@ namespace BridgeEdu.Game.Play {
                 dummy: _dummy,
                 human: _human,
                 contract: Contract,
+                currentTrick: CurrentTrick,
                 hand: CurrentPlayer.Hand);
             var playingSuggestions = _playingEngine.GetSuggestions(context);
             CurrentPlayer.RequestPlayerPlayDecision(context, playingSuggestions);

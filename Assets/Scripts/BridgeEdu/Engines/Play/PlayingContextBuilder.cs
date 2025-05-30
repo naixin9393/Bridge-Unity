@@ -11,9 +11,15 @@ namespace BridgeEdu.Engines.Play {
         private IPlayer _dummy;
         private IPlayer _human;
         private Bid _contract;
+        private ITrick _currentTrick;
 
         public PlayingContextBuilder WithHand(IHand hand) {
             _hand = hand;
+            return this;
+        }
+
+        public PlayingContextBuilder WithCurrentTrick(ITrick currentTrick) {
+            _currentTrick = currentTrick;
             return this;
         }
 
@@ -46,6 +52,7 @@ namespace BridgeEdu.Engines.Play {
             return new PlayingContext(
                 hand: _hand,
                 tricks: new List<ITrick>(_tricks),
+                currentTrick: _currentTrick,
                 possibleCards: new List<Card>(_possibleCards),
                 dummy: _dummy,
                 human: _human,

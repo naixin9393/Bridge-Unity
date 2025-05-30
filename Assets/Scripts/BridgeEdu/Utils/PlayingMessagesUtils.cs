@@ -22,5 +22,10 @@ namespace BridgeEdu.Utils {
             string cards = string.Join(", ", twoBelow);
             return $"Dos honores consecutivos y tercera carta dos por debajo del menor de los honores: {cards}. Jugar el mayor de los honores";
         }
+
+        public static string DiscardLowestCard(List<Card> cards) {
+            if (cards.Count == 0) return "No hay cartas para descartar";
+            return $"Descartar cartas. {cards}: descartar la más baja";
+        }
     }
 }
