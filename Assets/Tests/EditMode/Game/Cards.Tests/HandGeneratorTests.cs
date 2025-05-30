@@ -1,36 +1,40 @@
-using System.Collections.Generic;
 using NUnit.Framework;
 
-public class HandGeneratorTests {
-    [Test]
-    public void Generate_BalancedHands_IsBalanced() {
-        Deck deck = new();
-        deck.Shuffle();
+using BridgeEdu.Core;
+using BridgeEdu.Utils;
 
-        IHand hand = HandGenerator.Generate(deck, true);
+namespace BridgeEdu.Game.Cards.Tests {
+    public class HandGeneratorTests {
+        [Test]
+        public void Generate_BalancedHands_IsBalanced() {
+            Deck deck = new();
+            deck.Shuffle();
 
-        Assert.IsTrue(HandUtils.IsBalancedHand(hand));
-    }
+            IHand hand = HandGenerator.Generate(deck, true);
 
-    [Test]
-    public void Generate_BalancedHands_DeckHas13CardsLess() {
-        Deck deck = new();
-        int numberOfCards = deck.Cards.Count;
-        deck.Shuffle();
+            Assert.IsTrue(HandUtils.IsBalancedHand(hand));
+        }
 
-        HandGenerator.Generate(deck, true);
+        [Test]
+        public void Generate_BalancedHands_DeckHas13CardsLess() {
+            Deck deck = new();
+            int numberOfCards = deck.Cards.Count;
+            deck.Shuffle();
 
-        Assert.AreEqual(numberOfCards - 13, deck.Cards.Count);
-    }
+            HandGenerator.Generate(deck, true);
 
-    [Test]
-    public void Generate_BalancedHandsWith15HCP_IsBalanced_AndHas15HCP() {
-        Deck deck = new();
-        deck.Shuffle();
+            Assert.AreEqual(numberOfCards - 13, deck.Cards.Count);
+        }
 
-        IHand hand = HandGenerator.Generate(deck, true, 15, 15);
+        [Test]
+        public void Generate_BalancedHandsWith15HCP_IsBalanced_AndHas15HCP() {
+            Deck deck = new();
+            deck.Shuffle();
 
-        Assert.IsTrue(hand.IsBalanced);
-        Assert.AreEqual(15, hand.HCP);
+            IHand hand = HandGenerator.Generate(deck, true, 15, 15);
+
+            Assert.IsTrue(hand.IsBalanced);
+            Assert.AreEqual(15, hand.HCP);
+        }
     }
 }
