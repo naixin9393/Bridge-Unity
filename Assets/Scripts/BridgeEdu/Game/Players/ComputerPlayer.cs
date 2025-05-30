@@ -9,6 +9,7 @@ using BridgeEdu.Utils;
 using BridgeEdu.Game.Play.Exceptions;
 
 using DoubleCall = BridgeEdu.Game.Bidding.Double;
+using BridgeEdu.Engines.Play;
 
 namespace BridgeEdu.Game.Players {
     public class ComputerPlayer : Player {
@@ -19,7 +20,7 @@ namespace BridgeEdu.Game.Players {
         public ComputerPlayer(Position position, IDelayService coroutineStarter) : base(position) {
             _coroutineStarter = coroutineStarter;
         }
-        public override void RequestPlayerPlayDecision(PlayingContext playingContext) {
+        public override void RequestPlayerPlayDecision(PlayingContext playingContext, List<PlayingSuggestion> playingSuggestions) {
             if (playingContext.Dummy == this && IsPartner(playingContext.Human)) return; // Dummy can't play if declarer is human
             if (playingContext.Dummy == playingContext.Human && IsPartner(playingContext.Human)) return; // Human can't play if declarer is dummy
             if (playingContext.PossibleCards.Count == 0)

@@ -272,3 +272,20 @@
     -unity-text-outline-width: 1px;
     -unity-font-style: bold;
 }
+
+.hint-item {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-width: 1px;
+    border-color: rgb(254, 243, 207);
+    margin-top: 5px;
+    margin-bottom: 5px;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-shrink: 0;
+    flex-grow: 1;
+    width: 100%;
+    align-items: center;
+}

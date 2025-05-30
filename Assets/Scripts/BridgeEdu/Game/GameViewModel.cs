@@ -7,11 +7,15 @@ using UnityEngine;
 using BridgeEdu.Core;
 using BridgeEdu.Game.Bidding;
 using BridgeEdu.Utils;
+using BridgeEdu.Engines.Play;
 
 namespace BridgeEdu.Game {
     public class GameViewModel : IDisposable {
         private readonly IGameManager _game;
         private readonly IPlayer _humanPlayer;
+        private readonly List<(string call, string message)> _biddingHintHistory = new();
+        private readonly List<(string card, string message)> _playingHintHistory = new();
+        private GamePhase _phase = GamePhase.Auction;
 
         public ReadOnlyCollection<ICall> Calls => _game.Calls;
         public ReadOnlyCollection<IPlayer> Players => _game.Players;
@@ -22,6 +26,7 @@ namespace BridgeEdu.Game {
         public IPlayer Declarer => _game.Declarer;
         public IPlayer Dummy => PlayerUtils.PartnerOf(_game.Declarer, _game.Players.ToList());
         public bool IsPlayerAttacker;
+        public int TricksNeededToWin;
         public BindableProperty<bool> ShowDummyHand => BindableProperty<bool>.Bind(() => {
             var noPlaysMade = _game.Tricks.Count == 1 && _game.Tricks[0].Plays.Count == 0;
 
@@ -57,10 +62,9 @@ namespace BridgeEdu.Game {
             return string.Empty;
         });
 
-        public int TricksNeededToWin;
+        public ReadOnlyCollection<PlayingSuggestion> PlayingSuggestions => _game.PlayingSuggestions.AsReadOnly();
+        public ReadOnlyCollection<(string card, string message)> PlayingHintHistory => _playingHintHistory.AsReadOnly();
         public ReadOnlyCollection<(string call, string message)> BiddingHintHistory => _biddingHintHistory.AsReadOnly();
-        private readonly List<(string call, string message)> _biddingHintHistory = new();
-        private GamePhase _phase = GamePhase.Auction;
 
         public GameViewModel(IGameManager game, IPlayer humanPlayer) {
             _game = game;
@@ -71,7 +75,6 @@ namespace BridgeEdu.Game {
                 player.OnCallChosen += HandlePlayerCallChosen;
                 player.OnCardChosen += HandlePlayerCardChosen;
             }
-
         }
 
         private void HandleGamePhaseChanged(GamePhase phase) {
@@ -86,6 +89,7 @@ namespace BridgeEdu.Game {
         }
 
         public void HandlePlayerCardChosen(Card card, IPlayer player) {
+            _playingHintHistory.Add((card.ToString(), _game.PlayingSuggestions[0].Message));
             _game.ProcessPlay(card, player);
         }
 

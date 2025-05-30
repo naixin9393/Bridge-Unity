@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -8,7 +9,7 @@ namespace BridgeEdu.UI.Game.Play {
         private VisualElement _playHintInstance;
         private Button _closeButton;
         private Label _cardLabel;
-        private Label _messageLabel;
+        private VisualElement _hintContainer;
 
         public void Initialize() {
             _playHintInstance = _playHintUXML.Instantiate();
@@ -20,12 +21,34 @@ namespace BridgeEdu.UI.Game.Play {
             _closeButton.RegisterCallback<ClickEvent>(OnCloseButtonClicked);
 
             _cardLabel = _playHintInstance.Q<Label>("CardLabel");
-            _messageLabel = _playHintInstance.Q<Label>("ExplanationLabel");
+            _hintContainer = _playHintInstance.Q<VisualElement>("HintContainer");
+
+            _cardLabel.text = string.Empty;
         }
 
-        public void Set(string card, string message) {
-            _messageLabel.text = message;
-            _cardLabel.text = card;
+        public void Set(List<(string card, string message)> suggestions) {
+            if (suggestions == null || suggestions.Count == 0) return;
+            _hintContainer.Clear();
+            _cardLabel.text = suggestions[0].card;
+            foreach (var suggestion in suggestions) {
+                VisualElement hintItem = CreateHintItem(suggestion.card, suggestion.message);
+                _hintContainer.Add(hintItem);
+            }
+        }
+
+        public VisualElement CreateHintItem(string card, string message) {
+            VisualElement hintItem = new VisualElement();
+            hintItem.AddToClassList("hint-item");
+
+            Label cardLabel = new(card);
+            cardLabel.AddToClassList("text30");
+            hintItem.Add(cardLabel);
+
+            Label messageLabel = new(message);
+            messageLabel.AddToClassList("text30");
+            hintItem.Add(messageLabel);
+
+            return hintItem;
         }
 
         private void OnCloseButtonClicked(ClickEvent evt) {

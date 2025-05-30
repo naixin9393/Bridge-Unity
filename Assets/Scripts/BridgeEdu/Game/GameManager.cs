@@ -7,6 +7,7 @@ using BridgeEdu.Core;
 using BridgeEdu.Game.Play;
 using BridgeEdu.Game.Bidding;
 using BridgeEdu.Events;
+using BridgeEdu.Engines.Play;
 
 namespace BridgeEdu.Game {
     public class GameManager : MonoBehaviour, IGameManager {
@@ -17,6 +18,7 @@ namespace BridgeEdu.Game {
         private List<IPlayer> _players;
         private IPlayer _dealer;
         private IBidding _bidding;
+        private IPlayingEngine _playingEngine;
         private IPlay _play;
         private ITrick _currentTrick => _play.CurrentTrick;
         private IPlayer _human;
@@ -31,16 +33,17 @@ namespace BridgeEdu.Game {
         public ReadOnlyCollection<ITrick> Tricks => _play.Tricks;
         public event Action<GamePhase> OnPhaseChanged;
         public List<BiddingSuggestion> BiddingSuggestions => _bidding.BiddingSuggestions;
+        public List<PlayingSuggestion> PlayingSuggestions => _play.PlayingSuggestions;
 
         public int TricksWonByAttackers => _play.TricksWonByAttackers;
         public int TricksWonByDefenders => _play.TricksWonByDefenders;
 
-
-        public void Initialize(List<IPlayer> players, IPlayer dealer, IPlayer human, IBiddingEngine biddingEngine) {
+        public void Initialize(List<IPlayer> players, IPlayer dealer, IPlayer human, IBiddingEngine biddingEngine, IPlayingEngine playingEngine) {
             _players = players;
             _dealer = dealer;
             _human = human;
             _bidding = new BiddingPhase(players: _players, dealer: _dealer, human: _human, biddingEngine: biddingEngine);
+            _playingEngine = playingEngine;
             Phase = GamePhase.Auction;
         }
 
@@ -69,7 +72,7 @@ namespace BridgeEdu.Game {
                     return;
                 }
                 Phase = GamePhase.Play;
-                _play = new PlayPhase(_bidding);
+                _play = new PlayPhase(_bidding, _playingEngine);
                 OnGamePhaseChanged.Raise(this, Phase);
                 OnPhaseChanged?.Invoke(Phase);
                 return;

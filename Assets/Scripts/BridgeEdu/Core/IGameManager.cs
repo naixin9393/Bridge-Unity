@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 
 using BridgeEdu.Game.Bidding;
 using BridgeEdu.Game;
+using BridgeEdu.Engines.Play;
 
 namespace BridgeEdu.Core {
     public interface IGameManager {
@@ -16,6 +17,7 @@ namespace BridgeEdu.Core {
         Bid Contract { get; }
         Suit? LeadSuit { get; }
         List<BiddingSuggestion> BiddingSuggestions { get; }
+        List<PlayingSuggestion> PlayingSuggestions { get; }
         int TricksWonByAttackers { get; }
         int TricksWonByDefenders { get; }
         GamePhase Phase { get; }

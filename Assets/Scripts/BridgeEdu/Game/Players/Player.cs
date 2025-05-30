@@ -5,6 +5,7 @@ using BridgeEdu.Core;
 using BridgeEdu.Game.Play;
 using BridgeEdu.Game.Play.Exceptions;
 using BridgeEdu.Game.Bidding;
+using BridgeEdu.Engines.Play;
 
 namespace BridgeEdu.Game.Players {
     public abstract class Player : IPlayer {
@@ -27,7 +28,7 @@ namespace BridgeEdu.Game.Players {
         }
 
         public override string ToString() => $"{Position}";
-        public virtual void RequestPlayerPlayDecision(PlayingContext _) { }
+        public virtual void RequestPlayerPlayDecision(PlayingContext _, List<PlayingSuggestion> __) { }
         public virtual void RequestPlayerCallDecision(List<BiddingSuggestion> _) { }
     }
 }

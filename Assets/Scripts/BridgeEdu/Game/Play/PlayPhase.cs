@@ -3,6 +3,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 
 using BridgeEdu.Core;
+using BridgeEdu.Engines;
+using BridgeEdu.Engines.Play;
 using BridgeEdu.Game.Bidding;
 using BridgeEdu.Game.Play.Exceptions;
 using BridgeEdu.Utils;
@@ -18,7 +20,7 @@ namespace BridgeEdu.Game.Play {
         private readonly IPlayer _human;
         private List<IPlayer> _attackers = new();
         private List<IPlayer> _defenders = new();
-
+        private IPlayingEngine _playingEngine;
         public ITrick CurrentTrick => _tricks[_currentTrickIndex];
         public ReadOnlyCollection<ITrick> Tricks => new(_tricks);
         public ReadOnlyCollection<IPlayer> Players => new(_players);
@@ -31,6 +33,15 @@ namespace BridgeEdu.Game.Play {
 
         public int TricksWonByDefenders => _tricksWonByDefenders;
 
+        public List<PlayingSuggestion> PlayingSuggestions => _playingEngine.GetSuggestions(new PlayingContext(
+            possibleCards: CalculatePossibleCards(),
+            tricks: _tricks.ToList(),
+            dummy: _dummy,
+            human: _human,
+            contract: Contract,
+            hand: CurrentPlayer.Hand
+        ));
+
         public PlayPhase(IBidding bidding) {
             Contract = bidding.FinalContract;
             _players = new List<IPlayer>(bidding.Players);
@@ -39,6 +50,11 @@ namespace BridgeEdu.Game.Play {
             DetermineLeadPlayer(bidding);
             DetermineTeams(LeadPlayer);
             _tricks.Add(new Trick(_players, Contract.Strain, CurrentPlayer));
+            _playingEngine = new NullPlayingEngine();
+        }
+
+        public PlayPhase(IBidding bidding, IPlayingEngine playingEngine) : this(bidding) {
+            _playingEngine = playingEngine;
         }
 
         public void PlayCard(Card card, IPlayer player) {
@@ -96,7 +112,15 @@ namespace BridgeEdu.Game.Play {
 
         public void RequestPlayerPlayDecision() {
             List<Card> possibleCards = CalculatePossibleCards();
-            CurrentPlayer.RequestPlayerPlayDecision(new PlayingContext(possibleCards, _tricks.ToList(), _dummy, _human));
+            var context = new PlayingContext(
+                possibleCards: possibleCards,
+                tricks: _tricks.ToList(),
+                dummy: _dummy,
+                human: _human,
+                contract: Contract,
+                hand: CurrentPlayer.Hand);
+            var playingSuggestions = _playingEngine.GetSuggestions(context);
+            CurrentPlayer.RequestPlayerPlayDecision(context, playingSuggestions);
         }
 
         private List<Card> CalculatePossibleCards() {

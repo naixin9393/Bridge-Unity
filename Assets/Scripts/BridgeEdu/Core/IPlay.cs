@@ -1,6 +1,7 @@
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-
 using BridgeEdu.Game.Bidding;
+using BridgeEdu.Engines.Play;
 
 namespace BridgeEdu.Core {
     public interface IPlay {
@@ -10,6 +11,7 @@ namespace BridgeEdu.Core {
         IPlayer CurrentPlayer { get; }
         Bid Contract { get; }
         ITrick CurrentTrick { get; }
+        List<PlayingSuggestion> PlayingSuggestions { get; }
         bool IsOver { get; }
         int TricksWonByAttackers { get; }
         int TricksWonByDefenders { get; }

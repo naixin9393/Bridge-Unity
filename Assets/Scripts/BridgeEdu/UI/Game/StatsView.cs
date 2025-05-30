@@ -16,7 +16,7 @@ using PlayerPosition = BridgeEdu.Game.Players.Position;
 namespace BridgeEdu.UI.Game {
     public class StatsView : MonoBehaviour {
         [SerializeField] private BiddingHintView _biddingHintView;
-        [SerializeField] private PlayHintView _playHintView;
+        [SerializeField] private PlayHintView _playingHintView;
         private GameViewModel _gameViewModel;
         private VisualElement _statsContainer;
         private VisualElement _player1CallsContainer;
@@ -36,7 +36,8 @@ namespace BridgeEdu.UI.Game {
         private IPlayer _player4;
         private Dictionary<PlayerPosition, VisualElement> _playerCallsContainersMap = new();
         private Dictionary<PlayerPosition, VisualElement> _playerPlaysContainersMap = new();
-        private Dictionary<VisualElement, (string call, string message)> _biddingHintsMap = new();
+        private readonly Dictionary<VisualElement, (string call, string message)> _biddingHintsMap = new();
+        private readonly Dictionary<VisualElement, (string card, string message)> _playingHintsMap = new();
         private Button _hintButton;
 
         public void Initialize(VisualElement statsContainer, GameViewModel gameViewModel) {
@@ -48,7 +49,8 @@ namespace BridgeEdu.UI.Game {
             _callsContainer = _statsContainer.Q<VisualElement>("CallsContainer");
             _playsContainer = _statsContainer.Q<VisualElement>("PlaysContainer");
 
-            _callsContainer.RegisterCallback<ClickEvent>(OnPlaysContainerClicked);
+            _callsContainer.RegisterCallback<ClickEvent>(OnCallsContainerClicked);
+            _playsContainer.RegisterCallback<ClickEvent>(OnPlaysContainerClicked);
 
             SetPlayersLabel();
 
@@ -73,13 +75,25 @@ namespace BridgeEdu.UI.Game {
             _playerPlaysContainersMap.Add(_player4.Position, _player4PlaysContainer);
 
             _biddingHintView.Initialize();
-            _playHintView.Initialize();
+            _playingHintView.Initialize();
 
             _hintButton = _statsContainer.Q<Button>("HintButton");
             _hintButton.RegisterCallback<ClickEvent>(OnHintButtonClicked);
         }
 
         private void OnPlaysContainerClicked(ClickEvent evt) {
+            var target = evt.target as VisualElement;
+            if (!_playingHintsMap.ContainsKey(target)) return;
+            var card = _playingHintsMap[target].card;
+            var message = _playingHintsMap[target].message;
+            var list = new List<(string card, string message)> {
+                (card, message)
+            };
+            _playingHintView.Set(list);
+            _playingHintView.Show();
+        }
+
+        private void OnCallsContainerClicked(ClickEvent evt) {
             var target = evt.target as VisualElement;
             if (!_biddingHintsMap.ContainsKey(target)) return;
             var call = _biddingHintsMap[target].call;
@@ -90,11 +104,15 @@ namespace BridgeEdu.UI.Game {
 
         private void OnHintButtonClicked(ClickEvent evt) {
             if (_gameViewModel.Phase == GamePhase.Play) {
-                _playHintView.Set(
-                    card: "A C",
-                    message: "Test"
+                List<(string card, string message)> playingSuggestions = new();
+                foreach (var suggestion in _gameViewModel.PlayingSuggestions) {
+                    var cardString = suggestion.Card == null ? "Desconocido" : suggestion.Card.ToString();
+                    playingSuggestions.Add((cardString, suggestion.Message));
+                }
+                _playingHintView.Set(
+                    playingSuggestions
                 );
-                _playHintView.Show();
+                _playingHintView.Show();
                 return;
             }
             _biddingHintView.Set(
@@ -117,7 +135,6 @@ namespace BridgeEdu.UI.Game {
             if (data is ValueTuple<Card, IPlayer> cardData) {
                 var card = cardData.Item1;
                 Label label = new(card.ToString());
-                label.AddToClassList("header2");
 
                 switch (card.Suit) {
                     case Suit.Clubs:
@@ -134,7 +151,13 @@ namespace BridgeEdu.UI.Game {
                         break;
                 }
 
+                label.AddToClassList("header2");
+                label.AddToClassList("clickable");
+
+                _playingHintsMap.Add(label, (card.ToString(), _gameViewModel.PlayingHintHistory[_playingHintsMap.Count].message));
+
                 _playerPlaysContainersMap[cardData.Item2.Position].Add(label);
+
             }
         }
 

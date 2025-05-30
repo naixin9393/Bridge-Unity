@@ -12,6 +12,8 @@ using BridgeEdu.Engines;
 using BridgeEdu.Engines.Bidding;
 using BridgeEdu.Engines.Bidding.OneNT;
 
+using PlayingStrategy = BridgeEdu.Engines.Play;
+
 namespace BridgeEdu.Game {
     public class GameInitializer : MonoBehaviour {
         [SerializeField] private GameConfiguration _gameConfig;
@@ -71,23 +73,31 @@ namespace BridgeEdu.Game {
 
             // Create bidding strategies list
             List<IBiddingStrategy> biddingStrategies = new() {
-            new OpenerStrategy(),
-            new NoInterventionStrategy(),
-            new OneNTResponseStrategy(),
-            new OneNTOpenerResponseStrategy(),
-            new TransferStrategy(),
-            new TransferResponseStrategy(),
-            new TransferOpenerResponseStrategy(),
-            new StaymanResponseStrategy(),
-            new StaymanOpenerResponseStrategy(),
-            new StaymanSecondResponseStrategy(),
-        };
+                new OpenerStrategy(),
+                new NoInterventionStrategy(),
+                new OneNTResponseStrategy(),
+                new OneNTOpenerResponseStrategy(),
+                new TransferStrategy(),
+                new TransferResponseStrategy(),
+                new TransferOpenerResponseStrategy(),
+                new StaymanResponseStrategy(),
+                new StaymanOpenerResponseStrategy(),
+                new StaymanSecondResponseStrategy(),
+            };
 
             // Create bidding engine
             IBiddingEngine biddingEngine = new BiddingEngine(biddingStrategies);
 
+            // Create playing strategies list
+            List<IPlayingStrategy> playingStrategies = new() {
+                new PlayingStrategy.OpenerStrategy()
+            };
+
+            // Create playing engine
+            IPlayingEngine playingEngine = new PlayingEngine(playingStrategies);
+
             // Initialize game manager
-            _gameManager.Initialize(players, dealer, humanPlayer, biddingEngine);
+            _gameManager.Initialize(players, dealer, humanPlayer, biddingEngine, playingEngine);
 
             // Create game view model
             var gameViewModel = new GameViewModel(_gameManager, humanPlayer);

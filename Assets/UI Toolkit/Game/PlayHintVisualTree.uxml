@@ -5,15 +5,13 @@
         <ui:VisualElement style="flex-grow: 0;">
             <ui:Label text="Pista" name="Title" class="header" />
         </ui:VisualElement>
-        <ui:VisualElement style="flex-grow: 1; width: 60%;">
-            <ui:VisualElement class="flex-row align-items-center" style="flex-grow: 1;">
+        <ui:VisualElement name="VisualElement" style="flex-grow: 1; width: 60%; justify-content: space-evenly;">
+            <ui:VisualElement class="flex-row align-items-center" style="flex-grow: 0;">
                 <ui:Label text="Carta:" class="header2" />
                 <ui:Label text="Label" name="CardLabel" class="header2 underline" />
             </ui:VisualElement>
-            <ui:VisualElement class="flex-row align-items-center" style="flex-grow: 1;">
-                <ui:Label name="ExplanationLabel" class="text30" style="white-space: normal; text-overflow: clip;" />
-            </ui:VisualElement>
-            <ui:VisualElement style="flex-grow: 1;">
+            <ui:ScrollView name="HintContainer" />
+            <ui:VisualElement style="flex-grow: 0;">
                 <ui:Button text="Cerrar" name="CloseButton" class="button" style="font-size: 30px;" />
             </ui:VisualElement>
         </ui:VisualElement>

@@ -1,7 +1,7 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI%20Toolkit/Styles/CommonStyleSheet.uss?fileID=7433441132597879392&amp;guid=086b46d161ea6c843a6999d57f0fa7ea&amp;type=3#CommonStyleSheet" />
     <ui:VisualElement name="MainContainer" style="flex-grow: 1; align-items: center; background-color: rgb(20, 56, 36); flex-wrap: nowrap; height: auto; flex-basis: auto; justify-content: center; cursor: initial;">
-        <ui:Label text="BRIDGE" name="Title" class="header gap"/>
+        <ui:Label text="BRIDGE" name="Title" class="header gap" />
         <ui:VisualElement name="IconContainer" class="gap" style="flex-grow: initial; background-image: none; width: auto; height: auto; max-height: none; max-width: none; min-width: auto; min-height: auto; flex-basis: auto; flex-shrink: initial; flex-direction: row;">
             <ui:VisualElement name="SpadeIcon" class="icon-gap" style="flex-grow: 1; background-image: resource(&apos;Suits/cards-spade&apos;); width: 110px; height: 128px;" />
             <ui:VisualElement name="HeartIcon" class="icon-gap" style="flex-grow: 1; background-image: resource(&apos;Suits/cards-heart&apos;); width: 118px; height: 128px;" />

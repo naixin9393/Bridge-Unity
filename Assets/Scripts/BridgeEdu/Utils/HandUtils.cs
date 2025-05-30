@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -92,6 +93,46 @@ namespace BridgeEdu.Utils {
 
         public static bool Contains4MajorCards(IHand hand) {
             return hand.NumberOfCardsOfSuit(Suit.Spades) >= 4 || hand.NumberOfCardsOfSuit(Suit.Hearts) >= 4;
+        }
+
+        public static bool ContainsHonorSequence(IHand hand) {
+            return GetHonorSequence(hand).Count > 0;
+        }
+
+        public static List<Card> GetHonorSequence(IHand hand) {
+            var groupedCardsBySuit = hand.Cards.GroupBy(card => card.Suit);
+
+            foreach (var group in groupedCardsBySuit) {
+                var orderedRanks = group
+                    .Select(card => card.Rank)
+                    .OrderByDescending(rank => rank)
+                    .ToList();
+
+                var honorSequence = new List<Card>();
+
+                // AQK
+                if (orderedRanks.Contains(Rank.Ace) && orderedRanks.Contains(Rank.Queen) && orderedRanks.Contains(Rank.King)) {
+                    honorSequence.Add(new Card(Rank.Ace, group.Key));
+                    honorSequence.Add(new Card(Rank.Queen, group.Key));
+                    honorSequence.Add(new Card(Rank.King, group.Key));
+                }
+
+                // KQJ
+                else if (orderedRanks.Contains(Rank.King) && orderedRanks.Contains(Rank.Queen) && orderedRanks.Contains(Rank.Jack)) {
+                    honorSequence.Add(new Card(Rank.King, group.Key));
+                    honorSequence.Add(new Card(Rank.Queen, group.Key));
+                    honorSequence.Add(new Card(Rank.Jack, group.Key));
+                }
+                // QJ10
+                else if (orderedRanks.Contains(Rank.Queen) && orderedRanks.Contains(Rank.Jack) && orderedRanks.Contains(Rank.Ten)) {
+                    honorSequence.Add(new Card(Rank.Queen, group.Key));
+                    honorSequence.Add(new Card(Rank.Jack, group.Key));
+                    honorSequence.Add(new Card(Rank.Ten, group.Key));
+                }
+                return honorSequence;
+            }
+
+            return new List<Card>();
         }
 
         private static bool Is4333(List<int> numberOfEachSuit) {
