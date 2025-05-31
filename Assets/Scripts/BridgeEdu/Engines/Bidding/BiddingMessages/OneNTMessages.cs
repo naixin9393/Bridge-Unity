@@ -48,8 +48,8 @@ namespace BridgeEdu.Engines.Bidding.BiddingMessages {
         public static string OneNTTransfer2D = "Transfer, 5+ corazones";
         public static string OneNTTransfer2H = "Transfer, 5+ picas";
 
-        public static string Transfer2DResponse2H = "Transfer, responder a 2D";
-        public static string Transfer2HResponse2S = "Transfer, responder a 2H";
+        public static string Transfer2DResponse2H = "Transfer, responder a 2D con 2H obligatorio";
+        public static string Transfer2HResponse2S = "Transfer, responder a 2H con 2S obligatorio";
 
         public static string TransferOpenerResponsePass(int HCP)
             => string.Format("Transfer, {0} {1}", WithHCP(HCP), HCPRange(0, 7));

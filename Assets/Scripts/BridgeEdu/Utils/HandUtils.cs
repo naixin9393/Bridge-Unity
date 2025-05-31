@@ -210,12 +210,12 @@ namespace BridgeEdu.Utils {
             return true;
         }
 
-        public static bool ContainsBiggerHonor(List<Card> hand, Card leadCard) => GetBiggerHonor(hand, leadCard) != null;
+        public static bool ContainsBiggerCard(List<Card> hand, Card leadCard) => GetBiggerCard(hand, leadCard) != null;
 
-        public static Card GetBiggerHonor(List<Card> hand, Card leadCard) {
+        public static Card GetBiggerCard(List<Card> hand, Card leadCard) {
             var cardsOfSameSuit = hand.Where(card => card.Suit == leadCard.Suit).ToList();
             return cardsOfSameSuit
-                .Where(card => CardUtils.IsHonor(card) && card.Rank > leadCard.Rank)
+                .Where(card => card.Rank > leadCard.Rank)
                 .OrderBy(card => card.Rank)
                 .FirstOrDefault();
         }

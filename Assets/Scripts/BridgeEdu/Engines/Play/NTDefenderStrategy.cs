@@ -1,7 +1,7 @@
-using System;
 using System.Collections.Generic;
 using BridgeEdu.Core;
 using BridgeEdu.Game.Bidding;
+using BridgeEdu.Game.Play;
 using BridgeEdu.Utils;
 
 namespace BridgeEdu.Engines.Play {
@@ -47,8 +47,8 @@ namespace BridgeEdu.Engines.Play {
 
             // If the lead card is a honor, play bigger honor if possible
             if (CardUtils.IsHonor(leadCard)) {
-                if (HandUtils.ContainsBiggerHonor(possibleCards, leadCard)) {
-                    var biggerHonor = HandUtils.GetBiggerHonor(possibleCards, leadCard);
+                if (HandUtils.ContainsBiggerCard(possibleCards, leadCard)) {
+                    var biggerHonor = HandUtils.GetBiggerCard(possibleCards, leadCard);
                     suggestions.Add(new PlayingSuggestion(
                         message: PlayingMessagesUtils.DefenderHonorOverHonor,
                         card: biggerHonor
@@ -72,6 +72,49 @@ namespace BridgeEdu.Engines.Play {
 
         private List<PlayingSuggestion> DefenderFourthTurn(IPlayingContext context) {
             List<PlayingSuggestion> suggestions = new();
+
+
+            // If partner card is highest, play lowest
+            var sortedCards = new List<Card>() {
+                context.CurrentTrick.Plays[0].Card,
+                context.CurrentTrick.Plays[1].Card,
+                context.CurrentTrick.Plays[2].Card,
+            };
+
+            var comparer = new BridgeCardComparer(leadSuit: context.CurrentTrick.LeadSuit.Value, contractStrain: context.Contract.Strain);
+
+            sortedCards.Sort((a, b) => comparer.Compare(a, b));
+            var highestCard = sortedCards[2];
+            var partnerCard = context.CurrentTrick.Plays[1].Card;
+
+            // If partner card is highest, play lowest
+            if (highestCard.Equals(partnerCard)) {
+                var possibleCards = context.PossibleCards;
+                possibleCards.Sort((a, b) => a.Rank.CompareTo(b.Rank));
+                suggestions.Add(new PlayingSuggestion(
+                    message: PlayingMessagesUtils.DefenderFourthTurnPlayLowestCardPartnerHighest,
+                    card: possibleCards[0]
+                ));
+            }
+            else {
+                // If partner card is not highest, play highest if can win
+                if (HandUtils.ContainsBiggerCard(context.PossibleCards, highestCard)) {
+                    var biggerCard = HandUtils.GetBiggerCard(context.PossibleCards, highestCard);
+                    suggestions.Add(new PlayingSuggestion(
+                        message: PlayingMessagesUtils.DefenderFourthTurnPlayHigherCard,
+                        card: biggerCard
+                    ));
+                }
+                else {
+                    // If cannot win, play lowest
+                    var possibleCards = context.PossibleCards;
+                    possibleCards.Sort((a, b) => a.Rank.CompareTo(b.Rank));
+                    suggestions.Add(new PlayingSuggestion(
+                        message: PlayingMessagesUtils.DefenderFourthTurnPlayLowestCardCantWin,
+                        card: possibleCards[0]
+                    ));
+                }
+            }
             return suggestions;
         }
     }

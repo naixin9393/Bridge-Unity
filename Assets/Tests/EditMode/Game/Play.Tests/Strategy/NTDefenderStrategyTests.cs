@@ -69,6 +69,58 @@ namespace BridgeEdu.Engines.Play {
             Assert.AreEqual(expectedCard, suggestions[0].Card);
         }
 
+        [Test, TestCaseSource(nameof(DefenderFourthTurnLowestCardTestCases))]
+        public void GetSuggestions_ReturnsLowestCard_WhenPartnerCardHighest(List<Card> possibleCards, Card firstCard, Card secondCard, Card thirdCard, Card expectedCard) {
+            var mockContext = new Mock<IPlayingContext>();
+            var mockTrick = new Mock<ITrick>();
+            mockTrick.Setup(t => t.Plays).Returns(new List<(Card, IPlayer)> { (firstCard, null), (secondCard, null), (thirdCard, null) });
+            mockTrick.Setup(t => t.LeadSuit).Returns(firstCard.Suit);
+            mockContext.Setup(c => c.CurrentTrick).Returns(mockTrick.Object);
+            mockContext.Setup(c => c.IsAttackerTurn).Returns(false);
+            mockContext.Setup(c => c.Contract).Returns(new Bid(1, Strain.NoTrump));
+            mockContext.Setup(c => c.PossibleCards).Returns(possibleCards);
+
+            var strategy = new NTDefenderStrategy();
+            var suggestions = strategy.GetSuggestions(mockContext.Object);
+
+            Assert.IsNotEmpty(suggestions);
+            Assert.AreEqual(expectedCard, suggestions[0].Card);
+        }
+
+        private static IEnumerable<TestCaseData> DefenderFourthTurnLowestCardTestCases() {
+            yield return new TestCaseData(
+                new List<Card> { new(Rank.Two, Suit.Diamonds), new(Rank.Four, Suit.Diamonds) },
+                new Card(Rank.Nine, Suit.Diamonds),
+                new Card(Rank.Jack, Suit.Diamonds),
+                new Card(Rank.Five, Suit.Diamonds),
+                new Card(Rank.Two, Suit.Diamonds)
+            ).SetName("Returns 2 when partner card is highest and possible cards = 2, 4");
+
+            yield return new TestCaseData(
+                new List<Card> { new(Rank.Seven, Suit.Clubs), new(Rank.Five, Suit.Clubs), new(Rank.Eight, Suit.Clubs) },
+                new Card(Rank.Ten, Suit.Clubs),
+                new Card(Rank.Queen, Suit.Clubs),
+                new Card(Rank.Three, Suit.Clubs),
+                new Card(Rank.Five, Suit.Clubs)
+            ).SetName("Returns 5 when partner card is highest and possible cards = 5, 7, 8");
+
+            yield return new TestCaseData(
+                new List<Card> { new(Rank.Ten, Suit.Spades), new(Rank.Three, Suit.Spades), new(Rank.Jack, Suit.Spades) },
+                new Card(Rank.Ten, Suit.Spades),
+                new Card(Rank.Four, Suit.Spades),
+                new Card(Rank.Queen, Suit.Spades),
+                new Card(Rank.Three, Suit.Spades)
+            ).SetName("Returns 3 when cant win and possible cards = 10, J, 3");
+
+            yield return new TestCaseData(
+                new List<Card> { new(Rank.King, Suit.Hearts), new(Rank.Two, Suit.Hearts), new(Rank.Three, Suit.Hearts) },
+                new Card(Rank.Ace, Suit.Hearts),
+                new Card(Rank.Four, Suit.Hearts),
+                new Card(Rank.Six, Suit.Hearts),
+                new Card(Rank.Two, Suit.Hearts)
+            ).SetName("Returns 2 when cant win and possible cards = K, 3, 2");
+        }
+
         private static IEnumerable<TestCaseData> DefenderSecondTurnLowestCardTestCases() {
             yield return new TestCaseData(
                 new List<Card> { new(Rank.Two, Suit.Diamonds), new(Rank.Four, Suit.Diamonds) },

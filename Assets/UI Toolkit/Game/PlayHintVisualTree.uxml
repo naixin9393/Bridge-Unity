@@ -9,6 +9,7 @@
             <ui:VisualElement class="flex-row align-items-center" style="flex-grow: 0;">
                 <ui:Label text="Carta:" class="header2" />
                 <ui:Label text="Label" name="CardLabel" class="header2 underline" />
+                <ui:VisualElement style="flex-grow: 1;" />
             </ui:VisualElement>
             <ui:ScrollView name="HintContainer" />
             <ui:VisualElement style="flex-grow: 0;">

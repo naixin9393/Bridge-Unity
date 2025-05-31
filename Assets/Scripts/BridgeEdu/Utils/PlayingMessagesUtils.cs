@@ -37,5 +37,8 @@ namespace BridgeEdu.Utils {
 
         public static string DefenderHonorOverHonor = $"Honor sobre honor del atacante. Jugar un honor mayor";
         public static string DefenderSecondTurnPlayLowestCard = "Segunda ronda lado defensor. Jugar la carta más baja si la primera carta no es honor";
+        public static string DefenderFourthTurnPlayLowestCardPartnerHighest = "Cuarta ronda lado defensor. Jugar la carta más baja si el compañero ha jugado la carta más alta";
+        public static string DefenderFourthTurnPlayLowestCardCantWin = "Cuarta ronda lado defensor. Jugar la carta más baja si no se puede ganar la baza";
+        public static string DefenderFourthTurnPlayHigherCard = "Cuarta ronda lado defensor. Si se puede ganar la baza, jugar la carta más pequeña que gane la baza";
     }
 }
