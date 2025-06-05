@@ -10,11 +10,26 @@ namespace BridgeEdu.Game.Play {
         public ITrick CurrentTrick { get; }
         public IPlayer Dummy { get; }
         public IPlayer Human { get; }
+        public IPlayer CurrentPlayer { get; }
         public Bid Contract { get; }
         public IHand Hand { get; }
         public bool IsAttackerTurn { get; }
+        public Suit DeclarerLongSuit { get; }
+        public List<IPlayer> Players { get; }
 
-        public PlayingContext(List<Card> possibleCards, List<ITrick> tricks, IPlayer dummy, IPlayer human, Bid contract, IHand hand, ITrick currentTrick, bool isAttackerTurn) {
+        public PlayingContext(
+            List<Card> possibleCards,
+            List<ITrick> tricks,
+            IPlayer dummy,
+            IPlayer human,
+            Bid contract,
+            IHand hand,
+            ITrick currentTrick,
+            bool isAttackerTurn,
+            Suit declarerLongSuit,
+            IPlayer currentPlayer,
+            List<IPlayer> players) {
+
             PossibleCards = possibleCards;
             CurrentTrick = currentTrick;
             Tricks = tricks;
@@ -23,6 +38,9 @@ namespace BridgeEdu.Game.Play {
             Contract = contract;
             Hand = hand;
             IsAttackerTurn = isAttackerTurn;
+            DeclarerLongSuit = declarerLongSuit;
+            Players = players;
+            CurrentPlayer = currentPlayer;
         }
     }
 }

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using BridgeEdu.Core;
 using BridgeEdu.Game.Bidding;
-using BridgeEdu.Game.Play;
 using BridgeEdu.Utils;
 
 namespace BridgeEdu.Engines.Play {

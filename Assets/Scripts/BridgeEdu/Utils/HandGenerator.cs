@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NUnit.Framework;
 using UnityEngine;
 
 using BridgeEdu.Core;
@@ -138,10 +137,6 @@ namespace BridgeEdu.Utils {
             }
 
             hand.AddCards(currentAttemptCards); // Assuming PlayerHand has an AddCards method
-
-            Assert.AreEqual(13, hand.NumberOfCards);
-            Assert.LessOrEqual(hand.HCP, maxHCP);
-            Assert.GreaterOrEqual(hand.HCP, minHCP);
 
             return hand;
         }

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NUnit.Framework;
 using UnityEngine;
 
 using BridgeEdu.Utils;
@@ -48,8 +47,6 @@ namespace BridgeEdu.Game {
 
             deck.RemoveCards(humanHand.Cards);
 
-            Assert.AreEqual(52 - 13, deck.Cards.Count);
-
             deck.Shuffle();
 
             // Identify players
@@ -64,8 +61,6 @@ namespace BridgeEdu.Game {
             partnerPlayer.ReceiveCards(partnerHand.Cards);
 
             deck.RemoveCards(partnerHand.Cards);
-
-            Assert.AreEqual(39 - 13, deck.Cards.Count);
 
             rightComputer.ReceiveCards(deck.DealCards(13));
             leftComputer.ReceiveCards(deck.DealCards(13));

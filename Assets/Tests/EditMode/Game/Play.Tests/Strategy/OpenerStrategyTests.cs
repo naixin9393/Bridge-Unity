@@ -5,6 +5,7 @@ using NUnit.Framework;
 using UnityEngine;
 using BridgeEdu.Game.Bidding;
 using BridgeEdu.Game.Play;
+using System.Linq;
 
 namespace BridgeEdu.Engines.Play {
     public class OpenerStrategyTests {
@@ -19,50 +20,43 @@ namespace BridgeEdu.Engines.Play {
         public void IsApplicable_ReturnsFalse_WhenNotFirstPlayOfGame() {
             var mockTricks = new Mock<IList<ITrick>>();
             mockTricks.Setup(t => t.Count).Returns(2);
-            var playingContext = new PlayingContextBuilder()
-                .WithTricks(mockTricks.Object)
-                .Build();
-            Assert.IsFalse(_strategy.IsApplicable(playingContext));
+            var mockContext = new Mock<IPlayingContext>();
+            mockContext.Setup(c => c.Tricks).Returns(mockTricks.Object.ToList());
+            Assert.IsFalse(_strategy.IsApplicable(mockContext.Object));
         }
 
         [Test]
         public void IsApplicable_ReturnsTrue_WhenFirstPlayOfGame() {
-            var playingContext = new PlayingContextBuilder()
-                .WithTricks(
-                    new List<ITrick> {
-                        new Trick(
-                            new List<IPlayer>(),
-                            strain: Strain.NoTrump,
-                            currentPlayer: null
-                        )
-                    }
-                )
-                .WithContract(new Bid(1, Strain.NoTrump))
-                .Build();
-            Assert.IsTrue(_strategy.IsApplicable(playingContext));
+            var trick = new Trick(
+                players: new List<IPlayer>(),
+                strain: Strain.NoTrump,
+                currentPlayer: null
+            );
+            var tricks = new List<ITrick> { trick };
+            var mockContext = new Mock<IPlayingContext>();
+            mockContext.Setup(c => c.Tricks).Returns(tricks);
+            mockContext.Setup(c => c.Contract).Returns(new Bid(1, Strain.NoTrump));
+            Assert.IsTrue(_strategy.IsApplicable(mockContext.Object));
         }
 
 
         [Test, TestCaseSource(nameof(HonorSequenceTestCases))]
         public void GetSuggestions_ReturnsFirstOfHonor_WhenHonorSequenceAndContractNT(List<Card> hand, Card expected) {
-            var mockHand = new Hand();
-            mockHand.AddCards(hand);
-            var playingContext = new PlayingContextBuilder()
-                .WithHand(mockHand)
-                .WithTricks(
-                    new List<ITrick> {
-                        new Trick(
-                            new List<IPlayer>(),
-                            strain: Strain.NoTrump,
-                            currentPlayer: null
-                        )
-                    }
-                )
-                .WithContract(new Bid(1, Strain.NoTrump))
-                .WithPossibleCards(hand)
-                .Build();
+            var mockHand = new Mock<IHand>();
+            mockHand.Setup(h => h.Cards).Returns(hand);
+            var trick = new Trick(
+                players: new List<IPlayer>(),
+                strain: Strain.NoTrump,
+                currentPlayer: null
+            );
+            var tricks = new List<ITrick> { trick };
+            var mockContext = new Mock<IPlayingContext>();
+            mockContext.Setup(c => c.Tricks).Returns(tricks);
+            mockContext.Setup(c => c.Contract).Returns(new Bid(1, Strain.NoTrump));
+            mockContext.Setup(c => c.PossibleCards).Returns(hand);
+            mockContext.Setup(c => c.Hand).Returns(mockHand.Object);
 
-            var suggestions = _strategy.GetSuggestions(playingContext);
+            var suggestions = _strategy.GetSuggestions(mockContext.Object);
             Assert.IsNotEmpty(suggestions);
 
             var firstSuggestion = suggestions[0];
@@ -75,24 +69,21 @@ namespace BridgeEdu.Engines.Play {
 
         [Test, TestCaseSource(nameof(FifthSuitWithHonorTestCases))]
         public void GetSuggestions_ReturnsFourthCard_WhenFifthSuitWithHonor(List<Card> hand, Card expected) {
-            var mockHand = new Hand();
-            mockHand.AddCards(hand);
-            var playingContext = new PlayingContextBuilder()
-                .WithHand(mockHand)
-                .WithTricks(
-                    new List<ITrick> {
-                        new Trick(
-                            new List<IPlayer>(),
-                            strain: Strain.NoTrump,
-                            currentPlayer: null
-                        )
-                    }
-                )
-                .WithContract(new Bid(1, Strain.NoTrump))
-                .WithPossibleCards(hand)
-                .Build();
+            var mockHand = new Mock<IHand>();
+            mockHand.Setup(h => h.Cards).Returns(hand);
+            var trick = new Trick(
+                players: new List<IPlayer>(),
+                strain: Strain.NoTrump,
+                currentPlayer: null
+            );
+            var tricks = new List<ITrick> { trick };
+            var mockContext = new Mock<IPlayingContext>();
+            mockContext.Setup(c => c.Tricks).Returns(tricks);
+            mockContext.Setup(c => c.Contract).Returns(new Bid(1, Strain.NoTrump));
+            mockContext.Setup(c => c.PossibleCards).Returns(hand);
+            mockContext.Setup(c => c.Hand).Returns(mockHand.Object);
 
-            var suggestions = _strategy.GetSuggestions(playingContext);
+            var suggestions = _strategy.GetSuggestions(mockContext.Object);
             Assert.IsNotEmpty(suggestions);
 
             var firstSuggestion = suggestions[0];
@@ -105,24 +96,21 @@ namespace BridgeEdu.Engines.Play {
 
         [Test, TestCaseSource(nameof(SequenceTwoBelowHonorTestCases))]
         public void GetSuggestions_ReturnsHighestHonor_WhenSequenceOfTwoHonorAndThirdTwoLowerThanHonor(List<Card> hand, Card expected) {
-            var mockHand = new Hand();
-            mockHand.AddCards(hand);
-            var playingContext = new PlayingContextBuilder()
-                .WithHand(mockHand)
-                .WithTricks(
-                    new List<ITrick> {
-                        new Trick(
-                            new List<IPlayer>(),
-                            strain: Strain.NoTrump,
-                            currentPlayer: null
-                        )
-                    }
-                )
-                .WithContract(new Bid(1, Strain.NoTrump))
-                .WithPossibleCards(hand)
-                .Build();
+            var mockHand = new Mock<IHand>();
+            mockHand.Setup(h => h.Cards).Returns(hand);
+            var trick = new Trick(
+                players: new List<IPlayer>(),
+                strain: Strain.NoTrump,
+                currentPlayer: null
+            );
+            var tricks = new List<ITrick> { trick };
+            var mockContext = new Mock<IPlayingContext>();
+            mockContext.Setup(c => c.Tricks).Returns(tricks);
+            mockContext.Setup(c => c.Contract).Returns(new Bid(1, Strain.NoTrump));
+            mockContext.Setup(c => c.PossibleCards).Returns(hand);
+            mockContext.Setup(c => c.Hand).Returns(mockHand.Object);
 
-            var suggestions = _strategy.GetSuggestions(playingContext);
+            var suggestions = _strategy.GetSuggestions(mockContext.Object);
             Assert.IsNotEmpty(suggestions);
 
             var firstSuggestion = suggestions[0];

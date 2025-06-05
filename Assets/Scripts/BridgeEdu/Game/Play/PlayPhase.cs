@@ -7,6 +7,7 @@ using BridgeEdu.Engines;
 using BridgeEdu.Engines.Play;
 using BridgeEdu.Game.Bidding;
 using BridgeEdu.Game.Play.Exceptions;
+using BridgeEdu.Game.Players;
 using BridgeEdu.Utils;
 
 namespace BridgeEdu.Game.Play {
@@ -18,6 +19,7 @@ namespace BridgeEdu.Game.Play {
         private readonly List<IPlayer> _players = new();
         private readonly IPlayer _dummy;
         private readonly IPlayer _human;
+        private readonly Suit _declarerLongSuit;
         private List<IPlayer> _attackers = new();
         private List<IPlayer> _defenders = new();
         private IPlayingEngine _playingEngine;
@@ -41,7 +43,10 @@ namespace BridgeEdu.Game.Play {
             contract: Contract,
             hand: CurrentPlayer.Hand,
             currentTrick: CurrentTrick,
-            isAttackerTurn: IsAttacker(CurrentPlayer)
+            isAttackerTurn: IsAttacker(CurrentPlayer),
+            players: _players,
+            currentPlayer: CurrentPlayer,
+            declarerLongSuit: _declarerLongSuit
         ));
 
         public PlayPhase(IBidding bidding) {
@@ -51,6 +56,9 @@ namespace BridgeEdu.Game.Play {
             _human = bidding.Human;
             DetermineLeadPlayer(bidding);
             DetermineTeams(LeadPlayer);
+
+            if (_dummy != null && PlayerUtils.PartnerOf(_dummy, _players) != null)
+                _declarerLongSuit = HandUtils.LongestSuit(_dummy.Hand, PlayerUtils.PartnerOf(_dummy, _players).Hand);
             _tricks.Add(new Trick(_players, Contract.Strain, CurrentPlayer));
             _playingEngine = new NullPlayingEngine();
         }
@@ -122,6 +130,9 @@ namespace BridgeEdu.Game.Play {
                 contract: Contract,
                 currentTrick: CurrentTrick,
                 isAttackerTurn: IsAttacker(CurrentPlayer),
+                declarerLongSuit: _declarerLongSuit,
+                players: _players,
+                currentPlayer: CurrentPlayer,
                 hand: CurrentPlayer.Hand);
             var playingSuggestions = _playingEngine.GetSuggestions(context);
             CurrentPlayer.RequestPlayerPlayDecision(context, playingSuggestions);

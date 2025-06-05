@@ -35,10 +35,22 @@ namespace BridgeEdu.Utils {
             return $"Cartas equivalentes. {cardsString}. Jugar la más baja";
         }
 
-        public static string DefenderHonorOverHonor = $"Honor sobre honor del atacante. Jugar un honor mayor";
-        public static string DefenderSecondTurnPlayLowestCard = "Segunda ronda lado defensor. Jugar la carta más baja si la primera carta no es honor";
-        public static string DefenderFourthTurnPlayLowestCardPartnerHighest = "Cuarta ronda lado defensor. Jugar la carta más baja si el compañero ha jugado la carta más alta";
-        public static string DefenderFourthTurnPlayLowestCardCantWin = "Cuarta ronda lado defensor. Jugar la carta más baja si no se puede ganar la baza";
-        public static string DefenderFourthTurnPlayHigherCard = "Cuarta ronda lado defensor. Si se puede ganar la baza, jugar la carta más pequeña que gane la baza";
+        public static string DefenderHonorOverHonor = $"Segundo turno defensor. Honor sobre honor del atacante. Jugar un honor mayor";
+        public static string DefenderSecondTurnPlayLowestCard = "Segundo turno defensor. Jugar la carta más baja si la primera carta no es honor";
+        public static string DefenderFourthTurnPlayLowestCardPartnerHighest = "Cuarto turno defensor. Jugar la carta más baja si el compañero ha jugado la carta más alta";
+        public static string DefenderFourthTurnPlayLowestCardCantWin = "Cuarto turno defensor. Jugar la carta más baja si no se puede ganar la baza";
+        public static string DefenderFourthTurnPlayHigherCard = "Cuarta turno defensor. Si se puede ganar la baza, jugar la carta más pequeña que gane la baza";
+        public static string AttackerPlayBiggerCard = $"Segundo turno atacante. Jugar una carta mayor si es posible";
+        public static string AttackerFourthTurnPlayLowestCardPartnerHighest = "Cuarto turno atacante. Jugar la carta más baja si la carta del compañero es la más alta";
+        public static string AttackerFourthTurnPlayLowestCardCantWin = "Cuarto turno atacante. Jugar la carta más baja si no se puede ganar la baza";
+        public static string AttackerFourthTurnPlayHigherCard = "Cuarta turno atacante. Si se puede ganar la baza, jugar la carta más pequeña que gane la baza";
+        public static string AttackerFirstTurnPlayLongSuitHighestCard = "Primer turno atacante. Jugar la carta más alta del palo largo si se tiene la carta más alta";
+        public static string AttackerFirstTurnPlayLongSuitLowestCard = "Primer turno atacante. Jugar la carta más baja del palo largo si el compañero tiene la carta más alta";
+        public static string AttackerSecondTurnPlayLowestCard = "Segundo turno atacante. Jugar la carta más baja si no tiene carta mayor que la del defensor";
+        public static string AttackerThirdTurnPlayLongSuitHighestCard = "Tercer turno atacante. Jugar la carta más alta del palo largo si se tiene la carta más alta";
+        public static string AttackerThirdTurnPlayLongSuitLowestCard = "Tercer turno atacante. Jugar la carta más baja del palo largo si el compañero tiene la carta más alta";
+        public static string AttackerThirdTurnPlayLowestCardPartnerHighest = "Tercer turno atacante. Jugar la carta más baja si la carta del compañero es la más alta";
+        public static string AttackerThirdTurnPlayLowestCardCantWin = "Tercer turno atacante. Jugar la carta más baja si no se puede ganar la baza";
+        public static string AttackerThirdTurnPlayHigherCard = "Tercer turno atacante. Si se puede ganar la baza, jugar la carta más pequeña que gane la baza";
     }
 }

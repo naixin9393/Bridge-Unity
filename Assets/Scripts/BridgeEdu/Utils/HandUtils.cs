@@ -220,6 +220,34 @@ namespace BridgeEdu.Utils {
                 .FirstOrDefault();
         }
 
+        public static Suit LongestSuit(IHand declarerHand, IHand dummyHand) {
+            var numberOfEachSuit = new List<int>() {
+                declarerHand.NumberOfCardsOfSuit(Suit.Spades) + dummyHand.NumberOfCardsOfSuit(Suit.Spades),
+                declarerHand.NumberOfCardsOfSuit(Suit.Hearts) + dummyHand.NumberOfCardsOfSuit(Suit.Hearts),
+                declarerHand.NumberOfCardsOfSuit(Suit.Diamonds) + dummyHand.NumberOfCardsOfSuit(Suit.Diamonds),
+                declarerHand.NumberOfCardsOfSuit(Suit.Clubs) + dummyHand.NumberOfCardsOfSuit(Suit.Clubs)
+            };
+
+            int maxCount = numberOfEachSuit.Max();
+            int index = numberOfEachSuit.IndexOf(maxCount);
+            return (Suit)index;
+        }
+
+        public static Card GetHighestCardOfSuit(IHand hand, Suit suit) {
+            return hand.Cards
+                .Where(card => card.Suit == suit)
+                .OrderByDescending(card => card.Rank)
+                .FirstOrDefault();
+        }
+
+        public static Card GetLowestCardOfSuit(IHand hand, Suit suit) {
+            return hand.Cards
+                .Where(card => card.Suit == suit)
+                .OrderBy(card => card.Rank)
+                .FirstOrDefault();
+        }
+
+
         private static bool Is4333(List<int> numberOfEachSuit) {
             return numberOfEachSuit.Count(suit => suit == 3) == 3 &&
                    numberOfEachSuit.Count(suit => suit == 4) == 1;
